@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>تسجيل الدخول</title>
+
+  <style>
+
+    :root {
+        --primary: #0F766E;
+        --primary-light: #14B8A6;
+        --secondary: #0284C7;
+
+        --success: #16A34A;
+        --danger: #B91C1C;
+
+        --dark: #0F172A;
+        --text: #334155;
+        --muted: #64748B;
+
+        --light: #F8FAFC;
+        --white: #FFFFFF;
+
+        --border: #E2E8F0;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Cairo', 'Segoe UI', Arial, sans-serif;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(15, 118, 110, 0.10),
+                rgba(2, 132, 199, 0.10)
+            ),
+            #F8FAFC;
+
+        color: var(--text);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        min-height: 100vh;
+    }
+
+
+    /* 
+       صندوق تسجيل الدخول
+    */
+
+    .login-box {
+        width: 90%;
+        max-width: 400px;
+
+        background: rgba(255, 255, 255, 0.95);
+
+        padding: 30px;
+
+        border-radius: 18px;
+
+        border: 1px solid rgba(226, 232, 240, .8);
+
+        box-shadow:
+            0 10px 30px rgba(15, 23, 42, .12);
+
+        backdrop-filter: blur(10px);
+    }
+
+
+
+
+    h2 {
+        text-align: center;
+
+        margin-top: 0;
+        margin-bottom: 10px;
+
+        color: var(--dark);
+
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+
+    .subtitle {
+        text-align: center;
+
+        color: var(--muted);
+
+        margin-bottom: 25px;
+
+        font-size: 14px;
+    }
+
+    .account-type {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .account-option {
+        padding: 14px 8px;
+
+        border: 2px solid var(--border);
+
+        border-radius: 10px;
+
+        background: var(--white);
+
+        color: var(--text);
+
+        cursor: pointer;
+
+        text-align: center;
+
+        font-size: 15px;
+
+        font-weight: 600;
+
+        transition: all .25s ease;
+    }
+
+
+    .account-option:hover {
+        border-color: var(--primary-light);
+
+        background: #F0FDFA;
+
+        transform: translateY(-2px);
+    }
+
+
+    .account-option.selected {
+        border-color: var(--primary);
+
+        background:
+            linear-gradient(
+                135deg,
+                #F0FDFA,
+                #ECFEFF
+            );
+
+        color: var(--primary);
+
+        font-weight: bold;
+
+        box-shadow:
+            0 4px 12px rgba(15, 118, 110, .12);
+    }
+
+
+
+
+    input {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 13px;
+
+        margin-bottom: 15px;
+
+        border: 1px solid var(--border);
+
+        border-radius: 10px;
+
+        font-size: 16px;
+
+        color: var(--text);
+
+        background: #FFFFFF;
+
+        transition: all .25s ease;
+    }
+
+
+    input::placeholder {
+        color: #94A3B8;
+    }
+
+
+    input:focus {
+        outline: none;
+
+        border-color: var(--primary-light);
+
+        box-shadow:
+            0 0 0 3px rgba(20, 184, 166, .12);
+    }
+
+    button.login-btn {
+        
+        width: 100%;
+        padding: 13px;
+        border: 0;
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary-light)
+            );
+
+        color: white;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all .3s ease;
+
+        box-shadow:
+            0 4px 12px rgba(15, 118, 110, .20);
+    }
+
+
+    button.login-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 7px 18px rgba(15, 118, 110, .25);
+    }
+
+
+    button.login-btn:active {
+        transform: translateY(0);
+    }
+
+
+    button.login-btn:disabled {
+        background:
+            linear-gradient(
+                135deg,
+                #94A3B8,
+                #CBD5E1
+            );
+
+        cursor: not-allowed;
+
+        box-shadow: none;
+
+        transform: none;
+    }
+
+
+
+    #message {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--muted);
+    }
+
+
+
+    @media (max-width: 500px) {
+
+        .login-box {
+            width: 85%;
+            padding: 25px;
+            border-radius: 16px;
+        }
+
+        h2 {
+            font-size: 23px;
+        }
+
+        .account-option {
+            padding: 12px 6px;
+            font-size: 14px;
+        }
+
+    }
+    
+    /* نافذة الباقات */
+
+.packages-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(15, 23, 42, .65);
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+
+.packages-box {
+    position: relative;
+    width: 100%;
+    max-width: 850px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow:
+        0 25px 60px rgba(15, 23, 42, .20);
+}
+
+
+.packages-close {
+    position: absolute;
+
+    top: 15px;
+    left: 15px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: #F1F5F9;
+    color: #475569;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+
+.packages-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+
+.packages-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0F766E,
+            #14B8A6
+        );
+
+    color: white;
+    font-size: 28px;
+    box-shadow:
+        0 8px 20px rgba(15, 118, 110, .20);
+}
+
+
+.packages-header h2 {
+    margin: 0;
+
+    color: #0F172A;
+    font-size: 26px;
+}
+
+
+.packages-header p {
+    margin: 7px 0 0;
+    color: #64748B;
+    font-size: 14px;
+}
+
+
+.packages-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(210px, 1fr)
+        );
+
+    gap: 16px;
+}
+
+
+.package-card {
+    position: relative;
+
+    border: 2px solid #E2E8F0;
+
+    border-radius: 18px;
+
+    padding: 22px;
+
+    background: #FFFFFF;
+
+    transition: .25s ease;
+}
+
+
+.package-card:hover {
+    transform: translateY(-4px);
+
+    border-color: #14B8A6;
+
+    box-shadow:
+        0 12px 25px rgba(15, 23, 42, .10);
+}
+
+
+.package-card.popular {
+    border-color: #0F766E;
+
+    background:
+        linear-gradient(
+            180deg,
+            #F0FDFA,
+            #FFFFFF
+        );
+}
+
+
+.package-badge {
+    position: absolute;
+
+    top: -11px;
+
+    right: 18px;
+
+    padding: 5px 12px;
+
+    border-radius: 20px;
+
+    background: #0F766E;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+
+.package-name {
+    color: #0F766E;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    margin-bottom: 12px;
+}
+
+
+.package-price {
+    color: #0F172A;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    margin-bottom: 4px;
+}
+
+
+.package-price span {
+    font-size: 14px;
+
+    color: #64748B;
+
+    font-weight: normal;
+}
+
+
+.package-duration {
+    color: #64748B;
+
+    font-size: 14px;
+
+    margin-bottom: 18px;
+}
+
+
+.package-feature {
+    display: flex;
+
+    gap: 7px;
+
+    align-items: center;
+
+    margin: 8px 0;
+
+    color: #334155;
+
+    font-size: 14px;
+}
+
+
+.package-select-btn {
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding: 12px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0F766E,
+            #14B8A6
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.package-select-btn:hover {
+    opacity: .92;
+}
+
+
+.packages-loading,
+.packages-empty {
+    text-align: center;
+
+    padding: 30px;
+
+    color: #64748B;
+}
+
+
+@media (max-width: 600px) {
+
+    .packages-box {
+        padding: 20px;
+
+        border-radius: 18px;
+    }
+
+    .packages-list {
+        grid-template-columns: 1fr;
+    }
+
+    .packages-header h2 {
+        font-size: 22px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-box">
+
+    <h2>🔐 تسجيل الدخول</h2>
+
+    <div class="subtitle">
+        اختر نوع الحساب
+    </div>
+
+
+
+    <div class="account-type">
+
+        <div
+            id="adminOption"
+            class="account-option selected"
+            onclick="selectAccountType('admin')">
+
+            👨‍💼<br>
+            المدير
+
+        </div>
+
+
+        <div
+            id="ownerOption"
+            class="account-option"
+            onclick="selectAccountType('owner')">
+
+            🏢<br>
+            صاحب المغسلة
+
+        </div>
+
+    </div>
+
+
+
+    <input
+        type="email"
+        id="email"
+        placeholder="البريد الإلكتروني">
+
+    <input
+        type="password"
+        id="password"
+        placeholder="كلمة المرور">
+
+
+
+
+<button
+    id="loginButton"
+    class="login-btn"
+    onclick="login()">
+
+    تسجيل دخول 
+
+</button>
+
+<button
+    id="newSubscriptionBtn"
+    type="button"
+    onclick="openPackagesModal()"
+    style="
+        width:100%;
+        margin-top:12px;
+        padding:13px;
+        border:1px solid #14B8A6;
+        border-radius:10px;
+        background:#F0FDFA;
+        color:#0F766E;
+        font-size:16px;
+        font-weight:bold;
+        cursor:pointer;
+    "
+>
+    ✨ اشتراك وإنشاء حساب جديد 
+</button>
+
+
+    <div id="message"></div>
+    
+    <div class="legal-links">
+    <a href="privacy.html">سياسة الخصوصية</a>
+    <span> | </span>
+    <a href="cookies.html">ملفات الارتباط</a>
+    <span> | </span>
+    <a href="terms.html">الشروط والأحكام</a>
+</div>
+    
+    <div
+    id="packagesModal"
+    class="packages-modal"
+>
+
+    <div class="packages-box">
+
+        <button
+            type="button"
+            class="packages-close"
+            onclick="closePackagesModal()"
+        >
+            ×
+        </button>
+
+        <div class="packages-header">
+
+            <div class="packages-icon">
+                ✨
+            </div>
+
+            <h2>
+                اختر باقتك
+            </h2>
+
+            <p>
+                اختر الباقة المناسبة لمغسلتك
+            </p>
+
+        </div>
+
+        <div
+            id="packagesLoading"
+            class="packages-loading"
+        >
+            جاري تحميل الباقات...
+        </div>
+
+        <div
+            id="packagesList"
+            class="packages-list"
+        ></div>
+
+        <div
+            id="packagesEmpty"
+            class="packages-empty"
+            style="display:none;"
+        >
+            لا توجد باقات متاحة حالياً
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+
+import {
+    getDatabase,
+    ref,
+    get,
+    push,
+    set
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+import {
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyCR1TQvsl3KznnnzfQtVmrNy2_K0WBbSoY",
+
+    authDomain:
+        "laundry-management-ef4f9.firebaseapp.com",
+
+    databaseURL:
+        "https://laundry-management-ef4f9-default-rtdb.firebaseio.com",
+
+    projectId:
+        "laundry-management-ef4f9",
+
+    storageBucket:
+        "laundry-management-ef4f9.firebasestorage.app",
+
+    messagingSenderId:
+        "719802435733",
+
+    appId:
+        "1:719802435733:web:805c07439239484321f39c"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+const db =
+    getDatabase(app);
+
+
+const storage =
+    getStorage(app);
+    
+    
+let selectedAccountType = "admin";
+
+window.selectAccountType = function(type) {
+    
+    if (type !== "admin" && type !== "owner") {
+        return;
+    }
+    
+    selectedAccountType = type;
+    
+    document
+        .getElementById("adminOption")
+        ?.classList.toggle("selected", type === "admin");
+    
+    document
+        .getElementById("ownerOption")
+        ?.classList.toggle("selected", type === "owner");
+    
+    console.log("نوع الحساب:", selectedAccountType);
+};
+
+    
+    async function loadPackages() {
+    
+    const loading =
+        document.getElementById(
+            "packagesLoading"
+        );
+    
+    const list =
+        document.getElementById(
+            "packagesList"
+        );
+    
+    const empty =
+        document.getElementById(
+            "packagesEmpty"
+        );
+    
+    
+    loading.style.display = "block";
+    
+    list.innerHTML = "";
+    
+    empty.style.display = "none";
+    
+    
+    try {
+        
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    "packages"
+                )
+            );
+        
+        
+        loading.style.display = "none";
+        
+        
+        if (!snapshot.exists()) {
+            
+            empty.style.display = "block";
+            
+            return;
+        }
+        
+        
+        const packages =
+            snapshot.val();
+        
+        
+        const entries =
+            Object.entries(packages)
+            .filter(
+                ([id, packageData]) =>
+                packageData &&
+                packageData.active !== false
+            );
+        
+        
+        if (entries.length === 0) {
+            
+            empty.style.display = "block";
+            
+            return;
+        }
+        
+        
+        entries.forEach(
+            ([id, packageData], index) => {
+                
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+                
+                
+                card.className =
+                    "package-card";
+                
+                
+                if (
+                    packageData.popular === true
+                ) {
+                    
+                    card.classList.add(
+                        "popular"
+                    );
+                    
+                }
+                
+                
+                const name =
+                    packageData.name ||
+                    packageData.title ||
+                    "باقة";
+                
+                
+                const price =
+                    packageData.price ??
+                    0;
+                
+                
+                const months =
+                    Number(
+                        packageData.durationMonths ||
+                        packageData.months ||
+                        1
+                    );
+                
+                
+                let durationText =
+                    "شهر واحد";
+                
+                
+                if (months === 3) {
+                    
+                    durationText =
+                        "3 أشهر";
+                    
+                }
+                
+                else if (months === 6) {
+                    
+                    durationText =
+                        "6 أشهر";
+                    
+                }
+                
+                else if (months === 12) {
+                    
+                    durationText =
+                        "سنة";
+                    
+                }
+                
+                else if (months !== 1) {
+                    
+                    durationText =
+                        months +
+                        " شهر";
+                    
+                }
+                
+                
+                card.innerHTML = `
+
+                    ${
+                        packageData.popular === true
+                            ? `
+                                <div class="package-badge">
+                                    الأكثر طلباً
+                                </div>
+                            `
+                            : ""
+                    }
+
+                    <div class="package-name">
+                        ${escapePackageHtml(name)}
+                    </div>
+
+                    <div class="package-price">
+                        ${escapePackageHtml(price)}
+                        <span>ريال</span>
+                    </div>
+
+                    <div class="package-duration">
+                        مدة الاشتراك:
+                        ${escapePackageHtml(durationText)}
+                    </div>
+
+                    <div class="package-feature">
+                        ✓ إدارة المغسلة
+                    </div>
+
+                    <div class="package-feature">
+                        ✓ إدارة الفروع
+                    </div>
+
+                    <div class="package-feature">
+                        ✓ لوحة تحكم كاملة
+                    </div>
+
+                    <button
+                        type="button"
+                        class="package-select-btn"
+                        onclick="selectPackage('${id}')"
+                    >
+                        اختيار الباقة
+                    </button>
+
+                `;
+                
+                
+                list.appendChild(card);
+                
+            }
+        );
+        
+        
+    }
+    
+    catch (error) {
+        
+        console.error(
+            "Load packages error:",
+            error
+        );
+        
+        
+        loading.style.display =
+            "none";
+        
+        
+        list.innerHTML = `
+            <div class="packages-empty">
+                ❌ تعذر تحميل الباقات
+            </div>
+        `;
+        
+    }
+    
+} 
+
+
+
+function escapePackageHtml(value) {
+    
+    return String(value)
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+    
+}
+
+
+
+
+let selectedPackageId = null;
+window.openPackagesModal = async function () {
+
+    const modal =
+        document.getElementById("packagesModal");
+
+    if (!modal) {
+        console.error("packagesModal غير موجود");
+        return;
+    }
+
+    modal.style.display = "flex";
+
+    await loadPackages();
+};
+
+
+
+
+window.closePackagesModal = function () {
+
+    const modal =
+        document.getElementById("packagesModal");
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+};
+
+
+
+
+window.selectPackage = async function (packageId) {
+
+    selectedPackageId = packageId;
+
+    const info =
+        document.getElementById(
+            "selectedPackageInfo"
+        );
+
+    if (info) {
+        info.textContent =
+            "جاري تحميل بيانات الباقة...";
+    }
+
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    `packages/${packageId}`
+                )
+            );
+
+
+        if (snapshot.exists()) {
+
+            const packageData =
+                snapshot.val();
+
+
+            const name =
+                packageData.name ||
+                packageData.title ||
+                "الباقة";
+
+
+            const price =
+                packageData.price ?? 0;
+
+
+            const months =
+                Number(
+                    packageData.durationMonths ||
+                    packageData.months ||
+                    1
+                );
+
+
+            let durationText =
+                "شهر واحد";
+
+
+            if (months === 3) {
+
+                durationText =
+                    "3 أشهر";
+
+            }
+
+            else if (months === 6) {
+
+                durationText =
+                    "6 أشهر";
+
+            }
+
+            else if (months === 12) {
+
+                durationText =
+                    "سنة";
+
+            }
+
+            else if (months !== 1) {
+
+                durationText =
+                    months + " شهر";
+
+            }
+
+
+            if (info) {
+
+                info.textContent =
+                    `الباقة المختارة: ${name} — ${price} ريال — ${durationText}`;
+
+            }
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Load selected package error:",
+            error
+        );
+
+
+        if (info) {
+
+            info.textContent =
+                "تم اختيار الباقة";
+
+        }
+
+    }
+
+
+    closePackagesModal();
+
+
+    const subscriptionModal =
+        document.getElementById(
+            "subscriptionModal"
+        );
+
+
+    if (subscriptionModal) {
+
+        subscriptionModal.style.display =
+            "flex";
+
+    }
+
+};
+
+
+
+
+
+
+// تسجيل الدخول
+
+window.login =
+    async function() {
+
+        const email =
+            document.getElementById(
+                "email"
+            ).value.trim();
+
+
+        const password =
+            document.getElementById(
+                "password"
+            ).value;
+
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+
+        const loginButton =
+            document.getElementById(
+                "loginButton"
+            );
+
+
+        if (!email || !password) {
+
+            message.style.color =
+                "#d32f2f";
+
+            message.textContent =
+                "أدخل البريد الإلكتروني وكلمة المرور";
+
+            return;
+
+        }
+
+
+        try {
+
+            loginButton.disabled = true;
+            loginButton.textContent =
+                "جاري الدخول...";
+
+
+            message.style.color =
+                "#1976d2";
+
+            message.textContent =
+                "جاري التحقق من الحساب...";
+
+
+            const credential =
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+
+            const user =
+                credential.user;
+
+
+            console.log(
+                "User UID:",
+                user.uid
+            );
+
+            if (
+                selectedAccountType ===
+                "admin"
+            ) {
+
+                const adminRef =
+                    ref(
+                        db,
+                        `admins/${user.uid}`
+                    );
+
+
+                const adminSnapshot =
+                    await get(adminRef);
+
+
+                if (
+                    !adminSnapshot.exists()
+                ) {
+
+                    await signOut(auth);
+
+
+                    message.style.color =
+                        "#d32f2f";
+
+                    message.textContent =
+                        "❌ هذا الحساب ليس حساب مدير";
+
+
+                    loginButton.disabled =
+                        false;
+
+                    loginButton.textContent =
+                        "دخول";
+
+                    return;
+
+                }
+
+
+                const adminData =
+                    adminSnapshot.val();
+
+
+                if (
+                    adminData.role !==
+                    "admin"
+                ) {
+
+                    await signOut(auth);
+
+
+                    message.style.color =
+                        "#d32f2f";
+
+                    message.textContent =
+                        "❌ لا توجد صلاحية مدير لهذا الحساب";
+
+
+                    loginButton.disabled =
+                        false;
+
+                    loginButton.textContent =
+                        "دخول";
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "تم التحقق من حساب المدير"
+                );
+
+
+                window.location.href =
+                    "admin.html";
+
+
+                return;
+
+            }
+
+            if (
+                selectedAccountType ===
+                "owner"
+            ) {
+
+                const laundryRef =
+                    ref(
+                        db,
+                        `laundries/${user.uid}`
+                    );
+
+
+                const laundrySnapshot =
+                    await get(
+                        laundryRef
+                    );
+
+
+                if (
+                    !laundrySnapshot.exists()
+                ) {
+
+                    await signOut(auth);
+
+
+                    message.style.color =
+                        "#d32f2f";
+
+                    message.textContent =
+                        "❌ لا توجد مغسلة مرتبطة بهذا الحساب";
+
+
+                    loginButton.disabled =
+                        false;
+
+                    loginButton.textContent =
+                        "دخول";
+
+                    return;
+
+                }
+
+
+                const laundry =
+                    laundrySnapshot.val();
+
+                if (
+                    laundry.role !==
+                    "owner"
+                ) {
+
+                    await signOut(auth);
+
+
+                    message.style.color =
+                        "#d32f2f";
+
+                    message.textContent =
+                        "❌ هذا الحساب ليس حساب مغسلة";
+
+
+                    loginButton.disabled =
+                        false;
+
+                    loginButton.textContent =
+                        "دخول";
+
+                    return;
+
+                }
+
+                if (
+                    laundry.active !==
+                    true
+                ) {
+
+                    await signOut(auth);
+
+
+                    message.style.color =
+                        "#d32f2f";
+
+                    message.textContent =
+                        "⛔ حساب المغسلة موقوف من الإدارة أو الأشتراك أنتهى";
+
+
+                    loginButton.disabled =
+                        false;
+
+                    loginButton.textContent =
+                        "دخول";
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "تم التحقق من حساب المغسلة"
+                );
+
+                window.location.href =
+                  "consent.html";
+
+
+                return;
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+
+            message.style.color =
+                "#d32f2f";
+
+
+            if (
+                error.code ===
+                "auth/invalid-credential"
+            ) {
+
+                message.textContent =
+                    "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة";
+
+            }
+
+            else if (
+                error.code ===
+                "auth/user-not-found"
+            ) {
+
+                message.textContent =
+                    "❌ الحساب غير موجود";
+
+            }
+
+            else if (
+                error.code ===
+                "auth/wrong-password"
+            ) {
+
+                message.textContent =
+                    "❌ كلمة المرور غير صحيحة";
+
+            }
+
+            else {
+
+                message.textContent =
+                    "❌ حدث خطأ أثناء تسجيل الدخول";
+
+                console.error(
+                    error.message
+                );
+
+            }
+
+
+            loginButton.disabled =
+                false;
+
+            loginButton.textContent =
+                "دخول";
+
+        }
+
+    };
+
+
+
+</script>
+
+
+</body>
+
+</html>

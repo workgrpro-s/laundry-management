@@ -1,0 +1,123 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #14b8a6;
+  --secondary: #0ea5e9;
+  --dark: #0f172a;
+  --light: #f1f5f9;
+  --danger: #B91C1C;
+  --success: #22c55e;
+  --warning: #facc15;
+}
+
+/* الخلفية الرئيسية */
+body {
+  font-family: 'Cairo', sans-serif;
+  background: linear-gradient(135deg, #0ea5e9, #14b8a6);
+  min-height: 100vh;
+  color: #1f2937;
+}
+
+
+.container-main {
+  display: flex;
+  height: 100vh;
+}
+
+
+.sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, #0ea5e9, #14b8a6);
+  color: white;
+  padding: 20px;
+}
+
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.top-header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.section,
+.products-section,
+.cart-section,
+.chart-box,
+.report-card,
+.settings-container,
+.stat-card,
+.modal-content {
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+
+.product-btn {
+  background: white;
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  transition: 0.3s;
+}
+
+.product-btn:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: 0 10px 20px rgba(20, 184, 166, 0.2);
+}
+
+/* الأزرار */
+.btn {
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--secondary);
+  transform: translateY(-2px);
+}
+
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+
+.inventory-table {
+  background: white;
+  border-radius: 12px;
+}
+
+
+.modal {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+}

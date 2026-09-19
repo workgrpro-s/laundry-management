@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>لوحة المغسلة</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cairo', Arial, sans-serif;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(15,118,110,.08),
+                    rgba(2,132,199,.08)
+                ),
+                #f4f6f8;
+            color: #334155;
+        }
+
+        .header {
+            background:
+                linear-gradient(
+                    135deg,
+                    #0F766E,
+                    #0284C7
+                );
+            color: white;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(15,118,110,.20);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .logout {
+            background: #B91C1C;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout:hover {
+            background: #991B1B;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(15,23,42,.08);
+            margin-bottom: 20px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .branch-bar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .branch-select {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #CBD5E1;
+            border-radius: 10px;
+            background: white;
+            font-size: 15px;
+        }
+
+        .branch-title {
+            color: #0F766E;
+            margin-top: 0;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .item {
+            background: #F8FAFC;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .item strong {
+            display: block;
+            margin-bottom: 7px;
+            color: #64748B;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .active {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .inactive {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .system-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #0F766E,
+                    #14B8A6
+                );
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .system-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .branch-note {
+            background: #F0FDFA;
+            color: #0F766E;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media (max-width: 600px) {
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .container {
+                padding: 0 12px;
+                margin-top: 20px;
+            }
+
+            .branch-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <h1 id="pageTitle">
+        لوحة المغسلة
+    </h1>
+
+    <button
+        class="logout"
+        onclick="logout()">
+
+        تسجيل الخروج
+
+    </button>
+
+</header>
+
+
+<div class="container">
+
+    <div id="loading">
+        جاري تحميل البيانات...
+    </div>
+
+
+    <div
+        id="content"
+        style="display:none;">
+
+        <div class="card">
+
+            <div class="branch-note">
+                🏢 إذا كان لديك أكثر من فرع، يمكنك اختيار الفرع من القائمة في الأسفل.
+            </div>
+
+
+            <div
+                id="branchBar"
+                class="branch-bar"
+                style="display:none;">
+
+                <select
+                    id="branchSelect"
+                    class="branch-select">
+
+                </select>
+
+            </div>
+
+
+            <h2
+                id="branchTitle"
+                class="branch-title">
+
+                بيانات المغسلة
+
+            </h2>
+
+
+            <div class="info">
+
+                <div class="item">
+
+                    <strong>
+                        اسم المغسلة
+                    </strong>
+
+                    <span id="laundryName">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>
+                        اسم الفرع
+                    </strong>
+
+                    <span id="branchName">
+                        الفرع الرئيسي
+                    </span>
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>
+                        المسؤول
+                    </strong>
+
+                    <span id="ownerName">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>
+                        رقم الجوال
+                    </strong>
+
+                    <span id="ownerPhone">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>
+                        البريد الإلكتروني
+                    </strong>
+
+                    <span id="ownerEmail">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>
+                        حالة الفرع
+                    </strong>
+
+                    <span
+                        id="accountStatus"
+                        class="status">
+
+                        -
+
+                    </span>
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>
+                        انتهاء الاشتراك
+                    </strong>
+
+                    <span id="subscriptionEnd">
+                        -
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="enterSystemBtn"
+                class="system-btn">
+
+                دخول إلى النظام
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+
+import {
+    getDatabase,
+    ref,
+    get,
+    set
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyCR1TQvsl3KznnnzfQtVmrNy2_K0WBbSoY",
+
+    authDomain:
+        "laundry-management-ef4f9.firebaseapp.com",
+
+    databaseURL:
+        "https://laundry-management-ef4f9-default-rtdb.firebaseio.com",
+
+    projectId:
+        "laundry-management-ef4f9",
+
+    storageBucket:
+        "laundry-management-ef4f9.firebasestorage.app",
+
+    messagingSenderId:
+        "719802435733",
+
+    appId:
+        "1:719802435733:web:805c07439239484321f39c"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+const db =
+    getDatabase(app);
+
+
+
+
+let currentUser = null;
+
+let currentLaundry = null;
+
+let currentBranch = null;
+
+let currentBranchId = "main";
+
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+
+    currentUser = user;
+
+
+    try {
+
+        const laundryRef =
+            ref(
+                db,
+                `laundries/${user.uid}`
+            );
+
+
+        const snapshot =
+            await get(laundryRef);
+
+
+        if (!snapshot.exists()) {
+
+            showBlockedMessage(
+                "❌ لا توجد بيانات مغسلة مرتبطة بهذا الحساب"
+            );
+
+            return;
+        }
+
+
+        const laundry =
+            snapshot.val();
+
+
+        currentLaundry =
+            laundry;
+
+
+        if (
+            laundry.role !==
+            "owner"
+        ) {
+
+            await signOut(auth);
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+        await loadBranches();
+
+
+    } catch (error) {
+
+        console.error(
+            "Laundry loading error:",
+            error
+        );
+
+
+        showBlockedMessage(
+            "❌ تعذر تحميل بيانات المغسلة"
+        );
+
+    }
+
+});
+
+
+   
+   
+
+async function loadBranches() {
+
+    const branches =
+        currentLaundry.branches || {};
+
+
+    const branchEntries =
+        Object.entries(
+            branches
+        );
+
+    if (
+        branchEntries.length ===
+        0
+    ) {
+
+        currentBranchId =
+            "main";
+
+
+        currentBranch = {
+
+            id:
+                "main",
+
+            name:
+                currentLaundry.branchName ||
+                "الفرع الرئيسي",
+
+            active:
+                currentLaundry.active === true,
+
+            phone:
+                currentLaundry.phone ||
+                "",
+
+            subscription:
+                currentLaundry.subscription ||
+                {}
+
+        };
+
+
+        setupBranchSelector(
+            []
+        );
+
+
+        await displayBranch();
+
+        return;
+    }
+
+    const formattedBranches =
+        branchEntries.map(
+            ([id, branch]) => {
+
+                return {
+
+                    id:
+                        id,
+
+                    ...branch
+
+                };
+
+            }
+        );
+
+
+    currentBranchId =
+        formattedBranches[0].id;
+
+
+    currentBranch =
+        formattedBranches[0];
+
+
+    setupBranchSelector(
+        formattedBranches
+    );
+
+
+    await displayBranch();
+
+}
+
+
+/*
+   قائمة الفروع
+*/
+
+function setupBranchSelector(
+    branches
+) {
+
+    const branchBar =
+        document.getElementById(
+            "branchBar"
+        );
+
+
+    const select =
+        document.getElementById(
+            "branchSelect"
+        );
+
+
+    if (
+        branches.length <= 1
+    ) {
+
+        branchBar.style.display =
+            "none";
+
+        return;
+    }
+
+
+    branchBar.style.display =
+        "flex";
+
+    select.innerHTML =
+        "";
+
+
+    branches.forEach(
+        branch => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                branch.id;
+
+
+            option.textContent =
+                branch.name ||
+                "فرع بدون اسم";
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+    select.value =
+        currentBranchId;
+
+
+    select.onchange =
+        async function () {
+
+            const branchId =
+                this.value;
+
+
+            const branch =
+                branches.find(
+                    item =>
+                        item.id ===
+                        branchId
+                );
+
+
+            if (!branch) {
+                return;
+            }
+
+
+            currentBranchId =
+                branchId;
+                
+            currentBranch =
+                branch;
+
+            await displayBranch();
+
+        };
+
+}
+
+
+/* 
+   عرض الفرع
+ */
+
+async function displayBranch() {
+
+    const branch =
+        currentBranch;
+
+
+    if (!branch) {
+
+        showBlockedMessage(
+            "❌ لا توجد بيانات للفرع"
+        );
+
+        return;
+    }
+
+
+    const subscription =
+        branch.subscription ||
+        currentLaundry.subscription ||
+        {};
+
+
+    let endTimestamp =
+        Number(
+            subscription.endTimestamp ||
+            0
+        );
+
+
+    if (
+        !endTimestamp &&
+        subscription.endDate
+    ) {
+
+        endTimestamp =
+            new Date(
+                subscription.endDate
+            ).getTime();
+
+    }
+
+
+    if (
+        endTimestamp &&
+        Date.now() >= endTimestamp
+    ) {
+
+
+        if (
+            currentBranchId !==
+            "main"
+        ) {
+
+            try {
+
+                await set(
+                    ref(
+                        db,
+                        `laundries/${currentUser.uid}/branches/${currentBranchId}/active`
+                    ),
+                    false
+                );
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+            }
+
+        }
+
+
+        showBlockedMessage(
+            "⛔ انتهى اشتراك هذا الفرع\nيرجى التواصل مع الإدارة للتجديد."
+        );
+
+        return;
+    }
+
+
+    const isActive =
+        branch.active === true;
+
+
+    if (!isActive) {
+
+        showBlockedMessage(
+            "⛔ تم إيقاف هذا الفرع من قبل الإدارة"
+        );
+
+        return;
+    }
+
+
+
+    document.getElementById(
+        "branchName"
+    ).textContent =
+        branch.name ||
+        "الفرع الرئيسي";
+
+
+    document.getElementById(
+        "laundryName"
+    ).textContent =
+        currentLaundry.name ||
+        "-";
+
+    document.getElementById(
+        "ownerName"
+    ).textContent =
+        currentLaundry.ownerName ||
+        "-";
+
+
+
+    document.getElementById(
+        "ownerPhone"
+    ).textContent =
+        branch.phone ||
+        currentLaundry.phone ||
+        "-";
+
+    document.getElementById(
+        "ownerEmail"
+    ).textContent =
+        currentLaundry.email ||
+        currentUser.email ||
+        "-";
+
+
+
+    const status =
+        document.getElementById(
+            "accountStatus"
+        );
+
+
+    status.textContent =
+        "نشطة";
+
+
+    status.className =
+        "status active";
+
+
+    if (endTimestamp) {
+
+        const date =
+            new Date(
+                endTimestamp
+            );
+
+
+        document.getElementById(
+            "subscriptionEnd"
+        ).textContent =
+            date.toLocaleDateString(
+                "ar-SA"
+            );
+
+    } else {
+
+        document.getElementById(
+            "subscriptionEnd"
+        ).textContent =
+            "-";
+
+    }
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        currentLaundry.name ||
+        "لوحة المغسلة";
+
+
+    document.getElementById(
+        "branchTitle"
+    ).textContent =
+        branch.name
+            ? `بيانات ${branch.name}`
+            : "بيانات المغسلة";
+
+
+
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "content"
+    ).style.display =
+        "block";
+
+    window.currentLaundryUID =
+        currentUser.uid;
+
+
+    window.currentLaundry =
+        currentLaundry;
+
+
+    window.currentBranchUID =
+        currentBranchId;
+
+
+    window.currentBranch =
+        currentBranch;
+
+}
+
+
+document
+    .getElementById(
+        "enterSystemBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sessionStorage.setItem(
+                "currentLaundryUID",
+                currentUser.uid
+            );
+
+
+            sessionStorage.setItem(
+                "currentBranchUID",
+                currentBranchId
+            );
+
+
+            sessionStorage.setItem(
+                "currentLaundryName",
+                currentLaundry.name ||
+                ""
+            );
+            sessionStorage.setItem(
+            "currentOwnerName",
+            currentLaundry.ownerName ||
+            ""
+            );
+
+
+            sessionStorage.setItem(
+                "currentBranchName",
+                currentBranch.name ||
+                "الفرع الرئيسي"
+            );
+
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+
+function showBlockedMessage(
+    message
+) {
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "content"
+    ).style.display =
+        "none";
+
+
+    const container =
+        document.querySelector(
+            ".container"
+        );
+
+
+    container.innerHTML = `
+
+        <div
+            class="card"
+            style="
+                text-align:center;
+                padding:40px 25px;
+            "
+        >
+
+            <div
+                style="
+                    font-size:55px;
+                    margin-bottom:20px;
+                "
+            >
+                ⛔
+            </div>
+
+            <h2
+                style="
+                    color:#B91C1C;
+                    margin-bottom:15px;
+                "
+            >
+                الوصول غير متاح
+            </h2>
+
+            <p
+                style="
+                    white-space:pre-line;
+                    font-size:17px;
+                    line-height:1.8;
+                    color:#555;
+                "
+            >
+                ${escapeHtml(message)}
+            </p>
+
+
+            <button
+                onclick="logout()"
+                style="
+                    margin-top:20px;
+                    background:#0F766E;
+                    color:white;
+                    border:none;
+                    padding:12px 25px;
+                    border-radius:8px;
+                    cursor:pointer;
+                    font-size:16px;
+                "
+            >
+                تسجيل الخروج
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+window.logout =
+    async function () {
+
+        try {
+
+            sessionStorage.removeItem(
+                "currentLaundryUID"
+            );
+
+            sessionStorage.removeItem(
+                "currentBranchUID"
+            );
+
+            sessionStorage.removeItem(
+                "currentLaundryName"
+            );
+
+            sessionStorage.removeItem(
+                "currentBranchName"
+            );
+
+
+            await signOut(auth);
+
+
+            window.location.href =
+                "login.html";
+
+        } catch (error) {
+
+            console.error(
+                "Logout error:",
+                error
+            );
+
+        }
+
+    };
+
+
+</script>
+
+
+</body>
+
+</html>

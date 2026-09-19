@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>الموافقة على الشروط والسياسات</title>
+
+
+    <style>
+
+        :root {
+
+            --primary: #0F766E;
+            --primary-light: #14B8A6;
+            --dark: #0F172A;
+            --text: #334155;
+            --muted: #64748B;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --border: #E2E8F0;
+            --danger: #B91C1C;
+
+        }
+
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                'Cairo',
+                'Segoe UI',
+                Arial,
+                sans-serif;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(15, 118, 110, .10),
+                    rgba(2, 132, 199, .10)
+                ),
+                var(--light);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+
+        }
+
+
+        .consent-box {
+
+            width: 100%;
+            max-width: 650px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 35px;
+            box-shadow:
+                0 15px 40px
+                rgba(15, 23, 42, .12);
+
+            text-align: center;
+
+        }
+
+
+        .icon {
+
+            width: 70px;
+            height: 70px;
+            margin:
+                0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+
+            color: white;
+            font-size: 32px;
+            box-shadow:
+                0 8px 20px
+                rgba(15, 118, 110, .20);
+
+        }
+
+
+        h1 {
+
+            margin: 0 0 10px;
+            color: var(--dark);
+            font-size: 27px;
+
+        }
+
+
+        .description {
+
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+
+        }
+
+
+        .policy-list {
+
+            display: grid;
+            gap: 12px;
+            margin-bottom: 25px;
+
+        }
+
+
+        .policy-link {
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #FFFFFF;
+            color: var(--text);
+            text-decoration: none;
+            transition: .25s ease;
+
+        }
+
+
+        .policy-link:hover {
+
+            border-color:
+            var(--primary-light);
+            background:
+                #F0FDFA;
+            transform:
+                translateY(-2px);
+
+        }
+
+        .policy-title {
+
+            font-weight: bold;
+            color: var(--dark);
+
+        }
+
+        .policy-arrow {
+
+            color:
+                var(--primary);
+
+            font-size: 20px;
+
+        }
+
+
+        .agreement {
+
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.8;
+
+        }
+
+
+        .buttons {
+
+            display: grid;
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 12px;
+
+        }
+
+
+        button {
+
+            border: 0;
+            border-radius: 11px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .25s ease;
+
+        }
+
+
+        .accept-btn {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+
+            color: white;
+
+            box-shadow:
+                0 5px 15px
+                rgba(15, 118, 110, .20);
+
+        }
+
+
+        .accept-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        .reject-btn {
+
+            background: #FEF2F2;
+            color: var(--danger);
+            border: 1px solid #FECACA;
+
+        }
+
+
+        .reject-btn:hover {
+
+            background: #FEE2E2;
+
+        }
+
+
+        #message {
+
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--danger);
+            min-height: 20px;
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .consent-box {
+
+                padding: 25px 18px;
+                border-radius: 18px;
+
+            }
+
+
+            h1 {
+
+                font-size: 23px;
+
+            }
+
+
+            .buttons {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="consent-box">
+
+
+        <div class="icon">
+
+            📋
+
+        </div>
+
+        <h1>
+
+            قبل الدخول إلى النظام
+
+        </h1>
+
+
+        <div class="description">
+
+            يرجى الاطلاع على الشروط والسياسات التالية
+            قبل استخدام منصة إدارة المغسلة.
+
+        </div>
+
+
+        <div class="policy-list">
+
+
+            <a
+                href="terms.html?from=consent"
+                class="policy-link"
+            >
+
+                <span class="policy-title">
+
+                    📋 الشروط والأحكام
+
+                </span>
+                <span class="policy-arrow">
+
+                    ←
+
+                </span>
+
+            </a>
+
+
+            <a
+                href="privacy.html?from=consent"
+                class="policy-link"
+            >
+
+                <span class="policy-title">
+
+                    🔒 سياسة الخصوصية
+
+                </span>
+
+
+                <span class="policy-arrow">
+
+                    ←
+
+                </span>
+
+            </a>
+
+
+            <a
+                href="cookies.html?from=consent"
+                class="policy-link"
+            >
+
+                <span class="policy-title">
+
+                    🍪 ملفات الارتباط
+
+                </span>
+
+
+                <span class="policy-arrow">
+
+                    ←
+
+                </span>
+
+            </a>
+
+
+        </div>
+
+        <div class="agreement">
+
+            بالضغط على
+            <strong>«أوافق وأتابع»</strong>،
+            فإنك تقر بأنك قرأت وفهمت الشروط والأحكام
+            وسياسة الخصوصية وملفات الارتباط وتوافق عليها.
+
+        </div>
+        <div class="buttons">
+
+
+            <button
+                type="button"
+                class="accept-btn"
+                onclick="acceptTerms()"
+            >
+
+                أوافق وأتابع
+
+            </button>
+
+
+            <button
+                type="button"
+                class="reject-btn"
+                onclick="rejectTerms()"
+            >
+
+                رفض
+
+            </button>
+
+
+        </div>
+
+        <div id="message"></div>
+
+
+    </div>
+
+    <script type="module">
+
+
+        import {
+
+            getAuth,
+            onAuthStateChanged,
+            signOut
+
+        } from
+            "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+
+        import {
+
+            initializeApp
+
+        } from
+            "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+
+        import {
+            
+            getDatabase,
+            ref,
+            get,
+            set
+
+        } from
+            "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+
+
+const firebaseConfig = {
+
+
+            apiKey:
+                "AIzaSyCR1TQvsl3KznnnzfQtVmrNy2_K0WBbSoY",
+                
+            authDomain:
+                "laundry-management-ef4f9.firebaseapp.com",
+
+            databaseURL:
+                "https://laundry-management-ef4f9-default-rtdb.firebaseio.com",
+
+            projectId:
+                "laundry-management-ef4f9",
+
+            storageBucket:
+                "laundry-management-ef4f9.firebasestorage.app",
+
+            messagingSenderId:
+                "719802435733",
+
+            appId:
+                "1:719802435733:web:805c07439239484321f39c"
+
+        };
+
+        const app =
+            initializeApp(firebaseConfig);
+
+
+        const auth =
+            getAuth(app);
+
+
+        const db =
+            getDatabase(app);
+
+        const message =
+            document.getElementById("message");
+
+        onAuthStateChanged(
+            auth,
+            async (user) => {
+
+                if (!user) {
+
+                    window.location.replace(
+                        "login.html"
+                    );
+
+                    return;
+
+                }
+
+                const uid =
+                    user.uid;
+
+                const consentRef =
+                    ref(
+                        db,
+                        `consent/${uid}`
+                    );
+
+
+
+                try {
+
+
+                    const snapshot =
+                        await get(consentRef);
+
+                    if (
+                        snapshot.exists() &&
+                        snapshot.val().accepted === true
+                    ) {
+
+
+                        window.location.replace(
+                            "laundry.html"
+                        );
+
+
+                        return;
+
+                    }
+
+
+                }
+
+                catch (error) {
+
+
+                    console.error(
+                        "Error checking consent:",
+                        error
+                    );
+
+
+                    message.textContent =
+                        "تعذر التحقق من حالة الموافقة.";
+
+                }
+
+            }
+        );
+
+window.acceptTerms =
+
+async function () {
+
+
+const user =
+auth.currentUser;
+
+if (!user) {
+
+
+window.location.replace(
+"login.html"
+                    );
+                    
+     return;
+
+                }
+
+   const uid =
+    user.uid;
+
+   try {
+
+await set(
+ref(
+db,
+`consent/${uid}`
+                        ),
+                        {
+
+accepted: true,
+
+acceptedAt:
+new Date().toISOString()
+
+                        }
+                    );
+
+window.location.replace(
+                        "laundry.html"
+                    );
+
+
+                }
+
+                catch (error) {
+
+
+                    console.error(
+                        "Consent save error:",
+                        error
+                    );
+
+                    message.textContent =
+                        "حدث خطأ أثناء حفظ الموافقة، حاول مرة أخرى.";
+
+                }
+
+            };
+
+window.rejectTerms =
+
+async function () {
+
+
+                message.textContent =
+                    "سيتم تسجيل خروجك من الحساب...";
+
+                try {
+
+                    await signOut(auth);
+
+
+                }
+
+                catch (error) {
+
+
+                    console.error(
+                        "Sign out error:",
+                        error
+                    );
+
+                }
+
+                window.location.replace(
+                    "login.html"
+                );
+
+            };
+
+
+    </script>
+
+
+</body>
+
+</html>
