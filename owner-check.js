@@ -109,20 +109,23 @@ onAuthStateChanged(auth, async (user) => {
     
     
     console.log(
-      "✅ الحساب صحيح"
-    );
-    
-    window.dispatchEvent(
-      new CustomEvent(
-        "ownerVerified",
-        {
-          detail: {
-            uid: user.uid,
-            laundry: laundry
-          }
-        }
-      )
-    );
+  "✅ الحساب صحيح"
+);
+
+document.documentElement.style.visibility = "visible";
+
+window.dispatchEvent(
+  new CustomEvent(
+    "ownerVerified",
+    {
+      detail: {
+        uid: user.uid,
+        laundry: laundry
+      }
+    }
+  )
+);
+
     
     
   } catch (error) {
