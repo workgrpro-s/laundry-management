@@ -1,0 +1,4486 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>لوحة المدير - إدارة المغاسل</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0F766E;
+            --primary-light: #14B8A6;
+            --secondary: #0284C7;
+            --success: #16A34A;
+            --warning: #D97706;
+            --danger: #B91C1C;
+            --info: #2563EB;
+            --dark: #0F172A;
+            --text: #334155;
+            --muted: #64748B;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --border: #E2E8F0;
+            --shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.12);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(15, 118, 110, 0.08),
+                    rgba(2, 132, 199, 0.08)
+                ),
+                #F8FAFC;
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .header {
+            background:
+                linear-gradient(
+                    135deg,
+                    #0F766E,
+                    #155E75,
+                    #0284C7
+                );
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow:
+                0 4px 15px rgba(15, 118, 110, 0.20);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logout {
+            background: #B91C1C;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .top-bar h2 {
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .add-btn {
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, .92);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border:
+                1px solid rgba(226, 232, 240, .8);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #F0FDFA;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        tbody tr:hover {
+            background: #F8FAFC;
+        }
+
+        .status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .active {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .inactive {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .expired {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .action-btn {
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .view-btn {
+            background: #2563EB;
+        }
+
+        .toggle-btn {
+            background: #14B8A6;
+        }
+
+        .stop-btn {
+            background: #B91C1C;
+        }
+
+        .renew-btn {
+            background: #D97706;
+        }
+
+        .branch-btn {
+            background: #0284C7;
+        }
+
+        .delete-btn {
+            background: #B91C1C;
+        }
+
+        .edit-btn {
+            background: #256;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .60);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        
+        /* ترتيب نوافذ الباقات */
+#packagesModal {
+    z-index: 1000;
+}
+
+#packageModal {
+    z-index: 1100;
+}
+
+
+        .modal-box {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 18px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-box h2 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            color: var(--text);
+            background: #FFFFFF;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow:
+                0 0 0 3px rgba(20, 184, 166, .12);
+        }
+
+        .type-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .type-option {
+            border: 2px solid var(--border);
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .type-option.selected {
+            border-color: var(--primary);
+            background: #F0FDFA;
+            color: var(--primary);
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 13px;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            width: 100%;
+            padding: 11px;
+            margin-top: 10px;
+            background: #F1F5F9;
+            color: var(--text);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #message {
+            margin-top: 15px;
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .subscription-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .subscription-btn {
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            padding: 18px 10px;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .subscription-btn.selected {
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+            color: white;
+        }
+
+        #selectedDuration {
+            text-align: center;
+            margin-top: 18px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .branch-list {
+            margin-top: 15px;
+        }
+
+        .branch-item {
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        /* إدارة الباقات */
+
+        .packages-section {
+            margin-top: 35px;
+        }
+
+        .packages-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .packages-header h2 {
+            margin: 0;
+            color: var(--dark);
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .package-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .package-card.package-disabled {
+            opacity: .65;
+        }
+
+        .package-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .package-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .package-price small {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .package-info {
+            line-height: 2;
+            color: var(--text);
+            margin-bottom: 15px;
+        }
+
+        .package-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .package-status.active-status {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .package-status.inactive-status {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .package-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .package-actions button {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .empty-packages {
+            text-align: center;
+            padding: 30px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 900px) {
+
+            .packages-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .container {
+                padding: 0 10px;
+                margin-top: 20px;
+            }
+
+            .top-bar h2 {
+                font-size: 20px;
+            }
+
+            .add-btn {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            th,
+            td {
+                padding: 10px;
+            }
+
+            .subscription-options,
+            .type-options {
+                grid-template-columns: 1fr;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .packages-header {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+        }
+
+/* نافذة إدارة الباقات */
+
+.packages-modal-box {
+    max-width: 1000px;
+    width: 100%;
+}
+
+.packages-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.packages-modal-header h2 {
+    margin: 0;
+    color: var(--primary);
+}
+
+.packages-add-btn {
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-light)
+        );
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#packagesModal .packages-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+@media (max-width: 900px) {
+
+    #packagesModal .packages-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .packages-modal-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #packagesModal .packages-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <h1>🏢 لوحة إدارة المغاسل</h1>
+
+    <button
+        class="logout"
+        onclick="logout()">
+
+        تسجيل الخروج
+
+    </button>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="top-bar">
+
+        <h2>المغاسل</h2>
+
+        <button
+            class="add-btn"
+            onclick="openAddLaundry()">
+
+            ➕ إضافة مغسلة / فرع
+
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <div style="margin-bottom:15px;">
+
+            <input
+                type="text"
+                id="laundrySearch"
+                placeholder="🔎 ابحث باسم المغسلة أو المسؤول أو البريد الإلكتروني..."
+                style="
+                    width:100%;
+                    padding:13px 15px;
+                    border:1px solid #CBD5E1;
+                    border-radius:10px;
+                    font-size:15px;
+                    outline:none;
+                "
+            >
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>اسم المغسلة</th>
+                        <th>المسؤول</th>
+                        <th>البريد</th>
+                        <th>الفروع</th>
+                        <th>الحالة</th>
+                        <th>الإجراء</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="laundryTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+<section class="packages-section">
+
+    <div class="packages-header">
+
+        <h2>
+            🗄️ إدارة باقات الاشتراك
+        </h2>
+
+        <button
+            class="add-btn"
+            onclick="openPackagesModal()">
+
+            🗂️ فتح إدارة الباقات
+
+        </button>
+
+    </div>
+
+</section>
+
+
+</div>
+
+<!-- إضافة صاحب / فرع -->
+
+<div id="laundryModal" class="modal">
+
+    <div class="modal-box">
+
+        <h2>➕ إضافة</h2>
+
+
+        <div class="type-options">
+
+            <div
+                id="newOwnerOption"
+                class="type-option selected"
+                onclick="selectCreateType('owner')">
+
+                👤<br>
+                صاحب مغسلة جديد
+
+            </div>
+
+
+            <div
+                id="branchOption"
+                class="type-option"
+                onclick="selectCreateType('branch')">
+
+                🏢<br>
+                فرع جديد
+
+            </div>
+
+        </div>
+
+
+        <div id="ownerForm">
+
+            <div class="form-group">
+
+                <label>اسم المغسلة</label>
+
+                <input
+                    type="text"
+                    id="laundryName"
+                    placeholder="مثال: مغسلة النور">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>اسم المسؤول</label>
+
+                <input
+                    type="text"
+                    id="ownerName"
+                    placeholder="اسم المسؤول">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>رقم الجوال</label>
+
+                <input
+                    type="tel"
+                    id="ownerPhone"
+                    placeholder="05xxxxxxxx">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>البريد الإلكتروني</label>
+
+                <input
+                    type="email"
+                    id="ownerEmail"
+                    placeholder="example@email.com">
+
+            </div>
+
+
+            <div style="
+                background:#F0FDFA;
+                border:1px solid #99F6E4;
+                color:#0F766E;
+                padding:13px;
+                border-radius:10px;
+                margin-bottom:15px;
+                line-height:1.8;
+            ">
+
+                📧 سيتم إنشاء حساب العميل وإرسال رسالة إلى بريده الإلكتروني
+                لتعيين كلمة المرور الخاصة به.
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>مدة الاشتراك</label>
+
+                <select id="subscriptionDuration">
+
+                    <option value="trial">
+                        🆓 تجربة مجانية - 7 أيام
+                    </option>
+
+                    <option value="1">
+                        📅 شهر واحد
+                    </option>
+
+                    <option value="3">
+                        📅 3 أشهر
+                    </option>
+
+                    <option value="6">
+                        📅 6 أشهر
+                    </option>
+
+                    <option value="12">
+                        📅 سنة
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+        
+
+        <div id="branchForm" style="display:none;">
+
+            <div class="form-group">
+
+                <label>صاحب المغسلة</label>
+
+                <select id="branchOwner">
+
+                    <option value="">
+                        اختر صاحب المغسلة
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>اسم الفرع</label>
+
+                <input
+                    type="text"
+                    id="branchName"
+                    placeholder="مثال: فرع حي الشاطئ">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>رقم الفرع</label>
+
+                <input
+                    type="text"
+                    id="branchNumber"
+                    placeholder="مثال: 2">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>موقع الفرع</label>
+
+                <input
+                    type="text"
+                    id="branchLocation"
+                    placeholder="مثال: الدمام - حي الشاطئ">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>رقم جوال الفرع</label>
+
+                <input
+                    type="tel"
+                    id="branchPhone"
+                    placeholder="05xxxxxxxx">
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="save-btn"
+            onclick="createLaundryOrBranch()">
+
+            إنشاء
+
+        </button>
+
+
+        <button
+            class="close-btn"
+            onclick="closeAddLaundry()">
+
+            إلغاء
+
+        </button>
+
+
+        <div id="message"></div>
+
+    </div>
+
+</div>
+
+
+<div id="branchesModal" class="modal">
+
+    <div class="modal-box">
+
+        <h2>🏢 فروع المغسلة</h2>
+
+        <div id="branchesContent"></div>
+
+        <button
+            class="close-btn"
+            onclick="closeBranchesModal()">
+
+            إغلاق
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<div id="renewModal" class="modal">
+
+    <div class="modal-box">
+
+        <h2>🔄 تجديد الاشتراك</h2>
+
+        <p style="text-align:center;">
+            اختر مدة الاشتراك
+        </p>
+
+
+        <div
+            class="subscription-options"
+            id="renewOptions">
+
+        </div>
+
+
+        <div id="selectedDuration"></div>
+
+
+        <button
+            class="save-btn"
+            onclick="confirmRenewSubscription()"
+            style="margin-top:15px;">
+
+            ✅ تأكيد التجديد
+
+        </button>
+
+
+        <button
+            class="close-btn"
+            onclick="closeRenewModal()">
+
+            إلغاء
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<div id="packageModal" class="modal">
+
+    <div class="modal-box">
+
+        <h2 id="packageModalTitle">
+            ➕ إضافة باقة
+        </h2>
+
+
+        <div class="form-group">
+
+            <label>
+                اسم الباقة
+            </label>
+
+            <input
+                type="text"
+                id="packageName"
+                placeholder="مثال: الباقة الأساسية">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                السعر
+            </label>
+
+            <input
+                type="number"
+                id="packagePrice"
+                min="0"
+                step="0.01"
+                placeholder="مثال: 99">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                مدة الاشتراك
+            </label>
+
+            <select id="packageDuration">
+
+                <option value="trial">
+                    🆓 7 أيام
+                </option>
+
+                <option value="1">
+                    📅 شهر واحد
+                </option>
+
+                <option value="3">
+                    📅 3 أشهر
+                </option>
+
+                <option value="6">
+                    📅 6 أشهر
+                </option>
+
+                <option value="12">
+                    📅 سنة
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                عدد الفروع المسموح بها
+            </label>
+
+            <input
+                type="number"
+                id="packageMaxBranches"
+                min="1"
+                step="1"
+                placeholder="مثال: 3">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                حالة الباقة
+            </label>
+
+            <select id="packageActive">
+
+                <option value="true">
+                    🟢 مفعلة
+                </option>
+
+                <option value="false">
+                    🔴 متوقفة
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <button
+            class="save-btn"
+            onclick="savePackage()">
+
+            💾 حفظ الباقة
+
+        </button>
+
+
+        <button
+            class="close-btn"
+            onclick="closePackageModal()">
+
+            إلغاء
+
+        </button>
+
+
+        <div id="packageMessage"
+             style="
+                margin-top:15px;
+                text-align:center;
+                line-height:1.7;
+             ">
+
+        </div>
+
+    </div>
+
+</div>
+<!-- نافذة إدارة الباقات -->
+
+<div id="packagesModal" class="modal">
+
+    <div class="modal-box packages-modal-box">
+
+        <div class="packages-modal-header">
+
+            <h2>
+                🗄️ إدارة باقات الاشتراك
+            </h2>
+
+            <button
+                class="packages-add-btn"
+                onclick="openAddPackage()">
+
+                ➕ إضافة باقة
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="packagesGrid"
+            class="packages-grid">
+
+            <div class="empty-packages">
+
+                جاري تحميل الباقات...
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="close-btn"
+            onclick="closePackagesModal()">
+
+            إغلاق
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut,
+    createUserWithEmailAndPassword,
+    sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+    getDatabase,
+    ref,
+    get,
+    set,
+    remove,
+    push
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+import {
+    getStorage
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyCR1TQvsl3KznnnzfQtVmrNy2_K0WBbSoY",
+
+    authDomain:
+        "laundry-management-ef4f9.firebaseapp.com",
+
+    databaseURL:
+        "https://laundry-management-ef4f9-default-rtdb.firebaseio.com",
+
+    projectId:
+        "laundry-management-ef4f9",
+
+    storageBucket:
+        "laundry-management-ef4f9.firebasestorage.app",
+
+    messagingSenderId:
+        "719802435733",
+
+    appId:
+        "1:719802435733:web:805c07439239484321f39c"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+const db =
+    getDatabase(app);
+    
+const storage =
+    getStorage(app);
+
+
+const secondaryApp =
+    initializeApp(
+        firebaseConfig,
+        "SecondaryApp"
+    );
+
+const secondaryAuth =
+    getAuth(
+        secondaryApp
+    );
+
+
+let createType = "owner";
+
+let selectedLaundryId = null;
+
+let selectedRenewDurationValue = null;
+
+let selectedPackageId = null;
+
+
+const defaultPackages = {
+
+    trial: {
+
+        name:
+            "تجربة مجانية",
+
+        price:
+            0,
+
+        durationType:
+            "trial",
+
+        durationMonths:
+            0,
+
+        durationDays:
+            7,
+
+        maxBranches:
+            1,
+
+        active:
+            true,
+
+        sortOrder:
+            1
+
+    },
+
+    month1: {
+
+        name:
+            "شهر واحد",
+
+        price:
+            0,
+
+        durationType:
+            "subscription",
+
+        durationMonths:
+            1,
+
+        durationDays:
+            0,
+
+        maxBranches:
+            1,
+
+        active:
+            true,
+
+        sortOrder:
+            2
+
+    },
+
+    month3: {
+
+        name:
+            "3 أشهر",
+
+        price:
+            0,
+
+        durationType:
+            "subscription",
+
+        durationMonths:
+            3,
+
+        durationDays:  0,
+
+        maxBranches:   1,
+
+        active:  true,
+
+        sortOrder: 3
+
+    },
+
+    month6: {
+
+        name:
+            "6 أشهر",
+
+        price: 0,
+
+        durationType:
+            "subscription",
+
+        durationMonths:   6,
+
+        durationDays:0,
+        
+        maxBranches:1,
+
+        active:
+            true,
+
+        sortOrder: 4
+
+    },
+
+    year1: {
+
+        name:
+            "سنة",
+
+        price:
+            0,
+
+        durationType:
+            "subscription",
+
+        durationMonths:
+            12,
+
+        durationDays:
+            0,
+
+        maxBranches:
+            1,
+
+        active:
+            true,
+
+        sortOrder:
+            5
+
+    }
+
+};
+
+
+window.logout =
+async function () {
+
+    try {
+
+        await signOut(auth);
+
+        window.location.href =
+            "login.html";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "تعذر تسجيل الخروج"
+        );
+
+    }
+
+};
+
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if (!user) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+        try {
+
+            const adminRef =
+                ref(
+                    db,
+                    `admins/${user.uid}`
+                );
+
+            const snapshot =
+                await get(adminRef);
+
+            if (!snapshot.exists()) {
+
+                await signOut(auth);
+
+                window.location.href =
+                    "login.html";
+
+                return;
+            }
+
+            const adminData =
+                snapshot.val();
+
+            if (
+                adminData.role !== "admin"
+            ) {
+
+                await signOut(auth);
+
+                window.location.href =
+                    "login.html";
+
+                return;
+            }
+
+            await initializePackages();
+
+            await loadLaundries();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "تعذر التحقق من صلاحية المدير"
+            );
+
+        }
+
+    }
+);
+
+
+/* 
+   الباقات
+*/
+
+async function initializePackages() {
+
+    try {
+
+        const packagesRef =
+            ref(
+                db,
+                "packages"
+            );
+
+        const snapshot =
+            await get(packagesRef);
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            await set(
+                packagesRef,
+                defaultPackages
+            );
+
+        } else {
+
+            const current =
+                snapshot.val();
+
+            for (
+                const [id, data]
+                of Object.entries(defaultPackages)
+            ) {
+
+                if (
+                    !current[id]
+                ) {
+
+  await set(
+                 ref(
+                  db,
+              `packages/${id}`
+                   ),
+                        data
+           );
+
+       }
+
+       }
+
+       }
+
+        await loadPackages();
+
+    } catch (error) {
+
+        console.error(
+            "Initialize packages error:",
+            error
+        );
+
+    }
+
+}
+
+
+async function loadPackages() {
+
+    const grid =
+        document.getElementById(
+            "packagesGrid"
+        );
+
+    grid.innerHTML = `
+        <div class="card empty-packages">
+            جاري تحميل الباقات...
+        </div>
+    `;
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    "packages"
+                )
+            );
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            grid.innerHTML = `
+                <div class="card empty-packages">
+                    لا توجد باقات
+                </div>
+            `;
+
+            return;
+        }
+
+        const packages =
+            snapshot.val();
+
+        grid.innerHTML = "";
+
+        const entries =
+            Object.entries(packages)
+                .sort(
+                    (a, b) =>
+                        Number(
+                            a[1].sortOrder || 999
+                        ) -
+                        Number(
+                            b[1].sortOrder || 999
+                        )
+                );
+
+
+        entries.forEach(
+            ([packageId, packageData]) => {
+
+                if (!packageData) {
+                    return;
+                }
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "package-card" +
+                    (
+                        packageData.active === false
+                            ? " package-disabled"
+                            : ""
+                    );
+
+
+                const durationText =
+                    packageData.durationType === "trial"   ? "7 أيام"
+                        : packageData.durationMonths === 1
+                        ? "شهر واحد"
+                        : packageData.durationMonths === 12
+                        ? "سنة"
+                        : `${packageData.durationMonths || 0} أشهر`;
+
+
+                const priceText =
+                    Number(
+                        packageData.price || 0
+                    ).toLocaleString(
+                        "ar-SA"
+                    );
+
+
+                const statusClass =
+                    packageData.active === false
+                        ? "inactive-status"
+                        : "active-status";
+
+
+                const statusText =
+                    packageData.active === false
+                        ? "🔴 متوقفة"
+                        : "🟢 مفعلة";
+
+
+                card.innerHTML = `
+
+                    <div class="package-name">
+
+                        ${escapeHtml(
+                            packageData.name ||
+                            "بدون اسم"
+                        )}
+
+                    </div>
+
+
+                    <div class="package-price">
+
+                        ${priceText}
+
+                        <small>
+                            ريال
+                        </small>
+
+                    </div>
+
+
+                    <div class="package-info">
+
+                        📅 المدة:
+                        ${durationText}
+
+                        <br>
+
+                        🏢 عدد الفروع:
+                        ${Number(
+                            packageData.maxBranches || 1
+                        )}
+
+                    </div>
+
+
+                    <span
+                        class="package-status ${statusClass}">
+
+                        ${statusText}
+
+                    </span>
+
+
+                    <div class="package-actions">
+
+                        <button
+                            class="action-btn edit-btn"
+                            onclick="editPackage('${packageId}')">
+
+                            ✏️ تعديل
+
+                        </button>
+
+
+         <button
+      class="action-btn ${
+                                packageData.active === false
+ ? "toggle-btn"
+: "stop-btn"
+}"
+onclick="togglePackage(
+'${packageId}',
+${packageData.active !== false}
+   )">
+
+${
+packageData.active === false
+? "🟢 تفعيل"
+: "🔴 إيقاف"
+}
+
+                        </button>
+
+
+                        <button
+                            class="action-btn delete-btn"
+                  onclick="deletePackage('${packageId}')">
+
+                            🗑️ حذف
+
+                        </button>
+
+                    </div>
+
+                `;
+
+                grid.appendChild(card);
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Load packages error:",
+            error
+        );
+
+        grid.innerHTML = `
+            <div class="card empty-packages"
+                 style="color:#B91C1C;">
+
+                ❌ تعذر تحميل الباقات
+
+            </div>
+        `;
+
+    }
+
+}
+
+
+window.openAddPackage =
+function () {
+
+    selectedPackageId =
+        null;
+
+    document.getElementById(
+        "packageModalTitle"
+    ).textContent =
+        "➕ إضافة باقة";
+
+    document.getElementById(
+        "packageName"
+    ).value =
+        "";
+
+    document.getElementById(
+        "packagePrice"
+    ).value =
+        "";
+
+    document.getElementById(
+        "packageDuration"
+    ).value =
+        "1";
+
+    document.getElementById(
+        "packageMaxBranches"
+    ).value =
+        "1";
+
+    document.getElementById(
+        "packageActive"
+    ).value =
+        "true";
+
+    document.getElementById(
+        "packageMessage"
+    ).textContent =
+        "";
+
+    document.getElementById(
+        "packageModal"
+    ).style.display =
+        "flex";
+
+};
+
+
+window.openPackagesModal =
+function () {
+
+    document.getElementById(
+        "packagesModal"
+    ).style.display =
+        "flex";
+
+    loadPackages();
+
+};
+
+
+window.closePackagesModal =
+function () {
+
+    document.getElementById(
+        "packagesModal"
+    ).style.display =
+        "none";
+
+};
+
+
+
+window.editPackage =
+async function (packageId) {
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    `packages/${packageId}`
+                )
+            );
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            alert(
+                "الباقة غير موجودة"
+            );
+
+            return;
+        }
+
+        const packageData =
+            snapshot.val();
+
+        selectedPackageId =
+            packageId;
+
+        document.getElementById(
+            "packageModalTitle"
+        ).textContent =
+            "✏️ تعديل الباقة";
+
+
+        document.getElementById(
+            "packageName"
+        ).value =
+            packageData.name || "";
+
+
+        document.getElementById(
+            "packagePrice"
+        ).value =
+            Number(
+                packageData.price || 0
+            );
+
+
+        document.getElementById(
+            "packageDuration"
+        ).value =
+            packageData.durationType === "trial"
+                ? "trial"
+                : String(
+                    packageData.durationMonths || 1
+                );
+
+
+        document.getElementById(
+            "packageMaxBranches"
+        ).value =
+            Number(
+                packageData.maxBranches || 1
+            );
+
+
+        document.getElementById(
+            "packageActive"
+        ).value =
+            packageData.active === false
+                ? "false"
+                : "true";
+
+
+        document.getElementById(
+            "packageMessage"
+        ).textContent =
+            "";
+
+
+        document.getElementById(
+            "packageModal"
+        ).style.display =
+            "flex";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ تعذر تحميل الباقة"
+        );
+
+    }
+
+};
+
+
+window.savePackage =
+async function () {
+
+    const name =
+        document.getElementById(
+            "packageName"
+        ).value.trim();
+
+
+    const price =
+        Number(
+            document.getElementById(
+                "packagePrice"
+            ).value
+        );
+
+
+    const duration =
+        document.getElementById(
+            "packageDuration"
+        ).value;
+
+
+    const maxBranches =
+        Number(
+            document.getElementById(
+                "packageMaxBranches"
+            ).value
+        );
+
+
+    const active =
+        document.getElementById(
+            "packageActive"
+        ).value === "true";
+
+
+    const message =
+        document.getElementById(
+            "packageMessage"
+        );
+
+
+    if (!name) {
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "اكتب اسم الباقة";
+
+        return;
+    }
+
+
+    if (
+        isNaN(price) ||
+        price < 0
+    ) {
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "أدخل سعر صحيح";
+
+        return;
+    }
+
+
+    if (
+        isNaN(maxBranches) ||
+        maxBranches < 1
+    ) {
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "أدخل عدد فروع صحيح";
+
+        return;
+    }
+
+
+    try {
+
+        message.style.color =
+            "#2563EB";
+
+        message.textContent =
+            "جاري حفظ الباقة...";
+
+
+        const packageId =
+            selectedPackageId ||
+            push(
+                ref(
+                    db,
+                    "packages"
+                )
+            ).key;
+
+
+        const oldSnapshot =
+            await get(
+                ref(
+                    db,
+                    `packages/${packageId}`
+                )
+            );
+
+
+        const oldData =
+            oldSnapshot.exists()
+                ? oldSnapshot.val()
+                : {};
+
+
+        let durationMonths = 0;
+
+        let durationDays = 0;
+
+        let durationType =
+            "subscription";
+
+
+        if (
+            duration === "trial"
+        ) {
+
+            durationType =
+                "trial";
+
+            durationDays =
+                7;
+
+        } else {
+
+            durationMonths =
+                Number(
+                    duration
+                );
+
+        }
+
+
+        const packageData = {
+
+            name:
+                name,
+
+            price:
+                price,
+
+            durationType:
+                durationType,
+
+            durationMonths:
+                durationMonths,
+
+            durationDays:
+                durationDays,
+
+            maxBranches:
+                maxBranches,
+
+            active:
+                active,
+
+            sortOrder:
+                oldData.sortOrder ||
+                999,
+
+            createdAt:
+                oldData.createdAt ||
+                new Date().toISOString(),
+
+            updatedAt:
+                new Date().toISOString()
+
+        };
+
+
+        await set(
+            ref(
+                db,
+                `packages/${packageId}`
+            ),
+            packageData
+        );
+
+
+        message.style.color =
+            "#16A34A";
+
+        message.textContent =
+            "✅ تم حفظ الباقة";
+
+
+        await loadPackages();
+
+
+        setTimeout(
+            () => {
+
+                closePackageModal();
+
+            },
+            700
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "❌ تعذر حفظ الباقة: " +
+            error.message;
+
+    }
+
+};
+
+
+window.togglePackage =
+async function (
+    packageId,
+    currentStatus
+) {
+
+    const newStatus =
+        !currentStatus;
+
+
+    const confirmed =
+        confirm(
+            newStatus
+                ? "هل تريد تفعيل هذه الباقة؟"
+                : "هل تريد إيقاف هذه الباقة؟"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        await set(
+            ref(
+                db,
+                `packages/${packageId}/active`
+            ),
+            newStatus
+        );
+
+
+        await loadPackages();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ تعذر تغيير حالة الباقة"
+        );
+
+    }
+
+};
+
+
+window.deletePackage =
+async function (packageId) {
+
+    const confirmed =
+        confirm(
+            "⚠️ هل أنت متأكد من حذف هذه الباقة؟"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        await remove(
+            ref(
+                db,
+                `packages/${packageId}`
+            )
+        );
+
+
+        await loadPackages();
+
+
+        alert(
+            "✅ تم حذف الباقة"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ تعذر حذف الباقة"
+        );
+
+    }
+
+};
+
+
+window.closePackageModal =
+function () {
+
+    document.getElementById(
+        "packageModal"
+    ).style.display =
+        "none";
+
+    selectedPackageId =
+        null;
+
+};
+
+
+window.selectCreateType =
+function (type) {
+
+    createType =
+        type;
+
+
+    const ownerOption =
+        document.getElementById(
+            "newOwnerOption"
+        );
+
+    const branchOption =
+        document.getElementById(
+            "branchOption"
+        );
+
+    const ownerForm =
+        document.getElementById(
+            "ownerForm"
+        );
+
+    const branchForm =
+        document.getElementById(
+            "branchForm"
+        );
+
+
+    if (
+        type === "owner"
+    ) {
+
+        ownerOption.classList.add(
+            "selected"
+        );
+
+        branchOption.classList.remove(
+            "selected"
+        );
+
+        ownerForm.style.display =
+            "block";
+
+        branchForm.style.display =
+            "none";
+
+    } else {
+
+        branchOption.classList.add(
+            "selected"
+        );
+
+        ownerOption.classList.remove(
+            "selected"
+        );
+
+        ownerForm.style.display =
+            "none";
+
+        branchForm.style.display =
+            "block";
+
+        loadOwnerList();
+
+    }
+
+};
+
+
+window.openAddLaundry =
+function () {
+
+    document.getElementById(
+        "laundryModal"
+    ).style.display =
+        "flex";
+
+    selectCreateType(
+        "owner"
+    );
+
+};
+
+
+window.closeAddLaundry =
+function () {
+
+    document.getElementById(
+        "laundryModal"
+    ).style.display =
+        "none";
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        "";
+
+};
+
+
+async function loadOwnerList() {
+
+    const select =
+        document.getElementById(
+            "branchOwner"
+        );
+
+
+    select.innerHTML = `
+        <option value="">
+            جاري التحميل...
+        </option>
+    `;
+
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    "laundries"
+                )
+            );
+
+
+        select.innerHTML = `
+            <option value="">
+                اختر صاحب المغسلة
+            </option>
+        `;
+
+
+        if (
+            !snapshot.exists()
+        ) {
+            return;
+        }
+
+
+        const laundries =
+            snapshot.val();
+
+
+        Object.entries(
+            laundries
+        ).forEach(
+            ([uid, laundry]) => {
+
+                if (
+                    laundry &&
+                    laundry.role === "owner"
+                ) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        uid;
+
+
+                    option.textContent =
+                        `${laundry.name || "بدون اسم"} — ${laundry.ownerName || "بدون مسؤول"}`;
+
+
+                    select.appendChild(
+                        option
+                    );
+
+                }
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        select.innerHTML = `
+            <option value="">
+                تعذر تحميل أصحاب المغاسل
+            </option>
+        `;
+
+    }
+
+}
+
+
+window.createLaundryOrBranch =
+async function () {
+
+    if (
+        createType === "owner"
+    ) {
+
+        await createNewOwner();
+
+    } else {
+
+        await createNewBranch();
+
+    }
+
+};
+
+
+async function createNewOwner() {
+
+    const laundryName =
+        document.getElementById(
+            "laundryName"
+        ).value.trim();
+
+
+    const ownerName =
+        document.getElementById(
+            "ownerName"
+        ).value.trim();
+
+
+    const ownerPhone =
+        document.getElementById(
+            "ownerPhone"
+        ).value.trim();
+
+
+    const ownerEmail =
+        document.getElementById(
+            "ownerEmail"
+        ).value.trim();
+
+
+    const durationValue =
+        document.getElementById(
+            "subscriptionDuration"
+        ).value;
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    if (!laundryName) {
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "اكتب اسم المغسلة";
+
+        return;
+    }
+
+
+    if (!ownerName) {
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "اكتب اسم المسؤول";
+
+        return;
+    }
+
+
+    if (!ownerEmail) {
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "اكتب البريد الإلكتروني";
+
+        return;
+    }
+
+
+    try {
+
+        message.style.color =
+            "#2563EB";
+
+        message.textContent =
+            "جاري إنشاء حساب العميل...";
+
+
+        const temporaryPassword =
+            crypto.randomUUID() +
+            "Aa1!";
+
+
+        const credential =
+            await createUserWithEmailAndPassword(
+                secondaryAuth,
+                ownerEmail,
+                temporaryPassword
+            );
+
+
+        const user =
+            credential.user;
+
+
+        const uid =
+            user.uid;
+
+
+        message.textContent =
+            "جاري إرسال رسالة تعيين كلمة المرور...";
+
+
+        await sendPasswordResetEmail(
+            secondaryAuth,
+            ownerEmail
+        );
+
+
+        const startDate =
+            new Date();
+
+
+        const endDate =
+            new Date(
+                startDate
+            );
+
+
+        let durationMonths =
+            0;
+
+        let durationDays =
+            0;
+
+        let durationType =
+            "subscription";
+
+
+        if (
+            durationValue === "trial"
+        ) {
+
+            durationDays =
+                7;
+
+            durationType =
+                "trial";
+
+
+            endDate.setDate(
+                endDate.getDate() + 7
+            );
+
+        } else {
+
+            durationMonths =
+                Number(
+                    durationValue
+                );
+
+
+            endDate.setMonth(
+                endDate.getMonth() +
+                durationMonths
+            );
+
+        }
+
+
+        const branchId =
+            push(
+                ref(
+                    db,
+                    `laundries/${uid}/branches`
+                )
+            ).key;
+
+
+        const laundryData = {
+
+            name:
+                laundryName,
+
+            ownerName:
+                ownerName,
+
+            phone:
+                ownerPhone,
+
+            email:
+                ownerEmail,
+
+            role:
+                "owner",
+
+            active:
+                true,
+
+            dataVersion:
+                4,
+
+            passwordSetup:
+                "email",
+
+            subscription: {
+
+                startDate:
+                    startDate.toISOString(),
+
+                endDate:
+                    endDate.toISOString(),
+
+                durationMonths:
+                    durationMonths,
+
+                durationDays:
+                    durationDays,
+
+                durationType:
+                    durationType,
+
+                endTimestamp:
+                    endDate.getTime()
+
+            },
+
+            branches: {
+
+                [branchId]: {
+
+                    id:
+                        branchId,
+
+                    name:
+                        laundryName,
+
+                    number:
+                        "1",
+
+                    location:
+                        "",
+
+                    phone:
+                        ownerPhone,
+
+                    active:
+                        true,
+
+                    createdAt:
+                        new Date().toISOString()
+
+                }
+
+            },
+
+            mainBranchId:
+                branchId,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        await set(
+            ref(
+                db,
+                `laundries/${uid}`
+            ),
+            laundryData
+        );
+
+
+        await signOut(
+            secondaryAuth
+        );
+
+
+        message.style.color =
+            "#16A34A";
+
+
+        message.textContent =
+            "✅ تم إنشاء العميل بنجاح، وتم إرسال رسالة إلى بريده لتعيين كلمة المرور";
+
+
+        clearOwnerForm();
+
+
+        await loadLaundries();
+
+
+        setTimeout(
+            () => {
+
+                closeAddLaundry();
+
+            },
+            1800
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Create owner error:",
+            error
+        );
+
+
+        try {
+
+            await signOut(
+                secondaryAuth
+            );
+
+        } catch (e) {
+
+            console.error(e);
+
+        }
+
+
+        message.style.color =
+            "#B91C1C";
+
+
+        if (
+            error.code ===
+            "auth/email-already-in-use"
+        ) {
+
+            message.textContent =
+                "❌ هذا البريد مستخدم مسبقًا";
+
+
+        } else if (
+            error.code ===
+            "auth/invalid-email"
+        ) {
+
+            message.textContent =
+                "❌ البريد الإلكتروني غير صحيح";
+
+
+        } else if (
+            error.code ===
+            "auth/operation-not-allowed"
+        ) {
+
+            message.textContent =
+                "❌ تسجيل الدخول بالبريد وكلمة المرور غير مفعل في Firebase Authentication";
+
+
+        } else {
+
+            message.textContent =
+                "❌ حدث خطأ: " +
+                error.message;
+
+        }
+
+    }
+
+}
+
+
+async function createNewBranch() {
+
+    const ownerId =
+        document.getElementById(
+            "branchOwner"
+        ).value;
+
+
+    const branchName =
+        document.getElementById(
+            "branchName"
+        ).value.trim();
+
+
+    const branchNumber =
+        document.getElementById(
+            "branchNumber"
+        ).value.trim();
+
+
+    const branchLocation =
+        document.getElementById(
+            "branchLocation"
+        ).value.trim();
+
+
+    const branchPhone =
+        document.getElementById(
+            "branchPhone"
+        ).value.trim();
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    if (!ownerId) {
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "اختر صاحب المغسلة";
+
+        return;
+    }
+
+
+    if (!branchName) {
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "اكتب اسم الفرع";
+
+        return;
+    }
+
+
+    try {
+
+        message.style.color =
+            "#2563EB";
+
+        message.textContent =
+            "جاري إنشاء الفرع...";
+
+
+        const laundryRef =
+            ref(
+                db,
+                `laundries/${ownerId}`
+            );
+
+
+        const snapshot =
+            await get(
+                laundryRef
+            );
+
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            throw new Error(
+                "صاحب المغسلة غير موجود"
+            );
+
+        }
+
+
+        const laundry =
+            snapshot.val();
+
+
+        const branchRef =
+            push(
+                ref(
+                    db,
+                    `laundries/${ownerId}/branches`
+                )
+            );
+
+
+        const branchId =
+            branchRef.key;
+
+
+        const branchData = {
+
+            id:
+                branchId,
+
+            name:
+                branchName,
+
+            number:
+                branchNumber || "",
+
+            location:
+                branchLocation || "",
+
+            phone:
+                branchPhone ||
+                laundry.phone ||
+                "",
+
+            active:
+                true,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        await set(
+            branchRef,
+            branchData
+        );
+
+
+        message.style.color =
+            "#16A34A";
+
+        message.textContent =
+            "✅ تم إنشاء الفرع بنجاح";
+
+
+        clearBranchForm();
+
+        await loadLaundries();
+
+
+        setTimeout(
+            () => {
+
+                closeAddLaundry();
+
+            },
+            1000
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Create branch error:",
+            error
+        );
+
+
+        message.style.color =
+            "#B91C1C";
+
+        message.textContent =
+            "❌ تعذر إنشاء الفرع: " +
+            error.message;
+
+    }
+
+}
+
+
+/*
+   عرض المغاسل
+ */
+
+async function loadLaundries() {
+
+    const table =
+        document.getElementById(
+            "laundryTable"
+        );
+
+
+    table.innerHTML = `
+        <tr>
+            <td colspan="6"
+                style="text-align:center;">
+
+                جاري تحميل المغاسل...
+
+            </td>
+        </tr>
+    `;
+
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    "laundries"
+                )
+            );
+
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="6"
+                        style="text-align:center;">
+
+                        لا توجد مغاسل حتى الآن
+
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        const laundries =
+            snapshot.val();
+
+
+        table.innerHTML = "";
+
+
+        Object.entries(
+            laundries
+        ).forEach(
+            ([laundryId, laundry]) => {
+
+                if (!laundry) {
+                    return;
+                }
+
+
+                let isExpired =
+                    false;
+
+
+                if (
+                    laundry.subscription &&
+                    laundry.subscription.endDate
+                ) {
+
+                    isExpired =
+                        new Date(
+                            laundry.subscription.endDate
+                        ) <= new Date();
+
+                }
+
+
+                const isActive =
+                    laundry.active === true &&
+                    !isExpired;
+
+
+                const branches =
+                    laundry.branches || {};
+
+
+                const branchCount =
+                    Object.keys(
+                        branches
+                    ).length;
+
+
+                const statusClass =
+                    isExpired
+                        ? "expired"
+                        : isActive
+                        ? "active"
+                        : "inactive";
+
+
+                const statusText =
+                    isExpired
+                        ? "منتهي الاشتراك"
+                        : isActive
+                        ? "نشطة"
+                        : "متوقفة";
+
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${escapeHtml(
+                            laundry.name ||
+                            "بدون اسم"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            laundry.ownerName ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            laundry.email ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="action-btn branch-btn"
+                            onclick="viewBranches('${laundryId}')">
+
+                            🏢 ${branchCount}
+
+                        </button>
+
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="status ${statusClass}">
+
+                            ${statusText}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="action-btn view-btn"
+                            onclick="viewLaundry('${laundryId}')">
+
+                            👁️ عرض
+
+                        </button>
+
+
+                        <button
+                            class="action-btn ${
+                                isActive
+                                    ? "stop-btn"
+                                    : "toggle-btn"
+                            }"
+                            onclick="toggleLaundry(
+                                '${laundryId}',
+                                ${isActive}
+                            )">
+
+                            ${
+                                isActive
+                                    ? "🔴 إيقاف"
+                                    : "🟢 تفعيل"
+                            }
+
+                        </button>
+
+
+                        <button
+                            class="action-btn renew-btn"
+                            onclick="renewSubscription('${laundryId}')">
+
+                            🔄 تجديد
+
+                        </button>
+
+
+                        <button
+                            class="action-btn delete-btn"
+                            onclick="deleteLaundry('${laundryId}')">
+
+                            🗑️ حذف
+
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                table.appendChild(
+                    row
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Load laundries error:",
+            error
+        );
+
+
+        table.innerHTML = `
+            <tr>
+
+                <td
+                    colspan="6"
+                    style="
+                        text-align:center;
+                        color:#B91C1C;
+                    ">
+
+                    ❌ تعذر تحميل المغاسل
+
+                </td>
+
+            </tr>
+        `;
+
+    }
+
+}
+
+
+document
+    .getElementById(
+        "laundrySearch"
+    )
+    .addEventListener(
+        "input",
+        function () {
+
+            const search =
+                this.value
+                    .trim()
+                    .toLowerCase();
+
+
+            const rows =
+                document.querySelectorAll(
+                    "#laundryTable tr"
+                );
+
+
+            rows.forEach(
+                row => {
+
+                    const text =
+                        row.textContent
+                            .toLowerCase();
+
+
+                    row.style.display =
+                        text.includes(search)
+                            ? ""
+                            : "none";
+
+                }
+            );
+
+        }
+    );
+
+
+/*  إضافة فرع جديد */
+
+window.viewBranches =
+async function (
+    laundryId
+) {
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    `laundries/${laundryId}`
+                )
+            );
+
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            alert(
+                "المغسلة غير موجودة"
+            );
+
+            return;
+        }
+
+
+        const laundry =
+            snapshot.val();
+
+
+        const branches =
+            laundry.branches || {};
+
+
+        const content =
+            document.getElementById(
+                "branchesContent"
+            );
+
+
+        content.innerHTML =
+            "";
+
+
+        const entries =
+            Object.entries(
+                branches
+            );
+
+
+        if (
+            entries.length === 0
+        ) {
+
+            content.innerHTML =
+                "<p style='text-align:center;'>لا توجد فروع</p>";
+
+        } else {
+
+            entries.forEach(
+                ([id, branch]) => {
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    item.className =
+                        "branch-item";
+
+
+                    item.innerHTML = `
+
+                        <strong>
+
+                            🏢 ${escapeHtml(
+                                branch.name ||
+                                "بدون اسم"
+                            )}
+
+                        </strong>
+
+                        <br>
+
+                        رقم الفرع:
+                        ${escapeHtml(
+                            branch.number ||
+                            "-"
+                        )}
+
+                        <br>
+
+                        الموقع:
+                        ${escapeHtml(
+                            branch.location ||
+                            "-"
+                        )}
+
+                        <br>
+
+                        الجوال:
+                        ${escapeHtml(
+                            branch.phone ||
+                            "-"
+                        )}
+
+                        <br>
+
+                        الحالة:
+
+                        ${
+                            branch.active === false
+                                ? "🔴 متوقف"
+                                : "🟢 نشط"
+                        }
+
+                        <br><br>
+
+                        <button
+                            class="action-btn delete-btn"
+                            onclick="deleteBranch(
+                                '${laundryId}',
+                                '${id}'
+                            )">
+
+                            🗑️ حذف الفرع
+
+                        </button>
+
+                    `;
+
+
+                    content.appendChild(
+                        item
+                    );
+
+                }
+            );
+
+        }
+
+
+        document.getElementById(
+            "branchesModal"
+        ).style.display =
+            "flex";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "تعذر تحميل الفروع"
+        );
+
+    }
+
+};
+
+
+window.closeBranchesModal =
+function () {
+
+    document.getElementById(
+        "branchesModal"
+    ).style.display =
+        "none";
+
+};
+
+
+window.deleteBranch =
+async function (
+    laundryId,
+    branchId
+) {
+
+    const confirmed =
+        confirm(
+            "⚠️ هل أنت متأكد من حذف هذا الفرع؟"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        await remove(
+            ref(
+                db,
+                `laundries/${laundryId}/branches/${branchId}`
+            )
+        );
+
+
+        alert(
+            "✅ تم حذف الفرع"
+        );
+
+
+        closeBranchesModal();
+
+        await loadLaundries();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ تعذر حذف الفرع\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+
+
+
+window.viewLaundry =
+async function (
+    laundryId
+) {
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    `laundries/${laundryId}`
+                )
+            );
+
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            alert(
+                "بيانات المغسلة غير موجودة"
+            );
+
+            return;
+        }
+
+
+        const laundry =
+            snapshot.val();
+
+
+        const subscription =
+            laundry.subscription || {};
+
+
+        const startDate =
+            subscription.startDate
+                ? new Date(
+                    subscription.startDate
+                ).toLocaleDateString(
+                    "ar-SA"
+                )
+                : "-";
+
+
+        const endDate =
+            subscription.endDate
+                ? new Date(
+                    subscription.endDate
+                ).toLocaleDateString(
+                    "ar-SA"
+                )
+                : "-";
+
+
+        const branches =
+            laundry.branches || {};
+
+
+        const branchCount =
+            Object.keys(
+                branches
+            ).length;
+
+
+        const expired =
+            subscription.endDate &&
+            new Date(
+                subscription.endDate
+            ) <= new Date();
+
+
+        const status =
+            expired
+                ? "منتهي الاشتراك"
+                : laundry.active
+                ? "نشطة"
+                : "متوقفة";
+
+
+        alert(
+
+            "🏢 اسم المغسلة: " +
+            (laundry.name || "-") +
+
+            "\n\n👤 المسؤول: " +
+            (laundry.ownerName || "-") +
+
+            "\n📱 الجوال: " +
+            (laundry.phone || "-") +
+
+            "\n📧 البريد: " +
+            (laundry.email || "-") +
+
+            "\n\n🏢 عدد الفروع: " +
+            branchCount +
+
+            "\n\n📅 بداية الاشتراك: " +
+            startDate +
+
+            "\n📅 نهاية الاشتراك: " +
+            endDate +
+
+            "\n\n🔵 الحالة: " +
+            status
+
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ تعذر تحميل البيانات"
+        );
+
+    }
+
+};
+
+
+
+
+window.toggleLaundry =
+async function (
+    laundryId,
+    currentStatus
+) {
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    `laundries/${laundryId}`
+                )
+            );
+
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            alert(
+                "المغسلة غير موجودة"
+            );
+
+            return;
+        }
+
+
+        const laundry =
+            snapshot.val();
+
+
+        if (
+            !currentStatus
+        ) {
+
+            if (
+                laundry.subscription &&
+                laundry.subscription.endDate
+            ) {
+
+                const endDate =
+                    new Date(
+                        laundry.subscription.endDate
+                    );
+
+
+                if (
+                    new Date() >= endDate
+                ) {
+
+                    alert(
+                        "⛔ انتهى الاشتراك. يرجى التجديد أولاً."
+                    );
+
+                    return;
+                }
+
+            }
+
+        }
+
+
+        const newStatus =
+            !currentStatus;
+
+
+        const confirmed =
+            confirm(
+                newStatus
+                    ? "هل تريد تفعيل المغسلة؟"
+                    : "هل تريد إيقاف المغسلة؟"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        await set(
+            ref(
+                db,
+                `laundries/${laundryId}/active`
+            ),
+            newStatus
+        );
+
+
+        await loadLaundries();
+
+
+        alert(
+            newStatus
+                ? "✅ تم التفعيل"
+                : "🔴 تم الإيقاف"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ تعذر تغيير الحالة"
+        );
+
+    }
+
+};
+
+
+
+window.renewSubscription =
+async function (
+    laundryId
+) {
+
+    selectedLaundryId =
+        laundryId;
+
+    selectedRenewDurationValue =
+        null;
+
+
+    document.getElementById(
+        "selectedDuration"
+    ).textContent =
+        "";
+
+
+    const options =
+        document.getElementById(
+            "renewOptions"
+        );
+
+
+    options.innerHTML =
+        "";
+
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    "packages"
+                )
+            );
+
+
+        if (
+            snapshot.exists()
+        ) {
+
+            const packages =
+                snapshot.val();
+
+
+            Object.entries(
+                packages
+            )
+            .sort(
+                (a, b) =>
+                    Number(
+                        a[1].sortOrder || 999
+                    ) -
+                    Number(
+                        b[1].sortOrder || 999
+                    )
+            )
+            .forEach(
+                ([packageId, packageData]) => {
+
+                    if (
+                        !packageData ||
+                        packageData.active === false
+                    ) {
+                        return;
+                    }
+
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    button.className =
+                        "subscription-btn";
+
+
+                    const durationText =
+                        packageData.durationType === "trial"
+                            ? "7 أيام"
+                            : packageData.durationMonths === 1
+                            ? "شهر واحد"
+                            : packageData.durationMonths === 12
+                            ? "سنة"
+                            : `${packageData.durationMonths || 0} أشهر`;
+
+
+                    button.innerHTML = `
+
+                        ${escapeHtml(
+                            packageData.name ||
+                            "باقة"
+                        )}
+
+                        <br>
+
+                        <small>
+                            ${Number(
+                                packageData.price || 0
+                            ).toLocaleString("ar-SA")}
+                            ريال
+                        </small>
+
+                        <br>
+
+                        <small>
+                            ${durationText}
+                        </small>
+
+                    `;
+
+
+                    button.onclick =
+                        function () {
+
+                            selectRenewPackage(
+                                packageId,
+                                packageData,
+                                button
+                            );
+
+                        };
+
+
+                    options.appendChild(
+                        button
+                    );
+
+                }
+            );
+
+        }
+
+
+        document.getElementById(
+            "renewModal"
+        ).style.display =
+            "flex";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ تعذر تحميل الباقات"
+        );
+
+    }
+
+};
+
+
+window.selectRenewPackage =
+function (
+    packageId,
+    packageData,
+    button
+) {
+
+    selectedRenewDurationValue =
+        packageId;
+
+
+    document
+        .querySelectorAll(
+            "#renewOptions .subscription-btn"
+        )
+        .forEach(
+            item => {
+
+                item.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    const durationText =
+        packageData.durationType === "trial"
+            ? "7 أيام"
+            : packageData.durationMonths === 1
+            ? "شهر واحد"
+            : packageData.durationMonths === 12
+            ? "سنة"
+            : `${packageData.durationMonths || 0} أشهر`;
+
+
+    document.getElementById(
+        "selectedDuration"
+    ).textContent =
+        `الباقة المختارة: ${packageData.name} — ${durationText} — ${Number(packageData.price || 0).toLocaleString("ar-SA")} ريال`;
+
+};
+
+
+window.closeRenewModal =
+function () {
+
+    document.getElementById(
+        "renewModal"
+    ).style.display =
+        "none";
+
+    selectedLaundryId =
+        null;
+
+    selectedRenewDurationValue =
+        null;
+
+};
+
+
+window.confirmRenewSubscription =
+async function () {
+
+    if (
+        !selectedLaundryId ||
+        !selectedRenewDurationValue
+    ) {
+
+        alert(
+            "اختر باقة"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const laundryRef =
+            ref(
+                db,
+                `laundries/${selectedLaundryId}`
+            );
+
+
+        const snapshot =
+            await get(
+                laundryRef
+            );
+
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            alert(
+                "المغسلة غير موجودة"
+            );
+
+            return;
+        }
+
+
+        const laundry =
+            snapshot.val();
+
+
+        const packageSnapshot =
+            await get(
+                ref(
+                    db,
+                    `packages/${selectedRenewDurationValue}`
+                )
+            );
+
+
+        if (
+            !packageSnapshot.exists()
+        ) {
+
+            alert(
+                "الباقة غير موجودة"
+            );
+
+            return;
+        }
+
+
+        const packageData =
+            packageSnapshot.val();
+
+
+        if (
+            packageData.active === false
+        ) {
+
+            alert(
+                "هذه الباقة متوقفة"
+            );
+
+            return;
+        }
+
+
+        const oldSubscription =
+            laundry.subscription || {};
+
+
+        let startDate =
+            new Date();
+
+
+        if (
+            oldSubscription.endDate
+        ) {
+
+            const oldEnd =
+                new Date(
+                    oldSubscription.endDate
+                );
+
+
+            if (
+                oldEnd > startDate
+            ) {
+
+                startDate =
+                    oldEnd;
+
+            }
+
+        }
+
+
+        const endDate =
+            new Date(
+                startDate
+            );
+
+
+        if (
+            packageData.durationType ===
+            "trial"
+        ) {
+
+            endDate.setDate(
+                endDate.getDate() +
+                Number(
+                    packageData.durationDays || 7
+                )
+            );
+
+        } else {
+
+            endDate.setMonth(
+                endDate.getMonth() +
+                Number(
+                    packageData.durationMonths || 1
+                )
+            );
+
+        }
+
+
+        await set(
+            ref(
+                db,
+                `laundries/${selectedLaundryId}/subscription`
+            ),
+            {
+
+                packageId:
+                    selectedRenewDurationValue,
+
+                packageName:
+                    packageData.name || "",
+
+                price:
+                    Number(
+                        packageData.price || 0
+                    ),
+
+                startDate:
+                    startDate.toISOString(),
+
+                endDate:
+                    endDate.toISOString(),
+
+                durationMonths:
+                    Number(
+                        packageData.durationMonths || 0
+                    ),
+
+                durationDays:
+                    Number(
+                        packageData.durationDays || 0
+                    ),
+
+                durationType:
+                    packageData.durationType ||
+                    "subscription",
+
+                maxBranches:
+                    Number(
+                        packageData.maxBranches || 1
+                    ),
+
+                endTimestamp:
+                    endDate.getTime()
+
+            }
+        );
+
+
+        await set(
+            ref(
+                db,
+                `laundries/${selectedLaundryId}/active`
+            ),
+            true
+        );
+
+
+        closeRenewModal();
+        await loadLaundries();
+
+
+        alert(
+            "✅ تم تجديد الاشتراك وتفعيل المغسلة بنجاح"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ تعذر تجديد الاشتراك\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+
+/* حذف المغاسل */
+
+window.deleteLaundry =
+async function (
+    laundryId
+) {
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    `laundries/${laundryId}`
+                )
+            );
+
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            alert(
+                "المغسلة غير موجودة"
+            );
+
+            return;
+        }
+
+
+        const laundry =
+            snapshot.val();
+
+
+        const confirmed =
+            confirm(
+
+                "⚠️ تحذير\n\n" +
+
+                "سيتم حذف بيانات صاحب المغسلة والفروع من قاعدة البيانات.\n\n" +
+
+                "اسم المغسلة: " +
+                (laundry.name || "-") +
+
+                "\n\nهل تريد المتابعة?"
+
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        await remove(
+            ref(
+                db,
+                `laundries/${laundryId}`
+            )
+        );
+
+
+        alert(
+            "✅ تم حذف بيانات المغسلة"
+        );
+
+
+        await loadLaundries();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ تعذر حذف المغسلة\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+
+
+
+function clearOwnerForm() {
+
+    document.getElementById(
+        "laundryName"
+    ).value =
+        "";
+
+    document.getElementById(
+        "ownerName"
+    ).value =
+        "";
+
+    document.getElementById(
+        "ownerPhone"
+    ).value =
+        "";
+
+    document.getElementById(
+        "ownerEmail"
+    ).value =
+        "";
+
+    document.getElementById(
+        "subscriptionDuration"
+    ).value =
+        "trial";
+
+}
+
+
+function clearBranchForm() {
+
+    document.getElementById(
+        "branchOwner"
+    ).value =
+        "";
+
+    document.getElementById(
+        "branchName"
+    ).value =
+        "";
+
+    document.getElementById(
+        "branchNumber"
+    ).value =
+        "";
+
+    document.getElementById(
+        "branchLocation"
+    ).value =
+        "";
+
+    document.getElementById(
+        "branchPhone"
+    ).value =
+        "";
+
+}
+
+
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+</script>
+
+</body>
+
+</html>
+
