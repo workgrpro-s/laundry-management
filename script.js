@@ -1624,20 +1624,43 @@ function saveData() {
 
 // ======== Language System ==========
 function switchLanguage(lang) {
-    currentLanguage = lang;
-    localStorage.setItem('language', lang);
-    
-    document.getElementById('htmlElement').lang = lang;
-    document.getElementById('htmlElement').dir = lang === 'ar' ? 'rtl' : 'ltr';
-    
-    updateAllTexts();
-    
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    event.target.classList.add('active');
-}
 
+    currentLanguage = lang;
+
+    localStorage.setItem('language', lang);
+
+
+    document.getElementById('htmlElement').lang = lang;
+
+    document.getElementById('htmlElement').dir =
+        lang === 'ar'
+        ? 'rtl'
+        : 'ltr';
+
+
+    updateAllTexts();
+    updateInvoicesTable();
+
+
+
+    if (typeof updateInvoicesTable === 'function') {
+        updateInvoicesTable();
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+
+        btn.classList.remove('active');
+
+    });
+
+
+    if (typeof event !== 'undefined' && event.target) {
+
+        event.target.classList.add('active');
+
+    }
+
+}
 
 function updateAllTexts() {
 
@@ -1692,57 +1715,6 @@ function updateAllTexts() {
 
     }
 }
-
-
-
-function updateAllTexts() {
-
-    const texts = {
-        ar: {
-            'logo-subtitle': 'نظام إدارة المغاسل',
-            'page-title': 'الرئيسية'
-        },
-
-        en: {
-            'logo-subtitle': 'Laundry Management System',
-            'page-title': 'Dashboard'
-        }
-    };
-
-    // ترجمة النصوص التي لديها data-ar و data-en
-    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
-        el.textContent = el.getAttribute(`data-${currentLanguage}`);
-    });
-
-    // ترجمة placeholder
-    document.querySelectorAll('[data-placeholder-ar][data-placeholder-en]').forEach(el => {
-        el.placeholder = el.getAttribute(
-            `data-placeholder-${currentLanguage}`
-        );
-    });
-
-    // ترجمة title
-    document.querySelectorAll('[data-title-ar][data-title-en]').forEach(el => {
-        el.title = el.getAttribute(
-            `data-title-${currentLanguage}`
-        );
-    });
-
-    // النصوص المرتبطة بالـ ID
-    if (texts[currentLanguage]) {
-
-        Object.keys(texts[currentLanguage]).forEach(id => {
-
-            const element = document.getElementById(id);
-
-            if (element) {
-                element.textContent = texts[currentLanguage][id];
-            }
-
-        });
-    }
-}
-
 
 
 function loadLanguage() {
@@ -2507,7 +2479,7 @@ function updateCart() {
     }
     
     
-    cartContainer.innerHTML =
+        cartContainer.innerHTML =
         cart.map((item, index) => {
             
             const isCarpet =
@@ -3699,46 +3671,118 @@ function getInvoiceCustomer() {
 // ============ INVOICES  تحديث الفاتورة  =============
 function updateInvoicesTable() {
 
-const tbody = document.getElementById('invoicesTable');
+    const tbody = document.getElementById('invoicesTable');
 
-if (!tbody) return;
-tbody.innerHTML = invoices.map((invoice) => {
+    if (!tbody) return;
 
+    const isArabic = currentLanguage === 'ar';
 
-        
-const total =
-    Number(invoice.total || 0);
+    tbody.innerHTML = invoices.map((invoice) => {
 
-const paid =
-    Number(invoice.paid || 0);
+        const total = Number(invoice.total || 0);
 
-const remaining =
-    Math.max(
-        0,
-        total - paid
-    );
+        const paid = Number(invoice.paid || 0);
+
+        const remaining = Math.max(0, total - paid);
 
 
-        const paymentText =
-            remaining <= 0
-            ?
-            `<span style="
-                color:#2e7d32;
-                font-weight:bold;
-                background:#e8f5e9;
-                padding:5px 10px;
-                border-radius:8px;">
-                ✅ مدفوعة
-            </span>`
-            :
-            `<span style="
-                color:#d32f2f;
-                font-weight:bold;
-                background:#ffebee;
-                padding:5px 10px;
-                border-radius:8px;">
-                ${remaining.toFixed(2)} ${settings.currency}
-            </span>`;
+        // حالة الدفع
+        const paymentText = remaining <= 0
+            ? `
+                <span style="
+                    color:#2e7d32;
+                    font-weight:bold;
+                    background:#e8f5e9;
+                    padding:5px 10px;
+                    border-radius:8px;">
+                    ${isArabic ? '✅ مدفوعة' : '✅ Paid'}
+                </span>
+            `
+            : `
+                <span style="
+                    color:#d32f2f;
+                    font-weight:bold;
+                    background:#ffebee;
+                    padding:5px 10px;
+                    border-radius:8px;">
+                    ${remaining.toFixed(2)} ${settings.currency}
+                </span>
+            `;
+
+
+        // اسم العميل
+        const customerName =
+            invoice.customerName ||
+            (isArabic ? 'عميل نقدي' : 'Cash Customer');
+
+
+        // طريقة الدفع
+        let paymentMethodText = '-';
+
+        if (invoice.paymentMethod) {
+
+            if (invoice.paymentMethod === 'شبكة') {
+
+                paymentMethodText =
+                    isArabic ? '💳 شبكة' : '💳 Card';
+
+            } else if (invoice.paymentMethod === 'كاش') {
+
+                paymentMethodText =
+                    isArabic ? '💵 كاش' : '💵 Cash';
+
+            } else if (invoice.paymentMethod === 'اشتراك') {
+
+                paymentMethodText =
+                    isArabic ? '🎫 اشتراك' : '🎫 Subscription';
+
+            } else {
+
+                paymentMethodText = invoice.paymentMethod;
+
+            }
+        }
+
+
+        // حالات الفاتورة
+        const statusReceived =
+            isArabic ? 'استلام' : 'Received';
+
+        const statusWashing =
+            isArabic ? 'قيد الغسيل' : 'Washing';
+
+        const statusIroning =
+            isArabic ? 'قيد الكوي' : 'Ironing';
+
+        const statusReady =
+            isArabic ? 'جاهز' : 'Ready';
+
+        const statusDelivered =
+            isArabic ? 'تم التسليم' : 'Delivered';
+
+
+        // الأزرار
+        const receivePaymentText =
+            isArabic
+            ? '💰 استلام دفعة'
+            : '💰 Receive Payment';
+
+        const printText =
+            isArabic
+            ? '🖨️ طباعة'
+            : '🖨️ Print';
+
+        const deleteText =
+            isArabic
+            ? '🗑️ حذف'
+            : '🗑️ Delete';
+
+
+        // الخصم
+        const discountText =
+            isArabic
+            ? '💳 خصم'
+            : '💳 Discount';
 
 
         return `
@@ -3751,21 +3795,21 @@ const remaining =
 
 
             <td>
-                ${new Date(invoice.date).toLocaleDateString(
-                    currentLanguage === 'ar' 
-                    ? 'ar-SA' 
-                    : 'en-US'
-                )}
+                ${
+                    new Date(invoice.date).toLocaleDateString(
+                        isArabic ? 'ar-SA' : 'en-US'
+                    )
+                }
             </td>
 
 
             <td>
-                ${invoice.customerName || "عميل نقدي"}
+                ${customerName}
             </td>
 
 
             <td>
-                ${invoice.customerPhone || "-"}
+                ${invoice.customerPhone || '-'}
             </td>
 
 
@@ -3774,84 +3818,92 @@ const remaining =
             </td>
 
 
-          <td>
-    ${
-        invoice.paymentMethod
-        ? `<span style="
-            display:inline-block;
-            padding:5px 10px;
-            border-radius:8px;
-            font-weight:bold;
-            background:${
-                invoice.paymentMethod === "شبكة"
-                    ? "#e3f2fd"
-                    : invoice.paymentMethod === "كاش"
-                    ? "#e8f5e9"
-                    : invoice.paymentMethod === "اشتراك"
-                    ? "#fff3e0"
-                    : "#f3f4f6"
-            };
-            color:${
-                invoice.paymentMethod === "شبكة"
-                    ? "#1565c0"
-                    : invoice.paymentMethod === "كاش"
-                    ? "#2e7d32"
-                    : invoice.paymentMethod === "اشتراك"
-                    ? "#e65100"
-                    : "#374151"
-            };
-        ">
-            ${
-                invoice.paymentMethod === "شبكة"
-                    ? "💳 شبكة"
-                    : invoice.paymentMethod === "كاش"
-                    ? "💵 كاش"
-                    : invoice.paymentMethod === "اشتراك"
-                    ? "🎫 اشتراك"
-                    : invoice.paymentMethod
-            }
-        </span>`
-        : "-"
-    }
-</td>
+            <td>
+
+                ${
+                    invoice.paymentMethod
+
+                    ?
+
+                    `<span style="
+                        display:inline-block;
+                        padding:5px 10px;
+                        border-radius:8px;
+                        font-weight:bold;
+                        background:${
+                            invoice.paymentMethod === 'شبكة'
+                            ? '#e3f2fd'
+                            : invoice.paymentMethod === 'كاش'
+                            ? '#e8f5e9'
+                            : invoice.paymentMethod === 'اشتراك'
+                            ? '#fff3e0'
+                            : '#f3f4f6'
+                        };
+                        color:${
+                            invoice.paymentMethod === 'شبكة'
+                            ? '#1565c0'
+                            : invoice.paymentMethod === 'كاش'
+                            ? '#2e7d32'
+                            : invoice.paymentMethod === 'اشتراك'
+                            ? '#e65100'
+                            : '#374151'
+                        };
+                    ">
+                        ${paymentMethodText}
+                    </span>`
+
+                    :
+
+                    '-'
+                }
+
+            </td>
 
 
             <td>
 
-                <select 
-                onchange="updateInvoiceStatus('${invoice.invoiceNo}',this.value)"
-                style="
-                padding:6px;
-                border-radius:8px;
-                ">
+                <select
+                    onchange="updateInvoiceStatus(
+                        '${invoice.invoiceNo}',
+                        this.value
+                    )"
+                    style="
+                        padding:6px;
+                        border-radius:8px;
+                    ">
 
-                    <option value="received"
-                    ${invoice.status==="received"?"selected":""}>
-                    استلام
+                    <option
+                        value="received"
+                        ${invoice.status === 'received' ? 'selected' : ''}>
+                        ${statusReceived}
                     </option>
 
 
-                    <option value="washing"
-                    ${invoice.status==="washing"?"selected":""}>
-                    قيد الغسيل
+                    <option
+                        value="washing"
+                        ${invoice.status === 'washing' ? 'selected' : ''}>
+                        ${statusWashing}
                     </option>
 
 
-                    <option value="ironing"
-                    ${invoice.status==="ironing"?"selected":""}>
-                    قيد الكوي
+                    <option
+                        value="ironing"
+                        ${invoice.status === 'ironing' ? 'selected' : ''}>
+                        ${statusIroning}
                     </option>
 
 
-                    <option value="ready"
-                    ${invoice.status==="ready"?"selected":""}>
-                    جاهز
+                    <option
+                        value="ready"
+                        ${invoice.status === 'ready' ? 'selected' : ''}>
+                        ${statusReady}
                     </option>
 
 
-                    <option value="delivered"
-                    ${invoice.status==="delivered"?"selected":""}>
-                    تم التسليم
+                    <option
+                        value="delivered"
+                        ${invoice.status === 'delivered' ? 'selected' : ''}>
+                        ${statusDelivered}
                     </option>
 
                 </select>
@@ -3859,101 +3911,119 @@ const remaining =
             </td>
 
 
-
             <td style="text-align:center;">
 
-            ${
-                Number(invoice.subscriptionDiscount || 0) > 0
+                ${
+                    Number(invoice.subscriptionDiscount || 0) > 0
 
-                ?
+                    ?
 
-                `<span style="
-                color:#1565c0;
-                background:#e3f2fd;
-                padding:5px 8px;
-                border-radius:8px;
-                font-weight:bold;">
-                💳 خصم ${Number(invoice.subscriptionDiscount).toFixed(2)}
-                </span>`
+                    `<span style="
+                        color:#1565c0;
+                        background:#e3f2fd;
+                        padding:5px 8px;
+                        border-radius:8px;
+                        font-weight:bold;">
+                        ${discountText}
+                        ${Number(
+                            invoice.subscriptionDiscount
+                        ).toFixed(2)}
+                    </span>`
 
-                :
+                    :
 
-                "-"
-            }
+                    '-'
+                }
 
             </td>
 
-         <td>
-<div style="
-display:flex;
-gap:6px;
-justify-content:center;
-align-items:center;
-white-space:nowrap;">
+
+            <td>
+
+                <div style="
+                    display:flex;
+                    gap:6px;
+                    justify-content:center;
+                    align-items:center;
+                    white-space:nowrap;
+                ">
 
 
+                ${
+                    remaining <= 0
 
-${
-    remaining <= 0
-    ?
-    `
-    <span style="
-        color:#2e7d32;
-        font-weight:bold;
-        background:#e8f5e9;
-        padding:6px 10px;
-        border-radius:8px;
-        display:inline-block;">
-        ✅ مدفوعة
-    </span>
-    `
-    :
-    `
-    <button
-        class="btn btn-small"
-        onclick="openInvoiceScanner()"
-        style="
-            background: #0D9488;
-            color:white;">
-        💰 استلام دفعة
-    </button>
-    `
-}
+                    ?
 
+                    `
+                    <span style="
+                        color:#2e7d32;
+                        font-weight:bold;
+                        background:#e8f5e9;
+                        padding:6px 10px;
+                        border-radius:8px;
+                        display:inline-block;">
+                        ${isArabic ? '✅ مدفوعة' : '✅ Paid'}
+                    </span>
+                    `
 
-<button class="btn btn-small"
-onclick="printInvoice('${invoice.invoiceNo}')">
-🖨️ طباعة
-</button>
+                    :
+
+                    `
+                    <button
+                        class="btn btn-small"
+                        onclick="openInvoiceScanner()"
+                        style="
+                            background:#0D9488;
+                            color:white;">
+                        ${receivePaymentText}
+                    </button>
+                    `
+                }
 
 
-<button class="btn btn-small"
-style="background:var(--danger);color:white;"
-onclick="deleteInvoice('${invoice.invoiceNo}')">
-🗑️ حذف
-</button>
+                <button
+                    class="btn btn-small"
+                    onclick="printInvoice('${invoice.invoiceNo}')">
+                    ${printText}
+                </button>
 
 
-</div>
-</td>
+                <button
+                    class="btn btn-small"
+                    style="
+                        background:var(--danger);
+                        color:white;"
+                    onclick="deleteInvoice('${invoice.invoiceNo}')">
+                    ${deleteText}
+                </button>
 
-         <td style="width:60px; text-align:center; padding-right:20px;">
-    <input
-        type="checkbox"
-        class="inv-check"
-        data-id="${invoice.invoiceNo}">
-</td>
 
+                </div>
+
+            </td>
+
+
+            <td style="
+                width:60px;
+                text-align:center;
+                padding-right:20px;
+            ">
+
+                <input
+                    type="checkbox"
+                    class="inv-check"
+                    data-id="${invoice.invoiceNo}">
+
+            </td>
 
         </tr>
 
-
         `;
-
 
     }).join('');
 
-} 
+}
+
 
 function toggleAllInvoices(source) {
     document.querySelectorAll('.inv-check')
