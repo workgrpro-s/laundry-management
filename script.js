@@ -1,11 +1,12 @@
 // ==================== DATA MANAGEMENT ====================
 let products = [
 
-
     {
         id: 1,
         name: 'ثوب',
+        nameEn: 'Thobe',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 5,
         qty: 100,
         total: 600,
@@ -15,7 +16,9 @@ let products = [
     {
         id: 2,
         name: 'شماغ',
+        nameEn: 'Shemagh',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 3,
         qty: 100,
         total: 300,
@@ -25,7 +28,9 @@ let products = [
     {
         id: 3,
         name: 'غترة',
+        nameEn: 'Ghutra',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 2,
         qty: 100,
         total: 200,
@@ -35,7 +40,9 @@ let products = [
     {
         id: 4,
         name: 'بنطلون',
+        nameEn: 'Pants',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 4,
         qty: 100,
         total: 400,
@@ -45,7 +52,9 @@ let products = [
     {
         id: 5,
         name: 'قميص',
+        nameEn: 'Shirt',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 4,
         qty: 100,
         total: 400,
@@ -55,7 +64,9 @@ let products = [
     {
         id: 6,
         name: 'جاكيت',
+        nameEn: 'Jacket',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 10,
         qty: 100,
         total: 1000,
@@ -65,7 +76,9 @@ let products = [
     {
         id: 7,
         name: 'فستان',
+        nameEn: 'Dress',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 15,
         qty: 100,
         total: 1500,
@@ -75,7 +88,9 @@ let products = [
     {
         id: 8,
         name: 'بطانية',
+        nameEn: 'Blanket',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 20,
         qty: 100,
         total: 2000,
@@ -85,7 +100,9 @@ let products = [
     {
         id: 9,
         name: 'لحاف',
+        nameEn: 'Comforter',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 25,
         qty: 100,
         total: 2500,
@@ -95,7 +112,9 @@ let products = [
     {
         id: 10,
         name: 'مخدة',
+        nameEn: 'Pillow',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 8,
         qty: 100,
         total: 800,
@@ -105,7 +124,9 @@ let products = [
     {
         id: 11,
         name: 'سجادة',
+        nameEn: 'Carpet',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 35,
         qty: 100,
         total: 3500,
@@ -115,7 +136,9 @@ let products = [
     {
         id: 12,
         name: 'عباية',
+        nameEn: 'Abaya',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 12,
         qty: 100,
         total: 1200,
@@ -125,7 +148,9 @@ let products = [
     {
         id: 13,
         name: 'ملابس أطفال',
+        nameEn: 'Kids Clothes',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 3,
         qty: 100,
         total: 300,
@@ -135,7 +160,9 @@ let products = [
     {
         id: 14,
         name: 'مفارش سرير',
+        nameEn: 'Bed Sheets',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 18,
         qty: 100,
         total: 1800,
@@ -145,7 +172,9 @@ let products = [
     {
         id: 15,
         name: 'ستارة',
+        nameEn: 'Curtain',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 30,
         qty: 100,
         total: 3000,
@@ -155,7 +184,9 @@ let products = [
     {
         id: 16,
         name: 'فروة شتوية',
+        nameEn: 'Winter Cloak',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 20,
         qty: 100,
         total: 2000,
@@ -165,7 +196,9 @@ let products = [
     {
         id: 17,
         name: 'بشت',
+        nameEn: 'Bisht',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 25,
         qty: 100,
         total: 2500,
@@ -175,7 +208,9 @@ let products = [
     {
         id: 18,
         name: 'بدلة رجالية',
+        nameEn: "Men's Suit",
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 18,
         qty: 100,
         total: 1800,
@@ -185,7 +220,9 @@ let products = [
     {
         id: 19,
         name: 'ملابس رياضية',
+        nameEn: 'Sportswear',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 5,
         qty: 100,
         total: 500,
@@ -195,7 +232,9 @@ let products = [
     {
         id: 20,
         name: 'ملابس داخلية',
+        nameEn: 'Underwear',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 2,
         qty: 100,
         total: 200,
@@ -205,7 +244,9 @@ let products = [
     {
         id: 21,
         name: 'جوارب',
+        nameEn: 'Socks',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 1,
         qty: 100,
         total: 100,
@@ -215,7 +256,9 @@ let products = [
     {
         id: 22,
         name: 'قبعة',
+        nameEn: 'Cap',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 4,
         qty: 100,
         total: 400,
@@ -225,7 +268,9 @@ let products = [
     {
         id: 23,
         name: 'حقيبة قماشية',
+        nameEn: 'Fabric Bag',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 10,
         qty: 100,
         total: 1000,
@@ -235,7 +280,9 @@ let products = [
     {
         id: 24,
         name: 'مفرش طاولة',
+        nameEn: 'Tablecloth',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 12,
         qty: 100,
         total: 1200,
@@ -245,7 +292,9 @@ let products = [
     {
         id: 25,
         name: 'مناشف',
+        nameEn: 'Towels',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 5,
         qty: 100,
         total: 500,
@@ -255,7 +304,9 @@ let products = [
     {
         id: 26,
         name: 'روب حمام',
+        nameEn: 'Bathrobe',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 10,
         qty: 100,
         total: 1000,
@@ -265,7 +316,9 @@ let products = [
     {
         id: 27,
         name: 'شرشف',
+        nameEn: 'Bed Sheet',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 8,
         qty: 100,
         total: 800,
@@ -275,7 +328,9 @@ let products = [
     {
         id: 28,
         name: 'كفر كنبة',
+        nameEn: 'Sofa Cover',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 25,
         qty: 100,
         total: 2500,
@@ -285,7 +340,9 @@ let products = [
     {
         id: 29,
         name: 'كفر سيارة',
+        nameEn: 'Car Cover',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 20,
         qty: 100,
         total: 2000,
@@ -295,7 +352,9 @@ let products = [
     {
         id: 30,
         name: 'مرتبة صغيرة',
+        nameEn: 'Small Mattress',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 40,
         qty: 100,
         total: 4000,
@@ -305,7 +364,9 @@ let products = [
     {
         id: 31,
         name: 'فنيلة داخلية',
+        nameEn: 'Undershirt',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 2,
         qty: 100,
         total: 200,
@@ -315,7 +376,9 @@ let products = [
     {
         id: 32,
         name: 'شورت',
+        nameEn: 'Shorts',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 3,
         qty: 100,
         total: 300,
@@ -325,7 +388,9 @@ let products = [
     {
         id: 33,
         name: 'تنورة',
+        nameEn: 'Skirt',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 8,
         qty: 100,
         total: 800,
@@ -335,7 +400,9 @@ let products = [
     {
         id: 34,
         name: 'بلوزة',
+        nameEn: 'Blouse',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 6,
         qty: 100,
         total: 600,
@@ -345,7 +412,9 @@ let products = [
     {
         id: 35,
         name: 'طرحة',
+        nameEn: 'Scarf',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 3,
         qty: 100,
         total: 300,
@@ -355,7 +424,9 @@ let products = [
     {
         id: 36,
         name: 'نقاب',
+        nameEn: 'Niqab',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 4,
         qty: 100,
         total: 400,
@@ -365,7 +436,9 @@ let products = [
     {
         id: 37,
         name: 'شال',
+        nameEn: 'Shawl',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 5,
         qty: 100,
         total: 500,
@@ -375,7 +448,9 @@ let products = [
     {
         id: 38,
         name: 'فستان سهرة',
+        nameEn: 'Evening Dress',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 25,
         qty: 100,
         total: 2500,
@@ -385,7 +460,9 @@ let products = [
     {
         id: 39,
         name: 'فستان زفاف',
+        nameEn: 'Wedding Dress',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 80,
         qty: 100,
         total: 8000,
@@ -395,7 +472,9 @@ let products = [
     {
         id: 40,
         name: 'بدلة أطفال',
+        nameEn: 'Kids Suit',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 10,
         qty: 100,
         total: 1000,
@@ -405,7 +484,9 @@ let products = [
     {
         id: 41,
         name: 'كيس مخدة',
+        nameEn: 'Pillowcase',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 3,
         qty: 100,
         total: 300,
@@ -415,7 +496,9 @@ let products = [
     {
         id: 42,
         name: 'كفر مرتبة',
+        nameEn: 'Mattress Cover',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 15,
         qty: 100,
         total: 1500,
@@ -425,7 +508,9 @@ let products = [
     {
         id: 43,
         name: 'بطانية فرو',
+        nameEn: 'Fur Blanket',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 30,
         qty: 100,
         total: 3000,
@@ -435,7 +520,9 @@ let products = [
     {
         id: 47,
         name: 'ربطة عنق',
+        nameEn: 'Tie',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 5,
         qty: 100,
         total: 500,
@@ -445,7 +532,9 @@ let products = [
     {
         id: 48,
         name: 'قفازات',
+        nameEn: 'Gloves',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 4,
         qty: 100,
         total: 400,
@@ -455,7 +544,9 @@ let products = [
     {
         id: 49,
         name: 'سترة',
+        nameEn: 'Vest',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 8,
         qty: 100,
         total: 800,
@@ -465,18 +556,21 @@ let products = [
     {
         id: 50,
         name: 'حذاء رياضي',
+        nameEn: 'Sneakers',
         category: 'غسيل',
+        categoryEn: 'Laundry',
         price: 20,
         qty: 100,
         total: 2000,
         image: '/images/sneakers.png'
     },
 
-
     {
         id: 51,
         name: 'غسيل جاف',
+        nameEn: 'Dry Cleaning',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 15,
         qty: 100,
         total: 1500,
@@ -486,7 +580,9 @@ let products = [
     {
         id: 52,
         name: 'كي فقط',
+        nameEn: 'Ironing Only',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 2,
         qty: 100,
         total: 200,
@@ -496,7 +592,9 @@ let products = [
     {
         id: 53,
         name: 'تنظيف بقع خاصة',
+        nameEn: 'Special Stain Cleaning',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 10,
         qty: 100,
         total: 1000,
@@ -506,7 +604,9 @@ let products = [
     {
         id: 54,
         name: 'تنظيف كنب',
+        nameEn: 'Sofa Cleaning',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 120,
         qty: 100,
         total: 12000,
@@ -516,7 +616,9 @@ let products = [
     {
         id: 55,
         name: 'تنظيف مرتبة',
+        nameEn: 'Mattress Cleaning',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 80,
         qty: 100,
         total: 8000,
@@ -526,7 +628,9 @@ let products = [
     {
         id: 56,
         name: 'تنظيف ستائر',
+        nameEn: 'Curtain Cleaning',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 40,
         qty: 100,
         total: 4000,
@@ -536,7 +640,9 @@ let products = [
     {
         id: 57,
         name: 'تنظيف حذاء',
+        nameEn: 'Shoe Cleaning',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 15,
         qty: 100,
         total: 1500,
@@ -546,7 +652,9 @@ let products = [
     {
         id: 58,
         name: 'تنظيف شنطة',
+        nameEn: 'Bag Cleaning',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 20,
         qty: 100,
         total: 2000,
@@ -556,7 +664,9 @@ let products = [
     {
         id: 59,
         name: 'تنظيف فرو',
+        nameEn: 'Fur Cleaning',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 30,
         qty: 100,
         total: 3000,
@@ -566,7 +676,9 @@ let products = [
     {
         id: 60,
         name: 'تنظيف بشت',
+        nameEn: 'Bisht Cleaning',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 25,
         qty: 100,
         total: 2500,
@@ -576,7 +688,9 @@ let products = [
     {
         id: 61,
         name: 'تلميع أحذية',
+        nameEn: 'Shoe Polishing',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 5,
         qty: 100,
         total: 500,
@@ -586,7 +700,9 @@ let products = [
     {
         id: 62,
         name: 'تعطير ملابس',
+        nameEn: 'Clothes Perfuming',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 3,
         qty: 100,
         total: 300,
@@ -596,7 +712,9 @@ let products = [
     {
         id: 63,
         name: 'تغليف ملابس',
+        nameEn: 'Clothes Packaging',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 5,
         qty: 100,
         total: 500,
@@ -606,7 +724,9 @@ let products = [
     {
         id: 64,
         name: 'إزالة وبر الملابس',
+        nameEn: 'Lint Removal',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 5,
         qty: 100,
         total: 500,
@@ -616,7 +736,9 @@ let products = [
     {
         id: 65,
         name: 'تنظيف بطانية كهربائية',
+        nameEn: 'Electric Blanket Cleaning',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 35,
         qty: 100,
         total: 3500,
@@ -626,7 +748,9 @@ let products = [
     {
         id: 66,
         name: 'جاكيت جلد',
+        nameEn: 'Leather Jacket',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 35,
         qty: 100,
         total: 3500,
@@ -636,7 +760,9 @@ let products = [
     {
         id: 67,
         name: 'معطف شتوي',
+        nameEn: 'Winter Coat',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 25,
         qty: 100,
         total: 2500,
@@ -646,7 +772,9 @@ let products = [
     {
         id: 68,
         name: 'قبعة',
+        nameEn: 'Cap',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 5,
         qty: 100,
         total: 500,
@@ -656,7 +784,9 @@ let products = [
     {
         id: 71,
         name: 'زي رسمي',
+        nameEn: 'Formal Uniform',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 20,
         qty: 100,
         total: 2000,
@@ -666,7 +796,9 @@ let products = [
     {
         id: 72,
         name: 'بدلة عسكرية',
+        nameEn: 'Military Uniform',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 25,
         qty: 100,
         total: 2500,
@@ -676,7 +808,9 @@ let products = [
     {
         id: 73,
         name: 'ملابس أطفال خاصة',
+        nameEn: 'Special Kids Clothes',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 8,
         qty: 100,
         total: 800,
@@ -686,7 +820,9 @@ let products = [
     {
         id: 74,
         name: 'ملابس رياضية خاصة',
+        nameEn: 'Special Sportswear',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 10,
         qty: 100,
         total: 1000,
@@ -696,7 +832,9 @@ let products = [
     {
         id: 75,
         name: 'فستان سهرة فاخر',
+        nameEn: 'Luxury Evening Dress',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 50,
         qty: 100,
         total: 5000,
@@ -706,7 +844,9 @@ let products = [
     {
         id: 76,
         name: 'فستان زفاف',
+        nameEn: 'Wedding Dress',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 100,
         qty: 100,
         total: 10000,
@@ -716,7 +856,9 @@ let products = [
     {
         id: 77,
         name: 'ستارة رول',
+        nameEn: 'Roller Blind',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 30,
         qty: 100,
         total: 3000,
@@ -726,7 +868,9 @@ let products = [
     {
         id: 78,
         name: 'مفرش طاولة فاخر',
+        nameEn: 'Luxury Tablecloth',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 15,
         qty: 100,
         total: 1500,
@@ -736,7 +880,9 @@ let products = [
     {
         id: 79,
         name: 'كرسي قماش',
+        nameEn: 'Fabric Chair',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 25,
         qty: 100,
         total: 2500,
@@ -746,7 +892,9 @@ let products = [
     {
         id: 80,
         name: 'كنب زاوية',
+        nameEn: 'Corner Sofa',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 180,
         qty: 100,
         total: 18000,
@@ -756,7 +904,9 @@ let products = [
     {
         id: 81,
         name: 'موكيت صغير',
+        nameEn: 'Small Carpet',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 40,
         qty: 100,
         total: 4000,
@@ -766,7 +916,9 @@ let products = [
     {
         id: 82,
         name: 'موكيت كبير',
+        nameEn: 'Large Carpet',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 80,
         qty: 100,
         total: 8000,
@@ -776,18 +928,21 @@ let products = [
     {
         id: 83,
         name: 'ستارة مخمل',
+        nameEn: 'Velvet Curtain',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 60,
         qty: 100,
         total: 6000,
         image: ''
     },
 
-
     {
         id: 84,
         name: 'دمى أطفال',
+        nameEn: 'Kids Dolls',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 10,
         qty: 100,
         total: 1000,
@@ -797,7 +952,9 @@ let products = [
     {
         id: 85,
         name: 'ألعاب قماش',
+        nameEn: 'Fabric Toys',
         category: 'خدمات',
+        categoryEn: 'Services',
         price: 15,
         qty: 100,
         total: 1500,
@@ -807,7 +964,9 @@ let products = [
     {
         id: 86,
         name: 'وسادة ديكور',
+        nameEn: 'Decorative Pillow',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 10,
         qty: 100,
         total: 1000,
@@ -817,7 +976,9 @@ let products = [
     {
         id: 87,
         name: 'غطاء كنبة',
+        nameEn: 'Sofa Cover',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 30,
         qty: 100,
         total: 3000,
@@ -827,7 +988,9 @@ let products = [
     {
         id: 88,
         name: 'غطاء سيارة',
+        nameEn: 'Car Cover',
         category: 'مفروشات',
+        categoryEn: 'Furnishings',
         price: 40,
         qty: 100,
         total: 4000,
@@ -835,6 +998,7 @@ let products = [
     }
 
 ];
+
 products = products.map(product => ({
     ...product,
     image: product.image || ''
@@ -858,65 +1022,233 @@ let invoiceScanner = null;
 
 
 function openInvoiceScanner() {
-
-
+    
     window.currentPaymentInvoice = null;
     window.currentPaymentRemaining = null;
-
-    if (typeof Html5Qrcode === "undefined") {
-        alert("ماسح QR غير محمل، أعد تحديث الصفحة");
-        return;
-    }
-
+    
     const modal =
         document.getElementById("invoiceScannerModal");
-
+    
     if (!modal) {
-        alert("نافذة الماسح غير موجودة");
+        
+        console.error(
+            "❌ invoiceScannerModal غير موجود"
+        );
+        
         return;
     }
-
+    
+    // إظهار النافذة فقط
     modal.style.display = "flex";
+    
+    
+    // تفريغ حقل الإدخال
+    const input =
+        document.getElementById("invoiceNumberInput");
+    
+    if (input) {
+        input.value = "";
+    }
+    
+    
+    console.log(
+        "✅ تم فتح نافذة اختيار طريقة المسح"
+    );
+    
+    
+}
 
+function selectInvoiceMethod(method) {
+    
+    console.log(
+        "طريقة المسح:",
+        method
+    );
+    
+    
+    // اختيار الكاميرا
+    if (method === "camera") {
+        
+        startInvoiceCamera();
+        
+        return;
+    }
+    
+    
+    // اختيار الماسح الخارجي
+    if (method === "scanner") {
+        
+        const input =
+            document.getElementById(
+                "invoiceNumberInput"
+            );
+        
+        if (input) {
+            
+            input.value = "";
+            
+            input.placeholder =
+                "امسح رقم الفاتورة بالماسح";
+            
+            input.focus();
+        }
+        
+        return;
+    }
+    
+    
+    // اختيار الإدخال اليدوي
+    if (method === "manual") {
+        
+        const input =
+            document.getElementById(
+                "invoiceNumberInput"
+            );
+        
+        if (input) {
+            
+            input.value = "";
+            
+            input.placeholder =
+                "أدخل رقم الفاتورة";
+            
+            input.focus();
+        }
+        
+        return;
+    }
+    
+    
+}
+
+
+function startInvoiceCamera() {
+    
+    if (typeof Html5Qrcode === "undefined") {
+        
+        alert(
+            "ماسح الكاميرا غير محمل"
+        );
+        
+        return;
+    }
+    
+    
+    // إنشاء الماسح
     invoiceScanner =
         new Html5Qrcode("reader");
-
+    
+    
     invoiceScanner.start(
-        { facingMode: "environment" },
+        
+        {
+            facingMode: "environment"
+        },
+        
         {
             fps: 10,
             qrbox: 220
         },
-
-        async decodedText => {
-
+        
+        async function(decodedText) {
+            
             console.log(
-                "📷 تم مسح الباركود:",
+                "📷 تم مسح الفاتورة:",
                 decodedText
             );
-
-
+            
+            
+            const invoiceNumber =
+                String(decodedText).trim();
+            
+            
+            if (!invoiceNumber) {
+                return;
+            }
+            
+            
             await closeInvoiceScanner();
+            
+            
             handleInvoiceScan(
-                String(decodedText).trim()
+                invoiceNumber
             );
+            
         }
-
-    ).catch(error => {
-
+        
+    ).catch(function(error) {
+        
         console.error(
-            "❌ خطأ تشغيل الماسح:",
+            "❌ خطأ تشغيل الكاميرا:",
             error
         );
-
-        closeInvoiceScanner();
-
-        alert("تعذر تشغيل الكاميرا");
-
+        
+        alert(
+            "تعذر تشغيل الكاميرا"
+        );
+        
     });
+    
+    
 }
 
 
+function submitInvoiceNumber() {
+    
+    const input =
+        document.getElementById("invoiceNumberInput");
+    
+    if (!input) {
+        return;
+    }
+    
+    const invoiceNumber =
+        String(input.value).trim();
+    
+    if (!invoiceNumber) {
+        
+        alert("أدخل رقم الفاتورة");
+        
+        input.focus();
+        
+        return;
+    }
+    
+    console.log(
+        "⌨️ رقم الفاتورة:",
+        invoiceNumber
+    );
+    
+    closeInvoiceScanner();
+    
+    handleInvoiceScan(invoiceNumber);
+    
+    
+}
+document.addEventListener("DOMContentLoaded", function() {
+    
+    const input =
+        document.getElementById("invoiceNumberInput");
+    
+    if (!input) {
+        return;
+    }
+    
+    
+    input.addEventListener("keydown", function(event) {
+        
+        // إذا ضغط الماسح Enter
+        if (event.key === "Enter") {
+            
+            event.preventDefault();
+            
+            submitInvoiceNumber();
+        }
+        
+    });
+    
+    
+});
 
 async function closeInvoiceScanner() {
 
@@ -1918,31 +2250,180 @@ if (phone.length !== 9 && phone.length !== 10) {
 
 // ==================== POS - SALES ====================
 function renderProducts(productList = products) {
+
     const grid = document.getElementById('productsGrid');
+
     grid.innerHTML = '';
-    
+
+    const lang =
+        document.documentElement.lang === 'en'
+            ? 'en'
+            : 'ar';
+
+    const productNamesEn = {
+
+        1: 'Thobe',
+        2: 'Shemagh',
+        3: 'Ghutra',
+        4: 'Pants',
+        5: 'Shirt',
+        6: 'Jacket',
+        7: 'Dress',
+        8: 'Blanket',
+        9: 'Comforter',
+        10: 'Pillow',
+        11: 'Carpet',
+        12: 'Abaya',
+        13: 'Kids Clothes',
+        14: 'Bed Sheets',
+        15: 'Curtain',
+        16: 'Winter Cloak',
+        17: 'Bisht',
+        18: "Men's Suit",
+        19: 'Sportswear',
+        20: 'Underwear',
+        21: 'Socks',
+        22: 'Cap',
+        23: 'Fabric Bag',
+        24: 'Tablecloth',
+        25: 'Towels',
+        26: 'Bathrobe',
+        27: 'Bed Sheet',
+        28: 'Sofa Cover',
+        29: 'Car Cover',
+        30: 'Small Mattress',
+        31: 'Undershirt',
+        32: 'Shorts',
+        33: 'Skirt',
+        34: 'Blouse',
+        35: 'Scarf',
+        36: 'Niqab',
+        37: 'Shawl',
+        38: 'Evening Dress',
+        39: 'Wedding Dress',
+        40: 'Kids Suit',
+        41: 'Pillowcase',
+        42: 'Mattress Cover',
+        43: 'Fur Blanket',
+
+        47: 'Tie',
+        48: 'Gloves',
+        49: 'Vest',
+        50: 'Sneakers',
+
+        51: 'Dry Cleaning',
+        52: 'Ironing Only',
+        53: 'Special Stain Cleaning',
+        54: 'Sofa Cleaning',
+        55: 'Mattress Cleaning',
+        56: 'Curtain Cleaning',
+        57: 'Shoe Cleaning',
+        58: 'Bag Cleaning',
+        59: 'Fur Cleaning',
+        60: 'Bisht Cleaning',
+        61: 'Shoe Polishing',
+        62: 'Clothes Perfuming',
+        63: 'Clothes Packaging',
+        64: 'Lint Removal',
+        65: 'Electric Blanket Cleaning',
+        66: 'Leather Jacket',
+        67: 'Winter Coat',
+        68: 'Cap Cleaning',
+
+        71: 'Formal Uniform',
+        72: 'Military Uniform',
+        73: 'Special Kids Clothes',
+        74: 'Special Sportswear',
+        75: 'Luxury Evening Dress',
+        76: 'Wedding Dress',
+        77: 'Roller Blind',
+        78: 'Luxury Tablecloth',
+        79: 'Fabric Chair',
+        80: 'Corner Sofa',
+        81: 'Small Carpet',
+        82: 'Large Carpet',
+        83: 'Velvet Curtain',
+        84: 'Kids Dolls',
+        85: 'Fabric Toys',
+        86: 'Decorative Pillow',
+        87: 'Sofa Cover',
+        88: 'Car Cover'
+    };
+
+
     productList.forEach(product => {
-        const btn = document.createElement('button');
-        btn.className = 'product-btn';
-        btn.type = 'button';
+
+        const btn =
+            document.createElement('button');
+
+        btn.className =
+            'product-btn';
+
+        btn.type =
+            'button';
+
+
+        const productName =
+            lang === 'en'
+                ? (productNamesEn[product.id] || product.name)
+                : product.name;
+
+
         btn.innerHTML = `
-           <div class="icon">
-    ${
-        product.image
-        ? `<img src="${product.image}" alt="${product.name}" class="product-image">`
-        : `<span>${product.icon || ''}</span>`
-    }
-</div>
-            <div class="name">${product.name}</div>
-            <div class="price">${product.price} ${settings.currency}</div>
+
+            <div class="icon">
+
+                ${
+                    product.image
+
+                    ? `
+                        <img
+                            src="${product.image}"
+                            alt="${productName}"
+                            class="product-image"
+                        >
+                    `
+
+                    : `
+                        <span>
+                            ${product.icon || ''}
+                        </span>
+                    `
+                }
+
+            </div>
+
+
+            <div
+                class="name"
+                data-ar="${product.name}"
+                data-en="${productNamesEn[product.id] || product.name}">
+                ${productName}
+            </div>
+
+
+            <div class="price">
+                ${product.price} ${settings.currency}
+            </div>
+
         `;
+
+
         btn.onclick = (e) => {
+
             e.preventDefault();
+
             addToCart(product);
+
         };
+
+
         grid.appendChild(btn);
+
     });
+
 }
+
 
 
 function addToCart(product) {
@@ -2019,9 +2500,8 @@ function updateCart() {
         cartContainer.innerHTML =
             `<p class="empty-cart">${emptyMsg}</p>`;
         
-        // عند إفراغ السلة نلغي التوصيل
+
         deliveryFee = 0;
-        
         calculateTotal();
         return;
     }
@@ -2373,6 +2853,7 @@ function clearCart() {
     const confirmMsg = currentLanguage === 'ar' ? 'هل تريد مسح السلة؟' : 'Clear cart?';
     if (confirm(confirmMsg)) {
         cart = [];
+        deliveryFee = 0;
         updateCart();
     }
 }
@@ -2515,17 +2996,10 @@ const tax =
     taxableAmount * taxRate;
 
 
-// =========================
-// رسوم التوصيل
-// =========================
 
 const deliveryTotal =
     Number(deliveryFee) || 0;
 
-
-// =========================
-// الإجمالي النهائي
-// =========================
 
 const total =
     taxableAmount +
@@ -2996,7 +3470,7 @@ const invoice = {
     subscriptionId: activeSub ? activeSub.id : null,
     subscriptionDiscount,
     tax,
-    deliveryFee: delivery,
+    deliveryFee: Number(deliveryFee) || 0,
     deliveryType,
     walletUsed,
     total,
@@ -3777,8 +4251,15 @@ justify-content:space-between;
 ">
 
 <span>
-🚚 ${invoice.deliveryType || 'استلام'}
+🚚 ${
+    invoice.items?.some(
+        item => item.deliveryType === "توصيل"
+    )
+        ? "توصيل"
+        : "استلام"
+}
 </span>
+
 
 <span>
 ${Number(invoice.deliveryFee || 0).toFixed(2)}
@@ -5557,74 +6038,191 @@ localStorage.setItem("laundryLogoName", name);
 
 
 //////  استرجاع البيانات 
+// ===============================
+// إنشاء نسخة احتياطية
+// ===============================
 function backupData() {
-    const data = {
-        products: products,
-        customers: customers,
-        invoices: invoices,
-        settings: settings,
-        subscriptions: subscriptions,
-        backupDate: new Date().toISOString()
-    };
-    
-    const dataStr = JSON.stringify(data, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-    const exportFileDefaultName = `backup_${new Date().toISOString().slice(0, 10)}.json`;
-
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-    
-    alert(currentLanguage === 'ar' ? '✓ تم الحفظ!' : '✓ Backup created!');
+    try {
+        const data = {
+            products: products || [],
+            customers: customers || [],
+            invoices: invoices || [],
+            settings: settings || {},
+            subscriptions: subscriptions || [],
+            archiveSubscriptions: archiveSubscriptions || [],
+            backupDate: new Date().toISOString(),
+            backupVersion: "1.0"
+        };
+        
+        // تحويل البيانات إلى JSON
+        const dataStr = JSON.stringify(data, null, 2);
+        
+        // إنشاء الملف
+        const blob = new Blob([dataStr], {
+            type: "application/json"
+        });
+        
+        // اسم الملف
+        const date = new Date();
+        const fileName =
+            `backup_${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}.json`;
+        
+        // تنزيل الملف
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // تنظيف الرابط
+        URL.revokeObjectURL(link.href);
+        
+        alert(
+            currentLanguage === "ar" ?
+            "✓ تم إنشاء النسخة الاحتياطية بنجاح" :
+            "✓ Backup created successfully"
+        );
+        
+    } catch (error) {
+        console.error("Backup error:", error);
+        
+        alert(
+            currentLanguage === "ar" ?
+            "حدث خطأ أثناء إنشاء النسخة الاحتياطية" :
+            "Error creating backup"
+        );
+    }
 }
 
 
+// ===============================
+// استرجاع نسخة احتياطية
+// ===============================
 function restoreBackup() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = (e) => {
-        const file = e.target.files[0];
+    
+    const input = document.createElement("input");
+    
+    input.type = "file";
+    input.accept = ".json,application/json";
+    
+    input.onchange = function(event) {
+        
+        const file = event.target.files[0];
+        
+        if (!file) {
+            return;
+        }
+        
         const reader = new FileReader();
-        reader.onload = (event) => {
+        
+        reader.onload = function(event) {
+            
             try {
+                
                 const data = JSON.parse(event.target.result);
-                if (data.products && data.invoices && data.settings && data.customers) {
-                    const confirmMsg = currentLanguage === 'ar' ? 'هل تريد استرجاع؟' : 'Restore backup?';
-                    if (confirm(confirmMsg)) {
-                        products = data.products;
-                        customers = data.customers;
-                        invoices = data.invoices;
-                        settings = data.settings;
-                        subscriptions = data.subscriptions || [];
-                        archiveSubscriptions = data.archiveSubscriptions || [];
-                        saveData();
-                        alert(currentLanguage === 'ar' ? '✓ تم الاسترجاع!' : '✓ Restored!');
-                        location.reload();
-                    }
-                } else {
-                    alert(currentLanguage === 'ar' ? 'ملف غير صحيح' : 'Invalid file');
+                
+                // التحقق من أن الملف نسخة احتياطية صحيحة
+                if (
+                    !data ||
+                    !Array.isArray(data.products) ||
+                    !Array.isArray(data.customers) ||
+                    !Array.isArray(data.invoices) ||
+                    !data.settings
+                ) {
+                    
+                    alert(
+                        currentLanguage === "ar" ?
+                        "❌ هذا الملف ليس نسخة احتياطية صحيحة للنظام" :
+                        "❌ Invalid backup file"
+                    );
+                    
+                    return;
                 }
+                
+                const confirmMsg =
+                    currentLanguage === "ar" ?
+                    "⚠️ سيتم استبدال البيانات الحالية بالنسخة الاحتياطية.\n\nهل أنت متأكد؟" :
+                    "⚠️ Current data will be replaced with the backup.\n\nAre you sure?";
+                
+                if (!confirm(confirmMsg)) {
+                    return;
+                }
+                
+                // استرجاع البيانات
+                products = data.products;
+                customers = data.customers;
+                invoices = data.invoices;
+                settings = data.settings;
+                
+                subscriptions =
+                    Array.isArray(data.subscriptions) ?
+                    data.subscriptions :
+                    [];
+                
+                archiveSubscriptions =
+                    Array.isArray(data.archiveSubscriptions) ?
+                    data.archiveSubscriptions :
+                    [];
+                
+                // حفظ البيانات في النظام
+                saveData();
+                
+                alert(
+                    currentLanguage === "ar" ?
+                    "✓ تم استرجاع النسخة الاحتياطية بنجاح" :
+                    "✓ Backup restored successfully"
+                );
+                
+                // إعادة تحميل النظام
+                location.reload();
+                
             } catch (error) {
-                alert(currentLanguage === 'ar' ? 'خطأ في الملف' : 'File error');
+                
+                console.error("Restore error:", error);
+                
+                alert(
+                    currentLanguage === "ar" ?
+                    "❌ الملف تالف أو غير صالح" :
+                    "❌ Backup file is corrupted or invalid"
+                );
             }
         };
+        
         reader.readAsText(file);
     };
+    
+    // فتح نافذة اختيار الملف
     input.click();
 }
 
+
+// ===============================
+// مسح جميع البيانات
+// ===============================
 function resetData() {
-    const confirmMsg = currentLanguage === 'ar' ? 'تحذير! هل أنت متأكد؟' : 'Warning! Are you sure?';
+    
+    const confirmMsg =
+        currentLanguage === "ar" ?
+        "⚠️ تحذير! سيتم حذف جميع بيانات النظام. هل أنت متأكد؟" :
+        "⚠️ Warning! All system data will be deleted. Are you sure?";
+    
     if (confirm(confirmMsg)) {
-        if (confirm(currentLanguage === 'ar' ? 'تأكد مرة أخرى!' : 'Confirm again!')) {
+        
+        const confirmAgain =
+            currentLanguage === "ar" ?
+            "⚠️ تأكيد نهائي: هل تريد حذف جميع البيانات؟" :
+            "⚠️ Final confirmation: Delete all data?";
+        
+        if (confirm(confirmAgain)) {
+            
             localStorage.clear();
+            
             location.reload();
         }
     }
 }
-
 
 // ==================== CLOCK ====================
 function updateClock() {
@@ -6274,6 +6872,7 @@ function renderSubscriptions(list = subscriptions) {
     });
 } 
 
+
 function deleteSubscription(index) {
     subscriptions.splice(index, 1);
     localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
@@ -6315,9 +6914,6 @@ if (!product) {
 }
 
 
-// =========================
-// نوع الخدمة
-// =========================
 
 const serviceElement =
     document.querySelector(
@@ -6333,9 +6929,6 @@ const service =
     serviceElement.value;
 
 
-// =========================
-// سرعة الخدمة
-// =========================
 
 const urgencyElement =
     document.querySelector(
@@ -6351,18 +6944,12 @@ const urgency =
     urgencyElement.value;
 
 
-// =========================
-// نوع المنتج
-// =========================
 
 const isCarpet =
     product.name === "سجاد" ||
     product.name === "سجادة";
 
 
-// =========================
-// نوع التوصيل
-// =========================
 
 const deliveryElement =
     document.querySelector(
@@ -6388,9 +6975,6 @@ const deliveryInput =
     );
 
 
-// =========================
-// رسوم التوصيل
-// =========================
 
 let currentDeliveryFee = 0;
 
@@ -6438,25 +7022,18 @@ if (selectedDelivery === "توصيل") {
         enteredFee;
 
 
-    // =========================
-    // مهم:
-    // رسوم التوصيل للطلب كاملًا
-    // =========================
 
     deliveryFee =
         currentDeliveryFee;
 
 } else {
 
-    // استلام = بدون رسوم توصيل
+
 
     deliveryFee = 0;
 }
 
 
-// =========================
-// الكمية والمقاسات
-// =========================
 
 let quantity = 1;
 let length = null;
@@ -6606,9 +7183,6 @@ if (isCarpet) {
 }
 
 
-// =========================
-// شماغ / غترة
-// =========================
 
 const isShemagh =
     product.name === "شماغ" ||
@@ -6659,9 +7233,6 @@ if (isShemagh) {
 }
 
 
-// =========================
-// حساب السعر
-// =========================
 
 let price = 0;
 
@@ -6728,10 +7299,6 @@ if (
 }
 
 
-// =========================
-// التحقق من مخزون السجاد
-// =========================
-
 if (isCarpet) {
 
     const stock =
@@ -6754,9 +7321,6 @@ if (isCarpet) {
 }
 
 
-// =========================
-// البحث عن منتج موجود
-// =========================
 
 let existingItem = null;
 
@@ -6788,9 +7352,6 @@ if (isCarpet) {
 }
 
 
-// =========================
-// تحديث المنتج الموجود
-// =========================
 
 if (existingItem) {
 
@@ -6820,9 +7381,6 @@ if (existingItem) {
 
 } else {
 
-    // =========================
-    // إضافة منتج جديد
-    // =========================
 
     cart.push({
 
@@ -6835,8 +7393,9 @@ if (existingItem) {
         shemaghStyle:
             shemaghStyle,
 
-        urgency: urgency,
 
+        urgency: urgency,
+        
         deliveryType:
             selectedDelivery,
 
@@ -6881,18 +7440,10 @@ if (existingItem) {
 }
 
 
-// =========================
-// تحديث السلة والإجمالي
-// =========================
 
 updateCart();
-
 calculateTotal();
 
-
-// =========================
-// إعادة ضبط الكمية
-// =========================
 
 const quantityElement =
     document.getElementById(
@@ -6905,9 +7456,6 @@ if (quantityElement) {
 }
 
 
-// =========================
-// إعادة ضبط مقاسات السجاد
-// =========================
 
 const lengthElement =
     document.getElementById(
@@ -6941,86 +7489,80 @@ if (areaElement) {
     areaElement.textContent = "0";
 }
 
-
-// =========================
-// إعادة ضبط رسوم التوصيل
-// =========================
-// لا نصفر deliveryFee هنا
-// لأن الرسوم أصبحت محفوظة للطلب
-
 if (deliveryInput) {
-    deliveryInput.value = "";
+    deliveryInput.value =
+        Number(deliveryFee) > 0 ? deliveryFee : "";
 }
-
 
 if (deliveryRow) {
-    deliveryRow.style.display = "none";
+    deliveryRow.style.display =
+        Number(deliveryFee) > 0 ? "flex" : "none";
 }
 
 
-// =========================
-// إغلاق النافذة
-// =========================
+
 
 closeServiceModal();
 
 
 }
-
 function updateDeliveryUI() {
     const deliveryElement = document.querySelector(
         'input[name="deliveryType"]:checked'
     );
-
+    
     const deliveryRow = document.getElementById("deliveryFeeRow");
     const deliveryInput = document.getElementById("deliveryFeeInput");
-
+    
     if (!deliveryRow) {
         console.error("لم يتم العثور على deliveryFeeRow");
         return;
     }
+    
 
+    if (deliveryInput) {
+        deliveryInput.oninput = () => {
+            deliveryFee =
+                Number(
+                    String(deliveryInput.value || "")
+                    .replace(",", ".")
+                    .trim()
+                ) || 0;
+            
+            calculateTotal();
+        };
+    }
+    
     if (!deliveryElement) {
+
         deliveryRow.style.display = "none";
-
-        if (deliveryInput) {
-            deliveryInput.value = "";
-        }
-
         calculateTotal();
         return;
     }
-
+    
     if (deliveryElement.value === "توصيل") {
-
-        // إظهار حقل رسوم التوصيل
+        
         deliveryRow.style.display = "flex";
-
+        
         if (deliveryInput) {
+            const defaultFee = Number(settings?.deliveryFee) || 0;
+            
 
-            const defaultFee =
-                Number(settings?.deliveryFee) || 0;
-
-            if (
-                deliveryInput.value === "" ||
-                Number(deliveryInput.value) === 0
-            ) {
-                deliveryInput.value = defaultFee;
+            if (deliveryInput.value === "") {
+                deliveryInput.value =
+                    Number(deliveryFee) > 0 ? deliveryFee : defaultFee;
             }
-
-            deliveryInput.oninput = calculateTotal;
+            
+            deliveryFee =
+                Number(String(deliveryInput.value || "").replace(",", ".")) || 0;
         }
-
+        
     } else {
+        
 
-        // استلام = إخفاء الرسوم وتصفيتها
         deliveryRow.style.display = "none";
-
-        if (deliveryInput) {
-            deliveryInput.value = "";
-        }
     }
-
+    
     calculateTotal();
 }
 
@@ -7033,9 +7575,6 @@ function confirmAddToCart() {
         return;
     }
 
-    // =========================
-    // نوع الخدمة
-    // =========================
 
     const serviceElement =
         document.querySelector(
@@ -7051,10 +7590,6 @@ function confirmAddToCart() {
         serviceElement.value;
 
 
-    // =========================
-    // سرعة الخدمة
-    // =========================
-
     const urgencyElement =
         document.querySelector(
             'input[name="urgencyType"]:checked'
@@ -7069,18 +7604,11 @@ function confirmAddToCart() {
         urgencyElement.value;
 
 
-    // =========================
-    // نوع المنتج
-    // =========================
 
     const isCarpet =
         product.name === "سجاد" ||
         product.name === "سجادة";
 
-
-    // =========================
-    // التوصيل للمنتج الحالي
-    // =========================
 
     const deliveryElement =
         document.querySelector(
@@ -7124,14 +7652,12 @@ function confirmAddToCart() {
         enteredFee >= 0
     ) {
         currentDeliveryFee = enteredFee;
-
-        // حفظ رسوم التوصيل للفاتورة
         deliveryFee = enteredFee;
     }
 
 } else {
 
-    // استلام لا يلغي رسوم التوصيل الموجودة
+
     if (deliveryRow) {
         deliveryRow.style.display = "none";
     }
@@ -7139,11 +7665,6 @@ function confirmAddToCart() {
     currentDeliveryFee = deliveryFee;
 }
 
-
-
-    // =========================
-    // الكمية
-    // =========================
 
     let quantity = 1;
     let length = null;
@@ -7286,10 +7807,6 @@ function confirmAddToCart() {
     }
 
 
-    // =========================
-    // شماغ / غترة
-    // =========================
-
     const isShemagh =
         product.name === "شماغ" ||
         product.name === "غترة";
@@ -7337,10 +7854,6 @@ function confirmAddToCart() {
             shapeElement.value;
     }
 
-
-    // =========================
-    // السعر
-    // =========================
 
     let price = 0;
 
@@ -7395,10 +7908,6 @@ function confirmAddToCart() {
     }
 
 
-    // =========================
-    // مخزون السجاد
-    // =========================
-
     if (isCarpet) {
 
         const stock =
@@ -7420,11 +7929,6 @@ function confirmAddToCart() {
         }
     }
 
-
-    // =========================
-    // البحث عن نفس المنتج
-    // =========================
-
     let existingItem = null;
 
 
@@ -7434,17 +7938,11 @@ function confirmAddToCart() {
             cart.find(item =>
 
                 item.id === product.id &&
-
                 item.serviceType === service &&
-
                 item.urgency === urgency &&
-
                 item.shemaghStyle === shemaghStyle &&
-
                 item.deliveryType === selectedDelivery &&
-
                 Number(item.length) === Number(length) &&
-
                 Number(item.width) === Number(width)
             );
 
@@ -7454,21 +7952,13 @@ function confirmAddToCart() {
             cart.find(item =>
 
                 item.id === product.id &&
-
                 item.serviceType === service &&
-
                 item.urgency === urgency &&
-
                 item.shemaghStyle === shemaghStyle &&
-
                 item.deliveryType === selectedDelivery
             );
     }
 
-
-    // =========================
-    // تحديث الموجود
-    // =========================
 
     if (existingItem) {
 
@@ -7495,8 +7985,6 @@ function confirmAddToCart() {
                 quantity;
         }
 
-
-        // تحديث توصيل هذا المنتج فقط
         if (selectedDelivery === "توصيل") {
 
             existingItem.deliveryFee =
@@ -7510,24 +7998,15 @@ function confirmAddToCart() {
 
     } else {
 
-        // =========================
-        // إضافة منتج جديد
-        // =========================
 
         cart.push({
 
             id: product.id,
-
             name: product.name,
-
             serviceType: service,
-
             shemaghStyle: shemaghStyle,
-
             urgency: urgency,
-
             deliveryType: selectedDelivery,
-
             price:
                 Number(
                     price.toFixed(2)
@@ -7569,18 +8048,8 @@ function confirmAddToCart() {
     }
 
 
-    // =========================
-    // تحديث العرض والحساب
-    // =========================
-
     updateCart();
-
     calculateTotal();
-
-
-    // =========================
-    // تصفير الحقول للمنتج القادم
-    // =========================
 
     const quantityElement =
         document.getElementById(
