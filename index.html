@@ -1114,12 +1114,6 @@ checked>
                 <h3 data-ar="النسخ الاحتياطيةونقل البيانات" data-en="Backup">النسخ الاحتياطيةونقل البيانات</h3>
                 <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="backupData()">💾 <span data-ar="إنشاء نسخة احتياطية" data-en="Create Backup">إنشاء نسخة احتياطية</span></button>
                 <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="restoreBackup()">📂 <span data-ar="استرجاع نسخة" data-en="Restore Backup">استرجاع نسخة</span></button>
-                        
-                        <input 
-type="file" 
-id="oldSystemFile"
-accept=".xlsx,.xls"
->
 
 
                     </div>
@@ -1798,39 +1792,237 @@ accept=".xlsx,.xls"
     </div>
     
 </div>
-
-<div id="invoiceScannerModal" 
+<div id="invoiceScannerModal"
 style="
 display:none;
 position:fixed;
-top:0;
-left:0;
+inset:0;
 width:100%;
 height:100%;
 background:rgba(0,0,0,.6);
-z-index:9999;
+z-index:999999;
 align-items:center;
 justify-content:center;
+padding:15px;
+box-sizing:border-box;
 ">
 
 <div style="
-background:white;
-padding:20px;
-border-radius:12px;
+background:#fff;
 width:350px;
+max-width:100%;
+border-radius:14px;
+padding:20px;
+box-sizing:border-box;
 text-align:center;
+box-shadow:0 10px 35px rgba(0,0,0,.25);
 ">
 
-<h3>📷 مسح الفاتورة</h3>
+    <h3
+    data-ar="🧾 مسح الفاتورة"
+    data-en="🧾 Scan Invoice"
+    style="
+    margin:0 0 18px 0;
+    color:#333;
+    font-size:20px;
+    ">
+        🧾 مسح الفاتورة
+    </h3>
 
-<div id="reader"></div>
 
-<button onclick="closeInvoiceScanner()" 
-class="btn btn-danger">
-إغلاق
+<div style="
+display:flex;
+gap:8px;
+margin-bottom:15px;
+">
+
+<button
+type="button"
+onclick="selectInvoiceMethod('camera')"
+class="btn btn-primary"
+style="
+flex:1;
+padding:10px 5px;
+border-radius:8px;
+">
+    📷
+    <br>
+
+    <span
+    data-ar="الكاميرا"
+    data-en="Camera">
+        الكاميرا
+    </span>
+
+</button>
+
+
+<button
+type="button"
+onclick="selectInvoiceMethod('scanner')"
+class="btn btn-success"
+style="
+flex:1;
+padding:10px 5px;
+border-radius:8px;
+">
+    🔫
+    <br>
+
+    <span
+    data-ar="الماسح"
+    data-en="Scanner">
+        الماسح
+    </span>
+
+</button>
+
+
+<button
+type="button"
+onclick="selectInvoiceMethod('manual')"
+class="btn btn-secondary"
+style="
+flex:1;
+padding:10px 5px;
+border-radius:8px;
+">
+    ⌨️
+    <br>
+
+    <span
+    data-ar="يدوي"
+    data-en="Manual">
+        يدوي
+    </span>
+
 </button>
 
 </div>
+
+
+<!-- الكاميرا -->
+
+<div id="reader"
+style="
+width:100%;
+max-width:310px;
+margin:0 auto 15px auto;
+border-radius:10px;
+overflow:hidden;
+">
+</div>
+
+
+<!-- فاصل -->
+
+<div style="
+display:flex;
+align-items:center;
+gap:10px;
+margin:15px 0;
+color:#999;
+font-size:13px;
+">
+
+    <div style="
+    flex:1;
+    height:1px;
+    background:#ddd;
+    "></div>
+
+
+    <span
+    data-ar="أو أدخل رقم الفاتورة"
+    data-en="Or enter the invoice number">
+        أو أدخل رقم الفاتورة
+    </span>
+
+
+    <div style="
+    flex:1;
+    height:1px;
+    background:#ddd;
+    "></div>
+
+</div>
+
+
+<!-- إدخال الرقم -->
+
+<input
+type="text"
+id="invoiceNumberInput"
+
+data-ar-placeholder="رقم الفاتورة"
+data-en-placeholder="Invoice number"
+
+placeholder="رقم الفاتورة"
+
+autocomplete="off"
+inputmode="numeric"
+
+style="
+width:100%;
+padding:12px;
+box-sizing:border-box;
+border:1px solid #ddd;
+border-radius:8px;
+font-size:16px;
+text-align:center;
+outline:none;
+margin-bottom:10px;
+">
+
+
+<!-- فتح الفاتورة -->
+
+<button
+type="button"
+onclick="submitInvoiceNumber()"
+class="btn btn-primary"
+style="
+width:100%;
+padding:11px;
+border-radius:8px;
+margin-bottom:8px;
+">
+
+<span
+data-ar="🔎 فتح الفاتورة"
+data-en="🔎 Open Invoice">
+    🔎 فتح الفاتورة
+</span>
+
+</button>
+
+
+<!-- إغلاق -->
+
+<button
+type="button"
+onclick="closeInvoiceScanner()"
+class="btn btn-danger"
+style="
+width:100%;
+padding:11px;
+border-radius:8px;
+">
+
+<span
+data-ar="إغلاق"
+data-en="Close">
+    إغلاق
+</span>
+
+</button>
+
+
+</div>
+</div>
+
+
+
 
 </div>
 
@@ -1917,18 +2109,13 @@ class="btn btn-danger">
 
 </div>
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <script src="https://unpkg.com/html5-qrcode"></script>
-
 <script src="import-data.js"></script>
-
 <script type="module" src="firebase.js"></script>
-
 <script type="module" src="firebase-bridge.js"></script>
-
 <script type="module" src="owner-check.js"></script>
 
 
