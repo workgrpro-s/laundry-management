@@ -4595,8 +4595,8 @@ new QRCode(
     document.getElementById("invoiceQR"),
     {
         text: invoice.barcode,
-        width: 70,
-        height: 70,
+        width: 90,
+        height: 90,
         colorDark: "#000",
         colorLight: "#fff"
     }
@@ -11083,56 +11083,56 @@ function viewWalletHistory(customerId) {
 
             <tbody>
 
-                ${
-                    history.map(item => {
+ ${
+history.map(item => {
 
-                        let color = "#555";
+let color = "#555";
 
-                        if (item.type === "دفع فاتورة")
-                            color = "#2e7d32";
+if (item.type === "دفع فاتورة")
+color = "#2e7d32";
 
-                        if (item.type === "استرجاع")
-                            color = "#1976d2";
+if (item.type === "استرجاع")
+color = "#1976d2";
 
-                        return `
+return `
 
-                            <tr>
+<tr>
 
-                                <td style="
-                                    color:${color};
-                                    font-weight:bold">
+<td style="
+color:${color};
+font-weight:bold">
 
-                                    ${item.type || "-"}
+${item.type || "-"}
 
-                                </td>
+</td>
 
-                                <td>
-                                    ${item.invoiceNo || "-"}
-                                </td>
+<td>
+${item.invoiceNo || "-"}
+</td>
 
-                                <td>
-                                    ${Number(item.amount || 0).toFixed(2)}
-                                    ${settings.currency}
-                                </td>
+<td>
+${Number(item.amount || 0).toFixed(2)}
+${settings.currency}
+</td>
 
-                                <td>
-                                    ${item.paymentMethod || "نقدي"}
-                                </td>
+<td>
+${item.paymentMethod || "نقدي"}
+</td>
 
-                                <td>
-                                    ${item.note || "-"}
-                                </td>
+<td>
+${item.note || "-"}
+</td>
 
-                                <td>
-                                    ${
-                                        item.date
-                                            ? new Date(item.date)
-                                                .toLocaleString('ar-AE')
-                                            : "-"
-                                    }
-                                </td>
+<td>
+${
+item.date
+? new Date(item.date)
+.toLocaleString('ar-AE')
+: "-"
+}
+</td>
 
-                            </tr>
+</tr>
 
                         `;
 
@@ -11164,7 +11164,7 @@ function closeWalletHistory() {
     
 }
 
-//   دالة بحث بالاسم او الرقم 
+////   دالة بحث بالاسم او الرقم 
 function searchCustomers() {
     const value = document.getElementById("searchCustomer").value.toLowerCase();
     
@@ -11231,171 +11231,168 @@ function renderSubscriptionPlans() {
                     data-plan-index="${index}"
                 >
 
-                    <div class="subscription-card-header">
+<div class="subscription-card-header">
+<div class="subscription-plan-title">
+<span class="subscription-icon">
+💳
+</span>
 
-                        <div class="subscription-plan-title">
+<div>
 
-                            <span class="subscription-icon">
-                                💳
-                            </span>
+<strong>
+${plan.name || "اشتراك جديد"}
+</strong>
 
-                            <div>
+<small>
+باقة اشتراك
+</small>
 
-                                <strong>
-                                    ${plan.name || "اشتراك جديد"}
-                                </strong>
+</div>
 
-                                <small>
-                                    باقة اشتراك
-                                </small>
-
-                            </div>
-
-                        </div>
+</div>
 
 
-                        <button
-                            type="button"
-                            class="delete-subscription-btn"
-                            onclick="deleteSubscriptionPlan(${index})"
-                            title="حذف الاشتراك">
+<button
+type="button"
+class="delete-subscription-btn"
+onclick="deleteSubscriptionPlan(${index})"
+title="حذف الاشتراك">
 
-                            🗑️
+🗑️
 
-                        </button>
-
-                    </div>
-
-
-                    <div class="subscription-grid">
+</button>
+</div>
 
 
-                        <!-- اسم الاشتراك -->
-
-                        <div class="subscription-field">
-
-                            <label>
-                                🏷️ اسم الاشتراك
-                            </label>
-
-                            <input
-                                type="text"
-                                id="subPlanName${index}"
-                                value="${plan.name || ""}"
-                                placeholder="مثال: شهري"
-                            >
-
-                        </div>
+<div class="subscription-grid">
 
 
-                        <!-- السعر -->
+<!-- اسم الاشتراك -->
 
-                        <div class="subscription-field">
+<div class="subscription-field">
 
-                            <label>
-                                💰 السعر المدفوع
-                            </label>
+<label>
+🏷️ اسم الاشتراك
+</label>
 
-                            <div class="subscription-input-wrap">
+<input
+type="text"
+id="subPlanName${index}"
+value="${plan.name || ""}"
+placeholder="مثال: شهري"
+>
 
-                                <input
-                                    type="number"
-                                    id="subPlanPrice${index}"
-                                    value="${Number(plan.price || 0)}"
-                                    min="0"
-                                    step="0.01"
-                                >
-
-                                <span>
-                                    ${settings.currency || "ر.س"}
-                                </span>
-
-                            </div>
-
-                        </div>
+</div>
 
 
-                        <!-- الرصيد -->
+<!-- السعر -->
 
-                        <div class="subscription-field">
+<div class="subscription-field">
 
-                            <label>
-                                💳 رصيد العميل
-                            </label>
+<label>
+💰 السعر المدفوع
+</label>
 
-                            <div class="subscription-input-wrap">
+<div class="subscription-input-wrap">
 
-                                <input
-                                    type="number"
-                                    id="subPlanBalance${index}"
-                                    value="${Number(plan.balance || 0)}"
-                                    min="0"
-                                    step="0.01"
-                                >
+<input
+type="number"
+id="subPlanPrice${index}"
+value="${Number(plan.price || 0)}"
+min="0"
+step="0.01"
+>
 
-                                <span>
-                                    ${settings.currency || "ر.س"}
-                                </span>
+<span>
+${settings.currency || "ر.س"}
+</span>
 
-                            </div>
+</div>
 
-                        </div>
-
-
-                        <!-- المدة -->
-
-                        <div class="subscription-field">
-
-                            <label>
-                                📅 مدة الاشتراك
-                            </label>
-
-                            <div class="subscription-input-wrap">
-
-                                <input
-                                    type="number"
-                                    id="subPlanDays${index}"
-                                    value="${Number(plan.days || 0)}"
-                                    min="1"
-                                >
-
-                                <span>
-                                    يوم
-                                </span>
-
-                            </div>
-
-                        </div>
+</div>
 
 
-                    </div>
+<!-- الرصيد -->
+
+<div class="subscription-field">
+
+<label>
+💳 رصيد العميل
+</label>
+
+<div class="subscription-input-wrap">
+
+<input
+type="number"
+id="subPlanBalance${index}"
+value="${Number(plan.balance || 0)}"
+min="0"
+step="0.01"
+>
+
+<span>
+${settings.currency || "ر.س"}
+</span>
+
+</div>
+
+</div>
 
 
-                    <!-- ملخص -->
+<!-- المدة -->
 
-                    <div class="subscription-summary">
+<div class="subscription-field">
 
-                        <span>
-                            يدفع العميل
+<label>
+📅 مدة الاشتراك
+</label>
+
+<div class="subscription-input-wrap">
+
+<input
+type="number"
+id="subPlanDays${index}"
+value="${Number(plan.days || 0)}"
+min="1"
+>
+
+<span>
+يوم
+</span>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- ملخص -->
+
+<div class="subscription-summary">
+
+<span>
+يدفع العميل
+<b>
+${Number(plan.price || 0).toFixed(2)}
+</b>
+</span>
+
+<span class="summary-arrow">
+←
+</span>
+
+<span class="summary-balance">
+يحصل على
                             <b>
-                                ${Number(plan.price || 0).toFixed(2)}
+${Number(plan.balance || 0).toFixed(2)}
                             </b>
-                        </span>
+</span>
 
-                        <span class="summary-arrow">
-                            ←
-                        </span>
+</div>
 
-                        <span class="summary-balance">
-                            يحصل على
-                            <b>
-                                ${Number(plan.balance || 0).toFixed(2)}
-                            </b>
-                        </span>
-
-                    </div>
-
-                </div>
+</div>
 
             `
             ).join("")}
@@ -11429,13 +11426,9 @@ function addSubscriptionPlan() {
     settings.subscriptionPlans.push({
         
         id: newId,
-        
         name: "اشتراك جديد",
-        
         price: 0,
-        
         balance: 0,
-        
         days: 30
         
     });
@@ -11455,7 +11448,6 @@ function addSubscriptionPlan() {
         if (input) {
             
             input.focus();
-            
             input.select();
             
         }
@@ -11509,13 +11501,9 @@ function addSubscriptionPlan() {
     settings.subscriptionPlans.push({
         
         id: Date.now(),
-        
         name: "اشتراك جديد",
-        
         price: 0,
-        
         balance: 0,
-        
         days: 30
         
     });
@@ -11578,11 +11566,8 @@ function renewSubscription(index) {
     if (!modal) {
         
         modal = document.createElement("div");
-        
         modal.id = "renewSubscriptionModal";
-        
         modal.className = "renew-subscription-overlay";
-        
         document.body.appendChild(modal);
     }
     
@@ -11696,6 +11681,8 @@ function renewSubscription(index) {
     modal.style.display = "flex";
 }
 
+
+
 function selectRenewPlan(planIndex) {
     
     const modal = document.getElementById("renewSubscriptionModal");
@@ -11747,7 +11734,6 @@ function confirmRenewSubscription() {
     }
     
     const sub = subscriptions[subIndex];
-    
     const plan =
         settings.subscriptionPlans[planIndex];
     
@@ -11807,7 +11793,6 @@ function closeRenewSubscription() {
     }
     
     window.renewingSubscriptionIndex = undefined;
-    
     window.selectedRenewPlanIndex = undefined;
 }
 
@@ -11821,8 +11806,6 @@ function restoreSubscription(index) {
     
     
     subscriptions.push(sub);
-    
-    
     archiveSubscriptions.splice(index, 1);
     
     
