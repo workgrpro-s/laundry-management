@@ -4596,7 +4596,7 @@ new QRCode(
     {
         text: invoice.barcode,
         width: 90,
-        height: 90,
+        height:90,
         colorDark: "#000",
         colorLight: "#fff"
     }
@@ -9746,7 +9746,6 @@ function selectPaymentMethod(method) {
     
     if (method === "full") {
         
-        closePaymentMethodModal(false);
         
         receiveFullPayment(
             invoice,
@@ -9758,7 +9757,7 @@ function selectPaymentMethod(method) {
     
     if (method === "partial") {
         
-        closePaymentMethodModal(false);
+        
         
         receivePartialPayment(
             invoice,
@@ -10120,6 +10119,8 @@ function completeFullPayment(paymentMethod) {
         `طريقة الدفع: ${paymentMethod}\n` +
         `المبلغ: ${remaining.toFixed(2)} ${settings.currency}`
     );
+closeFullPaymentModal();
+closePaymentMethodModal(false);
 
 }
 
