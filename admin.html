@@ -858,96 +858,139 @@
         </div>
         
 
-        <div id="branchForm" style="display:none;">
+<div id="branchForm" style="display:none;">
 
-            <div class="form-group">
+    <!-- صاحب المغسلة -->
+<div class="form-group">
 
-                <label>صاحب المغسلة</label>
+    <label>صاحب المغسلة</label>
 
-                <select id="branchOwner">
+    <div style="position:relative;">
 
-                    <option value="">
-                        اختر صاحب المغسلة
-                    </option>
+        <input
+            type="text"
+            id="branchOwnerSearch"
+            placeholder="🔍 ابحث عن صاحب المغسلة..."
+            autocomplete="off"
+        >
 
-                </select>
+        <input
+            type="hidden"
+            id="branchOwner"
+        >
 
-            </div>
-
-
-            <div class="form-group">
-
-                <label>اسم الفرع</label>
-
-                <input
-                    type="text"
-                    id="branchName"
-                    placeholder="مثال: فرع حي الشاطئ">
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>رقم الفرع</label>
-
-                <input
-                    type="text"
-                    id="branchNumber"
-                    placeholder="مثال: 2">
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>موقع الفرع</label>
-
-                <input
-                    type="text"
-                    id="branchLocation"
-                    placeholder="مثال: الدمام - حي الشاطئ">
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>رقم جوال الفرع</label>
-
-                <input
-                    type="tel"
-                    id="branchPhone"
-                    placeholder="05xxxxxxxx">
-
-            </div>
-
-        </div>
-
-
-        <button
-            class="save-btn"
-            onclick="createLaundryOrBranch()">
-
-            إنشاء
-
-        </button>
-
-
-        <button
-            class="close-btn"
-            onclick="closeAddLaundry()">
-
-            إلغاء
-
-        </button>
-
-
-        <div id="message"></div>
+        <div
+            id="branchOwnerResults"
+            style="
+                display:none;
+                position:absolute;
+                top:100%;
+                left:0;
+                right:0;
+                background:#fff;
+                border:1px solid #ddd;
+                border-radius:10px;
+                margin-top:5px;
+                max-height:220px;
+                overflow-y:auto;
+                z-index:99999;
+                box-shadow:0 5px 15px rgba(0,0,0,.12);
+            "
+        ></div>
 
     </div>
 
 </div>
+
+
+
+    <!-- اسم الفرع -->
+    <div class="form-group">
+
+        <label>
+            اسم الفرع
+        </label>
+
+        <input
+            type="text"
+            id="branchName"
+            placeholder="مثال: فرع حي الشاطئ"
+        >
+
+    </div>
+
+
+    <!-- رقم الفرع -->
+    <div class="form-group">
+
+        <label>
+            رقم الفرع
+        </label>
+
+        <input
+            type="text"
+            id="branchNumber"
+            placeholder="مثال: 2"
+        >
+
+    </div>
+
+
+    <!-- موقع الفرع -->
+    <div class="form-group">
+
+        <label>
+            موقع الفرع
+        </label>
+
+        <input
+            type="text"
+            id="branchLocation"
+            placeholder="مثال: الدمام - حي الشاطئ"
+        >
+
+    </div>
+
+
+    <!-- جوال الفرع -->
+    <div class="form-group">
+
+        <label>
+            رقم جوال الفرع
+        </label>
+
+        <input
+            type="tel"
+            id="branchPhone"
+            placeholder="05xxxxxxxx"
+        >
+
+    </div>
+
+</div>
+
+
+<!-- زر إنشاء -->
+<button
+    class="save-btn"
+    onclick="createLaundryOrBranch()"
+>
+    إنشاء
+</button>
+
+
+<!-- زر إلغاء -->
+<button
+    class="close-btn"
+    onclick="closeAddLaundry()"
+>
+    إلغاء
+</button>
+
+
+<!-- الرسائل -->
+<div id="message"></div>
+
 
 
 <div id="branchesModal" class="modal">
@@ -2420,17 +2463,39 @@ function () {
 
 async function loadOwnerList() {
 
-    const select =
+    const searchInput =
+        document.getElementById(
+            "branchOwnerSearch"
+        );
+
+    const ownerInput =
         document.getElementById(
             "branchOwner"
         );
 
+    const results =
+        document.getElementById(
+            "branchOwnerResults"
+        );
 
-    select.innerHTML = `
-        <option value="">
-            جاري التحميل...
-        </option>
-    `;
+
+    if (
+        !searchInput ||
+        !ownerInput ||
+        !results
+    ) {
+        console.warn(
+            "عناصر بحث صاحب المغسلة غير موجودة"
+        );
+
+        return;
+    }
+
+
+    searchInput.value = "";
+    ownerInput.value = "";
+    results.innerHTML = "";
+    results.style.display = "none";
 
 
     try {
@@ -2444,16 +2509,10 @@ async function loadOwnerList() {
             );
 
 
-        select.innerHTML = `
-            <option value="">
-                اختر صاحب المغسلة
-            </option>
-        `;
-
-
         if (
             !snapshot.exists()
         ) {
+
             return;
         }
 
@@ -2462,53 +2521,242 @@ async function loadOwnerList() {
             snapshot.val();
 
 
-        Object.entries(
-            laundries
-        ).forEach(
-            ([uid, laundry]) => {
-
-                if (
+        const owners =
+            Object.entries(
+                laundries
+            )
+            .filter(
+                ([uid, laundry]) =>
                     laundry &&
                     laundry.role === "owner"
-                ) {
+            );
 
-                    const option =
+
+        function showResults(
+            searchText
+        ) {
+
+            const search =
+                searchText
+                    .trim()
+                    .toLowerCase();
+
+
+            results.innerHTML = "";
+
+
+            if (!search) {
+
+                results.style.display =
+                    "none";
+
+                return;
+            }
+
+
+            const filtered =
+                owners.filter(
+                    ([uid, laundry]) => {
+
+                        const text = `
+
+                            ${laundry.name || ""}
+
+                            ${laundry.ownerName || ""}
+
+                            ${laundry.phone || ""}
+
+                            ${laundry.email || ""}
+
+                        `
+                        .toLowerCase();
+
+
+                        return text.includes(
+                            search
+                        );
+
+                    }
+                );
+
+
+            if (
+                filtered.length === 0
+            ) {
+
+                results.innerHTML = `
+
+                    <div style="
+                        padding:14px;
+                        text-align:center;
+                        color:#777;
+                    ">
+
+                        🔍 لا يوجد صاحب مغسلة مطابق
+
+                    </div>
+
+                `;
+
+                results.style.display =
+                    "block";
+
+                return;
+            }
+
+
+            filtered.forEach(
+                ([uid, laundry]) => {
+
+                    const item =
                         document.createElement(
-                            "option"
+                            "div"
                         );
 
 
-                    option.value =
-                        uid;
+                    item.style.cssText = `
+                        padding:12px 15px;
+                        cursor:pointer;
+                        border-bottom:1px solid #eee;
+                        background:#fff;
+                    `;
 
 
-                    option.textContent =
-                        `${laundry.name || "بدون اسم"} — ${laundry.ownerName || "بدون مسؤول"}`;
+                    item.innerHTML = `
+
+                        <strong>
+                            🏢 ${escapeHtml(
+                                laundry.name ||
+                                "بدون اسم"
+                            )}
+                        </strong>
+
+                        <div style="
+                            font-size:13px;
+                            color:#777;
+                            margin-top:4px;
+                        ">
+
+                            👤 ${escapeHtml(
+                                laundry.ownerName ||
+                                "بدون مسؤول"
+                            )}
+
+                            ${
+                                laundry.phone
+                                    ? `
+                                    <br>
+                                    📱 ${escapeHtml(
+                                        laundry.phone
+                                    )}
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+                    `;
 
 
-                    select.appendChild(
-                        option
+                    item.addEventListener(
+                        "click",
+                        function () {
+
+                            // تخزين UID الحقيقي
+                            ownerInput.value =
+                                uid;
+
+
+                            // إظهار الاسم المختار
+                            searchInput.value =
+                                `${laundry.name || "بدون اسم"} — ${laundry.ownerName || "بدون مسؤول"}`;
+
+
+                            results.style.display =
+                                "none";
+
+                        }
+                    );
+
+
+                    item.addEventListener(
+                        "mouseenter",
+                        function () {
+
+                            item.style.background =
+                                "#f5f7fa";
+
+                        }
+                    );
+
+
+                    item.addEventListener(
+                        "mouseleave",
+                        function () {
+
+                            item.style.background =
+                                "#fff";
+
+                        }
+                    );
+
+
+                    results.appendChild(
+                        item
+                    );
+
+                }
+            );
+
+
+            results.style.display =
+                "block";
+
+        }
+
+
+        // البحث أثناء الكتابة
+        searchInput.oninput =
+            function () {
+
+                // إذا غيّر النص بعد الاختيار
+                ownerInput.value = "";
+
+                showResults(
+                    this.value
+                );
+
+            };
+
+
+        // عند الضغط على الحقل
+        searchInput.onfocus =
+            function () {
+
+                if (
+                    this.value.trim()
+                ) {
+
+                    showResults(
+                        this.value
                     );
 
                 }
 
-            }
-        );
+            };
 
 
     } catch (error) {
 
-        console.error(error);
-
-        select.innerHTML = `
-            <option value="">
-                تعذر تحميل أصحاب المغاسل
-            </option>
-        `;
+        console.error(
+            "Load owner list error:",
+            error
+        );
 
     }
 
 }
+
 
 
 window.createLaundryOrBranch =
@@ -3385,9 +3633,7 @@ document
 /*  إضافة فرع جديد */
 
 window.viewBranches =
-async function (
-    laundryId
-) {
+async function (laundryId) {
 
     try {
 
@@ -3399,148 +3645,256 @@ async function (
                 )
             );
 
+        if (!snapshot.exists()) {
 
-        if (
-            !snapshot.exists()
-        ) {
-
-            alert(
-                "المغسلة غير موجودة"
-            );
+            alert("المغسلة غير موجودة");
 
             return;
         }
 
-
         const laundry =
             snapshot.val();
 
-
         const branches =
             laundry.branches || {};
-
 
         const content =
             document.getElementById(
                 "branchesContent"
             );
 
-
-        content.innerHTML =
-            "";
-
-
         const entries =
-            Object.entries(
-                branches
-            );
+            Object.entries(branches);
 
 
-        if (
-            entries.length === 0
-        ) {
+        if (entries.length === 0) {
 
-            content.innerHTML =
-                "<p style='text-align:center;'>لا توجد فروع</p>";
+            content.innerHTML = `
+                <div style="
+                    text-align:center;
+                    padding:30px;
+                    color:#777;
+                ">
+                    لا توجد فروع
+                </div>
+            `;
 
         } else {
 
-            entries.forEach(
-                ([id, branch]) => {
+            content.innerHTML = `
 
-                    const item =
-                        document.createElement(
-                            "div"
-                        );
+                <div style="
+                    margin-bottom:20px;
+                    position:relative;
+                ">
+
+                    <input
+                        type="text"
+                        id="branchSearchInput"
+                        placeholder="🔍 ابحث باسم الفرع أو الرقم أو الجوال أو الموقع..."
+                        style="
+                            width:100%;
+                            padding:13px 16px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                            box-sizing:border-box;
+                            outline:none;
+                        "
+                    >
+
+                </div>
+
+                <div id="branchesList"></div>
+            `;
 
 
-                    item.className =
-                        "branch-item";
+            const searchInput =
+                document.getElementById(
+                    "branchSearchInput"
+                );
+
+            const branchesList =
+                document.getElementById(
+                    "branchesList"
+                );
 
 
-                    item.innerHTML = `
+            function renderBranches(
+                searchText = ""
+            ) {
 
-                        <strong>
+                const search =
+                    searchText
+                        .trim()
+                        .toLowerCase();
 
-                            🏢 ${escapeHtml(
-                                branch.name ||
-                                "بدون اسم"
-                            )}
 
-                        </strong>
+                const filtered =
+                    entries.filter(
+                        ([id, branch]) => {
 
-                        <br>
+                            const text = [
 
-                        رقم الفرع:
-                        ${escapeHtml(
-                            branch.number ||
-                            "-"
-                        )}
+                                branch.name || "",
 
-                        <br>
+                                branch.number || "",
 
-                        الموقع:
-                        ${escapeHtml(
-                            branch.location ||
-                            "-"
-                        )}
+                                branch.phone || "",
 
-                        <br>
+                                branch.location || ""
 
-                        الجوال:
-                        ${escapeHtml(
-                            branch.phone ||
-                            "-"
-                        )}
+                            ]
+                            .join(" ")
+                            .toLowerCase();
 
-                        <br>
 
-                        الحالة:
+                            return text.includes(
+                                search
+                            );
 
-                        ${
-                            branch.active === false
-                                ? "🔴 متوقف"
-                                : "🟢 نشط"
                         }
+                    );
 
-                        <br><br>
 
-                        <button
-                            class="action-btn delete-btn"
-                            onclick="deleteBranch(
-                                '${laundryId}',
-                                '${id}'
-                            )">
+                if (
+                    filtered.length === 0
+                ) {
 
-                            🗑️ حذف الفرع
+                    branchesList.innerHTML = `
 
-                        </button>
+                        <div style="
+                            text-align:center;
+                            padding:30px;
+                            color:#777;
+                        ">
+
+                            🔍 لا توجد نتائج مطابقة
+
+                        </div>
 
                     `;
 
+                    return;
+                }
 
-                    content.appendChild(
-                        item
+
+                branchesList.innerHTML = "";
+
+
+                filtered.forEach(
+                    ([id, branch]) => {
+
+                        const item =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        item.className =
+                            "branch-item";
+
+
+                        item.innerHTML = `
+
+                            <strong>
+                                🏢 ${escapeHtml(
+                                    branch.name ||
+                                    "بدون اسم"
+                                )}
+                            </strong>
+
+                            <br>
+
+                            رقم الفرع:
+                            ${escapeHtml(
+                                branch.number ||
+                                "-"
+                            )}
+
+                            <br>
+
+                            الموقع:
+                            ${escapeHtml(
+                                branch.location ||
+                                "-"
+                            )}
+
+                            <br>
+
+                            الجوال:
+                            ${escapeHtml(
+                                branch.phone ||
+                                "-"
+                            )}
+
+                            <br>
+
+                            الحالة:
+
+                            ${
+                                branch.active === false
+                                    ? "🔴 متوقف"
+                                    : "🟢 نشط"
+                            }
+
+                            <br><br>
+
+                            <button
+                                class="action-btn delete-btn"
+                                onclick="deleteBranch(
+                                    '${laundryId}',
+                                    '${id}'
+                                )"
+                            >
+                                🗑️ حذف الفرع
+                            </button>
+
+                        `;
+
+
+                        branchesList.appendChild(
+                            item
+                        );
+
+                    }
+                );
+
+            }
+
+
+            searchInput.addEventListener(
+                "input",
+                function () {
+
+                    renderBranches(
+                        this.value
                     );
 
                 }
             );
+
+
+            renderBranches();
 
         }
 
 
         document.getElementById(
             "branchesModal"
-        ).style.display =
-            "flex";
+        ).style.display = "flex";
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "خطأ في عرض الفروع:",
+            error
+        );
 
         alert(
-            "تعذر تحميل الفروع"
+            "تعذر تحميل الفروع\n\n" +
+            error.message
         );
 
     }
@@ -3551,10 +3905,17 @@ async function (
 window.closeBranchesModal =
 function () {
 
-    document.getElementById(
-        "branchesModal"
-    ).style.display =
-        "none";
+    const modal =
+        document.getElementById(
+            "branchesModal"
+        );
+
+    if (modal) {
+
+        modal.style.display =
+            "none";
+
+    }
 
 };
 
@@ -3598,7 +3959,10 @@ async function (
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "خطأ في حذف الفرع:",
+            error
+        );
 
         alert(
             "❌ تعذر حذف الفرع\n\n" +
@@ -4483,4 +4847,3 @@ function escapeHtml(value) {
 </body>
 
 </html>
-
