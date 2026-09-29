@@ -765,6 +765,55 @@
 
 </div>
 
+
+
+<div id="packagesModal" class="modal">
+
+    <div class="modal-box packages-modal-box">
+
+        <div class="packages-modal-header">
+
+            <h2>
+                🗄️ إدارة باقات الاشتراك
+            </h2>
+
+            <button
+                type="button"
+                class="packages-add-btn"
+                onclick="openAddPackage()">
+
+                ➕ إضافة باقة
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="packagesGrid"
+            class="packages-grid">
+
+            <div class="empty-packages">
+                جاري تحميل الباقات...
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="close-btn"
+            onclick="closePackagesModal()">
+
+            ✕ إغلاق
+
+        </button>
+
+    </div>
+
+</div>
+
+
 <!-- إضافة صاحب / فرع -->
 
 <div id="laundryModal" class="modal">
@@ -1688,6 +1737,8 @@ async function initializePackages() {
 }
 
 
+
+
 async function loadPackages() {
 
     const grid =
@@ -1976,8 +2027,22 @@ function () {
         "packagesModal"
     ).style.display =
         "none";
-
+loadPackages();
 };
+
+document.addEventListener("click", function (event) {
+
+    const modal =
+        document.getElementById("packagesModal");
+
+    if (
+        modal &&
+        event.target === modal
+    ) {
+        closePackagesModal();
+    }
+
+});
 
 
 
