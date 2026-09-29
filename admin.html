@@ -698,6 +698,47 @@
         </div>
 
     </div>
+<div id="branchesModal" class="modal">
+
+    <div class="modal-box">
+
+        <h2 style="margin-top:0;">
+            🏢 فروع المغسلة
+        </h2>
+
+        <div id="branchesContent"></div>
+
+        <!-- زر الإغلاق أسفل النافذة -->
+        <div style="
+            margin-top:20px;
+            padding-top:15px;
+            border-top:1px solid #E5E7EB;
+            text-align:center;
+        ">
+
+            <button
+                type="button"
+                class="action-btn"
+                onclick="closeBranchesModal()"
+                style="
+                    background:#64748B;
+                    color:#fff;
+                    min-width:120px;
+                    padding:10px 25px;
+                    border:none;
+                    border-radius:10px;
+                    cursor:pointer;
+                    font-size:15px;
+                "
+            >
+                ✕ إغلاق
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 
@@ -1560,6 +1601,23 @@ onAuthStateChanged(
 
     }
 );
+
+
+document.addEventListener("click", function (event) {
+
+    const modal =
+        document.getElementById("laundryModal");
+
+    if (!modal) {
+        return;
+    }
+    if (event.target === modal) {
+
+        modal.style.display = "none";
+
+    }
+
+});
 
 
 /* 
@@ -4661,6 +4719,37 @@ async function () {
     }
 
 };
+
+function closeBranchesModal() {
+
+    const modal =
+        document.getElementById("branchesModal");
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+
+}
+
+document.addEventListener("click", function (event) {
+
+    const modal =
+        document.getElementById("branchesModal");
+
+    if (!modal) {
+        return;
+    }
+
+    if (
+        event.target === modal
+    ) {
+
+        closeBranchesModal();
+
+    }
+
+});
+
 
 
 /* حذف المغاسل */
