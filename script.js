@@ -3387,6 +3387,27 @@ let earnedPoints = 0;
 
 
 
+function resetInvoiceCustomerFields() {
+
+    selectedCustomer = null;
+
+    const search = document.getElementById("invoiceCustomerSearch");
+    const name = document.getElementById("customerName");
+    const phone = document.getElementById("customerPhone");
+    const results = document.getElementById("invoiceCustomerResults");
+
+    if (search) search.value = "";
+    if (name) name.value = "";
+    if (phone) phone.value = "";
+
+    if (results) {
+        results.innerHTML = "";
+        results.style.display = "none";
+    }
+
+}
+
+
 // 🧾 إنشاء الفاتورة
 function getNextInvoiceNo() {
     let lastNo = parseInt(localStorage.getItem("lastInvoiceNo") || "0", 10);
@@ -3576,7 +3597,7 @@ if (discountInput) {
     discountInput.value = '';
 }
 
-
+resetInvoiceCustomerFields();
 updateCart();
 
 }
@@ -3680,13 +3701,10 @@ function updateInvoicesTable() {
     tbody.innerHTML = invoices.map((invoice) => {
 
         const total = Number(invoice.total || 0);
-
         const paid = Number(invoice.paid || 0);
-
         const remaining = Math.max(0, total - paid);
 
 
-        // حالة الدفع
         const paymentText = remaining <= 0
             ? `
                 <span style="
@@ -3710,13 +3728,13 @@ function updateInvoicesTable() {
             `;
 
 
-        // اسم العميل
+
         const customerName =
             invoice.customerName ||
             (isArabic ? 'عميل نقدي' : 'Cash Customer');
 
 
-        // طريقة الدفع
+
         let paymentMethodText = '-';
 
         if (invoice.paymentMethod) {
@@ -3744,7 +3762,6 @@ function updateInvoicesTable() {
         }
 
 
-        // حالات الفاتورة
         const statusReceived =
             isArabic ? 'استلام' : 'Received';
 
@@ -3761,7 +3778,6 @@ function updateInvoicesTable() {
             isArabic ? 'تم التسليم' : 'Delivered';
 
 
-        // الأزرار
         const receivePaymentText =
             isArabic
             ? '💰 استلام دفعة'
@@ -3778,7 +3794,6 @@ function updateInvoicesTable() {
             : '🗑️ Delete';
 
 
-        // الخصم
         const discountText =
             isArabic
             ? '💳 خصم'
@@ -4029,6 +4044,8 @@ function toggleAllInvoices(source) {
     document.querySelectorAll('.inv-check')
         .forEach(cb => cb.checked = source.checked);
 }
+
+
 
 function searchInvoices() {
     const query = document.getElementById('searchInvoice').value.toLowerCase();
@@ -6108,9 +6125,6 @@ localStorage.setItem("laundryLogoName", name);
 
 
 //////  استرجاع البيانات 
-// ===============================
-// إنشاء نسخة احتياطية
-// ===============================
 function backupData() {
     try {
         const data = {
@@ -6124,20 +6138,18 @@ function backupData() {
             backupVersion: "1.0"
         };
         
-        // تحويل البيانات إلى JSON
+
         const dataStr = JSON.stringify(data, null, 2);
-        
-        // إنشاء الملف
         const blob = new Blob([dataStr], {
             type: "application/json"
         });
         
-        // اسم الملف
+
         const date = new Date();
         const fileName =
             `backup_${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}.json`;
         
-        // تنزيل الملف
+
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
         link.download = fileName;
@@ -6146,7 +6158,6 @@ function backupData() {
         link.click();
         document.body.removeChild(link);
         
-        // تنظيف الرابط
         URL.revokeObjectURL(link.href);
         
         alert(
@@ -6167,9 +6178,8 @@ function backupData() {
 }
 
 
-// ===============================
+
 // استرجاع نسخة احتياطية
-// ===============================
 function restoreBackup() {
     
     const input = document.createElement("input");
