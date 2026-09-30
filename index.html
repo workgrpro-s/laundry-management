@@ -2119,6 +2119,129 @@ data-en="Close">
 <script type="module" src="owner-check.js"></script>
 
 
+<script>
+/* =========================================================
+   إغلاق جميع النوافذ عند الضغط خارج محتواها
+   ========================================================= */
+
+(function () {
+
+
+    const overlaySelectors = [
+        ".modal",
+        ".subscription-manager-overlay"
+    ];
+
+    function isVisible(element) {
+
+        if (!element) return false;
+        const style = window.getComputedStyle(element);
+
+        return (
+            style.display !== "none" &&
+            style.visibility !== "hidden" &&
+            style.opacity !== "0"
+        );
+    }
+
+
+    function closeOverlay(overlay) {
+
+        if (!overlay) return;
+
+        const id = overlay.id;
+        const closeFunctions = {
+
+            addCustomerModal: "closeCustomerModal",
+            addProductModal: "closeModal",
+            receiptModal: "closeReceiptModal",
+            serviceModal: "closeServiceModal",
+            customerInvoicesModal: "closeCustomerInvoices",
+            invoiceScannerModal: "closeInvoiceScanner",
+            walletHistoryModal: "closeWalletHistory",
+            addSubscriptionModal: "closeSubscriptionModal",
+            subscriptionManagerModal: "closeSubscriptionManager"
+
+        };
+
+
+        const functionName = closeFunctions[id];
+
+        if (
+            functionName &&
+            typeof window[functionName] === "function"
+        ) {
+
+            window[functionName]();
+
+            return;
+        }
+
+        overlay.style.display = "none";
+
+    }
+
+
+    function handleOutsideClick(event) {
+
+        const overlays = document.querySelectorAll(
+            overlaySelectors.join(",")
+        );
+
+
+        overlays.forEach(function (overlay) {
+
+            if (!isVisible(overlay)) {
+                return;
+            }
+
+            if (event.target === overlay) {
+
+                closeOverlay(overlay);
+
+            }
+
+        });
+
+    }
+
+    document.addEventListener(
+        "click",
+        handleOutsideClick
+    );
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key !== "Escape") {
+                return;
+            }
+
+
+            const overlays = document.querySelectorAll(
+                overlaySelectors.join(",")
+            );
+
+            for (let i = overlays.length - 1; i >= 0; i--) {
+
+                if (isVisible(overlays[i])) {
+
+                    closeOverlay(overlays[i]);
+
+                    break;
+                }
+
+            }
+
+        }
+    );
+
+
+})();
+
+</script>
+
 
 </body>
 </html>
