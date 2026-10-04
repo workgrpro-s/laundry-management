@@ -947,6 +947,8 @@
 
         </div>
         
+        
+        
 
 <div id="branchForm" style="display:none;">
 
@@ -1359,6 +1361,7 @@ import {
     ref,
     get,
     set,
+    update,
     remove,
     push
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
@@ -1416,6 +1419,13 @@ const secondaryAuth =
     getAuth(
         secondaryApp
     );
+    const renewModal =
+    document.getElementById("renewModal");
+
+if (renewModal) {
+    document.body.appendChild(renewModal);
+}
+
 
 
 let createType = "owner";
@@ -4338,168 +4348,168 @@ async function (
 
 
 
-window.renewSubscription =
-async function (
-    laundryId
-) {
-
-    selectedLaundryId =
-        laundryId;
-
-    selectedRenewDurationValue =
-        null;
-
-
-    document.getElementById(
-        "selectedDuration"
-    ).textContent =
-        "";
-
-
-    const options =
+    window.renewSubscription =
+    async function (
+        laundryId
+    ) {
+    
+        selectedLaundryId =
+            laundryId;
+    
+        selectedRenewDurationValue =
+            null;
+    
+    
         document.getElementById(
-            "renewOptions"
-        );
-
-
-    options.innerHTML =
-        "";
-
-
-    try {
-
-        const snapshot =
-            await get(
-                ref(
-                    db,
-                    "packages"
-                )
+            "selectedDuration"
+        ).textContent =
+            "";
+    
+    
+        const options =
+            document.getElementById(
+                "renewOptions"
             );
-
-
-        if (
-            snapshot.exists()
-        ) {
-
-            const packages =
-                snapshot.val();
-
-
-            Object.entries(
-                packages
-            )
-            .sort(
-                (a, b) =>
-                    Number(
-                        a[1].sortOrder || 999
-                    ) -
-                    Number(
-                        b[1].sortOrder || 999
+    
+    
+        options.innerHTML =
+            "";
+    
+    
+        try {
+    
+            const snapshot =
+                await get(
+                    ref(
+                        db,
+                        "packages"
                     )
-            )
-            .forEach(
-                ([packageId, packageData]) => {
-
-                    if (
-                        !packageData ||
-                        packageData.active === false
-                    ) {
-                        return;
-                    }
-
-
-                    const button =
-                        document.createElement(
-                            "button"
-                        );
-
-
-                    button.className =
-                        "subscription-btn";
-
-
-                    const durationText =
-                        packageData.durationType === "trial"
-                            ? "7 أيام"
-                            : packageData.durationMonths === 1
-                            ? "شهر واحد"
-                            : packageData.durationMonths === 12
-                            ? "سنة"
-                            : `${packageData.durationMonths || 0} أشهر`;
-
-
-                    button.innerHTML = `
-
-                        ${escapeHtml(
-                            packageData.name ||
-                            "باقة"
-                        )}
-
-                        <br>
-
-                        <small>
-                            ${Number(
-                                packageData.price || 0
-                            ).toLocaleString("ar-SA")}
-                            ريال
-                        </small>
-
-                        <br>
-
-                        <small>
-                            ${durationText}
-                        </small>
-
-                    `;
-
-
-                    button.onclick =
-                        function () {
-
-                            selectRenewPackage(
-                                packageId,
-                                packageData,
-                                button
+                );
+    
+    
+            if (
+                snapshot.exists()
+            ) {
+    
+                const packages =
+                    snapshot.val();
+    
+    
+                Object.entries(
+                    packages
+                )
+                .sort(
+                    (a, b) =>
+                        Number(
+                            a[1].sortOrder || 999
+                        ) -
+                        Number(
+                            b[1].sortOrder || 999
+                        )
+                )
+                .forEach(
+                    ([packageId, packageData]) => {
+    
+                        if (
+                            !packageData ||
+                            packageData.active === false
+                        ) {
+                            return;
+                        }
+    
+    
+                        const button =
+                            document.createElement(
+                                "button"
                             );
-
-                        };
-
-
-                    options.appendChild(
-                        button
-                    );
-
-                }
+    
+    
+                        button.className =
+                            "subscription-btn";
+    
+    
+                        const durationText =
+                            packageData.durationType === "trial"
+                                ? "7 أيام"
+                                : packageData.durationMonths === 1
+                                ? "شهر واحد"
+                                : packageData.durationMonths === 12
+                                ? "سنة"
+                                : `${packageData.durationMonths || 0} أشهر`;
+    
+    
+                        button.innerHTML = `
+    
+                            ${escapeHtml(
+                                packageData.name ||
+                                "باقة"
+                            )}
+    
+                            <br>
+    
+                            <small>
+                                ${Number(
+                                    packageData.price || 0
+                                ).toLocaleString("ar-SA")}
+                                ريال
+                            </small>
+    
+                            <br>
+    
+                            <small>
+                                ${durationText}
+                            </small>
+    
+                        `;
+    
+    
+                        button.onclick =
+                            function () {
+    
+                                selectRenewPackage(
+                                    packageId,
+                                    packageData,
+                                    button
+                                );
+    
+                            };
+    
+    
+                        options.appendChild(
+                            button
+                        );
+    
+                    }
+                );
+    
+            }
+    
+    
+            document.getElementById(
+                "renewModal"
+            ).style.display =
+                "flex";
+    
+    
+        } catch (error) {
+    
+            console.error(error);
+    
+            alert(
+                "❌ تعذر تحميل الباقات"
             );
-
+    
         }
-
-
-        document.getElementById(
-            "renewModal"
-        ).style.display =
-            "flex";
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert(
-            "❌ تعذر تحميل الباقات"
-        );
-
-    }
-
-};
-
-
-window.selectRenewPackage =
-function (
-    packageId,
-    packageData,
-    button
-) {
+    
+    };
+    
+    
+    window.selectRenewPackage =
+    function (
+        packageId,
+        packageData,
+        button
+    ) {
 
     selectedRenewDurationValue =
         packageId;
@@ -4568,9 +4578,7 @@ async function () {
         !selectedRenewDurationValue
     ) {
 
-        alert(
-            "اختر باقة"
-        );
+        alert("اختر باقة");
 
         return;
     }
@@ -4644,35 +4652,36 @@ async function () {
         }
 
 
-        const oldSubscription =
-            laundry.subscription || {};
-
-
-        let startDate =
+        const now =
             new Date();
 
 
+        let startDate =
+            new Date(now);
+
+
+        const oldEndDate =
+            laundry.subscription &&
+            laundry.subscription.endDate
+                ? new Date(
+                    laundry.subscription.endDate
+                )
+                : null;
+
+
+
         if (
-            oldSubscription.endDate
+            oldEndDate &&
+            !isNaN(
+                oldEndDate.getTime()
+            ) &&
+            oldEndDate > now
         ) {
 
-            const oldEnd =
-                new Date(
-                    oldSubscription.endDate
-                );
-
-
-            if (
-                oldEnd > startDate
-            ) {
-
-                startDate =
-                    oldEnd;
-
-            }
+            startDate =
+                oldEndDate;
 
         }
-
 
         const endDate =
             new Date(
@@ -4680,15 +4689,34 @@ async function () {
             );
 
 
+        const durationType =
+            packageData.durationType ||
+            "subscription";
+
+
+        const durationMonths =
+            Number(
+                packageData.durationMonths ||
+                0
+            );
+
+
+        const durationDays =
+            Number(
+                packageData.durationDays ||
+                0
+            );
+
+
         if (
-            packageData.durationType ===
-            "trial"
+            durationType === "trial"
         ) {
 
             endDate.setDate(
                 endDate.getDate() +
-                Number(
-                    packageData.durationDays || 7
+                (
+                    durationDays ||
+                    7
                 )
             );
 
@@ -4696,85 +4724,137 @@ async function () {
 
             endDate.setMonth(
                 endDate.getMonth() +
-                Number(
-                    packageData.durationMonths || 1
+                (
+                    durationMonths ||
+                    1
                 )
             );
 
         }
 
+        const newSubscription = {
 
-        await set(
-            ref(
-                db,
-                `laundries/${selectedLaundryId}/subscription`
-            ),
-            {
+            packageId:
+                selectedRenewDurationValue,
 
-                packageId:
-                    selectedRenewDurationValue,
+            packageName:
+                packageData.name ||
+                "",
 
-                packageName:
-                    packageData.name || "",
+            price:
+                Number(
+                    packageData.price ||
+                    0
+                ),
 
-                price:
-                    Number(
-                        packageData.price || 0
-                    ),
+            startDate:
+                startDate.toISOString(),
 
-                startDate:
-                    startDate.toISOString(),
+            endDate:
+                endDate.toISOString(),
 
-                endDate:
-                    endDate.toISOString(),
+            endTimestamp:
+                endDate.getTime(),
 
-                durationMonths:
-                    Number(
-                        packageData.durationMonths || 0
-                    ),
+            durationMonths:
+                durationMonths,
 
-                durationDays:
-                    Number(
-                        packageData.durationDays || 0
-                    ),
+            durationDays:
+                durationDays,
 
-                durationType:
-                    packageData.durationType ||
-                    "subscription",
+            durationType:
+                durationType,
 
-                maxBranches:
-                    Number(
-                        packageData.maxBranches || 1
-                    ),
+            maxBranches:
+                Number(
+                    packageData.maxBranches ||
+                    1
+                ),
 
-                endTimestamp:
-                    endDate.getTime()
+            status:
+                "active",
 
-            }
-        );
+            active:
+                true,
+
+            renewedAt:
+                new Date().toISOString()
+
+        };
 
 
-        await set(
-            ref(
-                db,
-                `laundries/${selectedLaundryId}/active`
-            ),
-            true
-        );
+        /*
+         * تحديث الحساب والاشتراك
+         */
 
+        const updates = {
+
+    active: true,
+
+    subscription: newSubscription
+
+};
+
+
+
+if (laundry.branches) {
+
+    Object.keys(laundry.branches).forEach(
+        branchId => {
+
+            updates[
+                `branches/${branchId}/active`
+            ] = true;
+
+        }
+    );
+
+}
+
+
+await update(
+    laundryRef,
+    updates
+);
+
+
+        const verifySnapshot =
+            await get(
+                laundryRef
+            );
+
+
+        const verifyData =
+            verifySnapshot.val();
+
+
+        if (
+            !verifyData ||
+            verifyData.active !== true
+        ) {
+
+            throw new Error(
+                "لم يتم تفعيل الحساب بعد التجديد"
+            );
+
+        }
 
         closeRenewModal();
         await loadLaundries();
 
 
         alert(
-            "✅ تم تجديد الاشتراك وتفعيل المغسلة بنجاح"
+            "✅ تم تجديد الاشتراك وتفعيل الحساب بنجاح"
         );
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Renew subscription error:",
+            error
+        );
+
 
         alert(
             "❌ تعذر تجديد الاشتراك\n\n" +
@@ -4784,6 +4864,7 @@ async function () {
     }
 
 };
+
 
 function closeBranchesModal() {
 
