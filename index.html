@@ -48,7 +48,7 @@
                 </div>
                 <div class="menu-item" onclick="showSection('sales')">
                     <span>🛒</span>
-                    <span class="menu-text" data-ar="فاتورة جديدة " data-en="POS">فاتورة جديدة </span>
+                    <span class="menu-text" data-ar=" إنشاء فاتورة جديدة " data-en=" New Ivoices"> فاتورة جديدة </span>
                 </div>
                 <div class="menu-item" onclick="showSection('invoices')">
                     <span>📋</span>
@@ -131,6 +131,21 @@
 </button>
 
     </div>
+<div class="subscription-search-box">
+
+<input
+    type="text"
+    id="subscriptionSearch"
+    class="subscription-search"
+    placeholder="🔍 البحث عن اسم العميل..."
+    data-placeholder-ar="🔍 البحث عن اسم العميل..."
+    data-placeholder-en="🔍 Search customer name..."
+>
+
+
+</div>
+
+
     <table class="inventory-table">
 <thead>
     <tr>
@@ -2099,7 +2114,7 @@ data-en="Close">
             <button
                 type="button"
                 class="subscription-save-btn"
-                onclick="saveSettings()">
+                onclick="saveSubscriptionPlans()">
                 ✓ حفظ التغييرات
             </button>
 
@@ -2117,6 +2132,7 @@ data-en="Close">
 <script type="module" src="firebase.js"></script>
 <script type="module" src="firebase-bridge.js"></script>
 <script type="module" src="owner-check.js"></script>
+
 
 
 <script>
