@@ -6246,7 +6246,7 @@ function restoreBackup() {
                     data.archiveSubscriptions :
                     [];
                 
-                // حفظ البيانات في النظام
+
                 saveData();
                 
                 alert(
@@ -9548,6 +9548,8 @@ function receivePayment(invoiceNo) {
     window.currentPaymentRemaining = remaining;
     
     openPaymentMethodModal();
+    closePaymentMethodModal();
+
 }
 
 
@@ -10302,6 +10304,7 @@ function closePartialPaymentModal() {
     if (modal) {
         modal.style.display = "none";
     }
+    
     
 }
 
@@ -11414,6 +11417,98 @@ ${Number(plan.balance || 0).toFixed(2)}
 }
 
 
+async function saveSubscriptionPlans() {
+
+    try {
+
+        if (
+            !Array.isArray(settings.subscriptionPlans)
+        ) {
+            settings.subscriptionPlans = [];
+        }
+
+        settings.subscriptionPlans.forEach(
+            (plan, index) => {
+
+                const nameInput =
+                    document.getElementById(
+                        `subPlanName${index}`
+                    );
+
+                const priceInput =
+                    document.getElementById(
+                        `subPlanPrice${index}`
+                    );
+
+                const balanceInput =
+                    document.getElementById(
+                        `subPlanBalance${index}`
+                    );
+
+                const daysInput =
+                    document.getElementById(
+                        `subPlanDays${index}`
+                    );
+
+
+                if (nameInput) {
+                    plan.name =
+                        nameInput.value.trim();
+                }
+
+                if (priceInput) {
+                    plan.price =
+                        Number(
+                            priceInput.value || 0
+                        );
+                }
+
+                if (balanceInput) {
+                    plan.balance =
+                        Number(
+                            balanceInput.value || 0
+                        );
+                }
+
+                if (daysInput) {
+                    plan.days =
+                        Number(
+                            daysInput.value || 0
+                        );
+                }
+
+            }
+        );
+
+
+        await saveData();
+
+
+        alert(
+            "✅ تم حفظ باقات الاشتراك بنجاح"
+        );
+
+
+        closeSubscriptionManager();
+
+
+    } catch (error) {
+
+        console.error(
+            "خطأ في حفظ الاشتراكات:",
+            error
+        );
+
+        alert(
+            "❌ تعذر حفظ الاشتراكات\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
 
 ////  دالة إضافة اشترام جديد
 function addSubscriptionPlan() {
@@ -11524,6 +11619,51 @@ function addSubscriptionPlan() {
     renderSubscriptionPlans();
     
 }
+
+
+const subscriptionSearch =
+    document.getElementById("subscriptionSearch");
+
+if (subscriptionSearch) {
+
+    subscriptionSearch.addEventListener("input", function () {
+
+        const search =
+            this.value
+                .trim()
+                .toLowerCase();
+
+        const rows =
+            document.querySelectorAll(
+                "#subscriptionsTable tr"
+            );
+
+        rows.forEach(row => {
+
+            const customerCell =
+                row.querySelector("td:first-child");
+
+            if (!customerCell) {
+                return;
+            }
+
+            const customerName =
+                customerCell.textContent
+                    .trim()
+                    .toLowerCase();
+
+            row.style.display =
+                customerName.includes(search)
+                    ? ""
+                    : "none";
+
+        });
+
+    });
+
+}
+
+
 
 function loadSubscriptionPlansToSelect() {
     
