@@ -612,30 +612,86 @@
     <div id="pointsInfo" style="margin-top:8px;"></div>
 </div></div>
 
-                        <div class="payment-section">
-                            <h4 data-ar="طريقة الدفع:" data-en="Payment Method:">طريقة الدفع:</h4>
-                            <div class="payment-options">
-                                <label>
-                                    <input type="radio" name="payment" value="نقداً">
-                                    <span data-ar="نقداً" data-en="Cash">نقداً</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="payment" value="بطاقة">
-                                    <span data-ar="بطاقة" data-en="Card">بطاقة</span>
-                                </label>
-                                <label>
- <label>
-    <input type="radio" name="paymentStatus" value="paid">
-    <span data-ar="دفع الآن" data-en="Pay Now">دفع الآن</span>
-</label>
+               <div class="payment-section" style="display:flex !important; flex-direction:row !important; align-items:center !important; gap:30px !important; flex-wrap:nowrap !important; font-size:14px !important;">
 
-<label>
-    <input type="radio" name="paymentStatus" value="later">
-    <span data-ar="دفع لاحقاً" data-en="Pay Later">دفع لاحقاً</span>
-</label>
+    <div style="display:flex !important; flex-direction:row !important; align-items:center !important; gap:8px !important; white-space:nowrap !important;">
+        <h4 style="margin:0 !important; white-space:nowrap !important; font-size:14px !important;"
+            data-ar="طريقة الدفع:"
+            data-en="Payment Method:">
+            طريقة الدفع:
+        </h4>
 
-                            </div>
-                        </div>
+        <label style="display:flex !important; flex-direction:row !important; align-items:center !important; white-space:nowrap !important;">
+            <input type="radio" name="payment" value="نقداً">
+            <span style="font-size:14px !important;" data-ar="نقداً" data-en="Cash">نقداً</span>
+        </label>
+
+        <label style="display:flex !important; flex-direction:row !important; align-items:center !important; white-space:nowrap !important;">
+            <input type="radio" name="payment" value="بطاقة">
+            <span style="font-size:14px !important;" data-ar="بطاقة" data-en="Card">بطاقة</span>
+        </label>
+    </div>
+
+
+    <div style="display:flex !important; flex-direction:row !important; align-items:center !important; gap:8px !important; white-space:nowrap !important;">
+        <h4 style="margin:0 !important; white-space:nowrap !important; font-size:14px !important;"
+            data-ar="حالة الدفع:"
+            data-en="Payment Status:">
+            حالة الدفع:
+        </h4>
+
+        <label style="display:flex !important; flex-direction:row !important; align-items:center !important; white-space:nowrap !important;">
+            <input type="radio" name="paymentStatus" value="paid">
+            <span style="font-size:14px !important;" data-ar="دفع الآن" data-en="Pay Now">دفع الآن</span>
+        </label>
+
+        <label style="display:flex !important; flex-direction:row !important; align-items:center !important; white-space:nowrap !important;">
+            <input type="radio" name="paymentStatus" value="later">
+            <span style="font-size:14px !important;" data-ar="دفع لاحقاً" data-en="Pay Later">دفع لاحقاً</span>
+        </label>
+    </div>
+
+</div>
+
+
+<script>
+(function () {
+    const paymentSection = document.querySelector('.payment-section');
+
+    if (!paymentSection) return;
+
+    const radios = paymentSection.querySelectorAll(
+        'input[type="radio"][name="payment"], input[type="radio"][name="paymentStatus"]'
+    );
+
+    radios.forEach(function (radio) {
+
+        radio.addEventListener('click', function () {
+
+            // إذا ضغط على الخيار المحدد مسبقاً، ألغِ الاختيار
+            if (this.checked && this.dataset.selected === 'true') {
+
+                this.checked = false;
+                this.dataset.selected = 'false';
+
+            } else {
+
+                // ألغِ الحالة السابقة داخل نفس المجموعة فقط
+                radios.forEach(function (item) {
+                    if (item.name === radio.name) {
+                        item.dataset.selected = 'false';
+                    }
+                });
+
+                this.dataset.selected = 'true';
+            }
+
+        });
+
+    });
+})();
+</script>
+
 
                         <div class="action-buttons">
                             <button class="btn btn-primary" onclick="completePayment()">✓ <span data-ar=" إصدار فاتورة" data-en="Complete Sale"> إصدار فاتورة</span></button>
