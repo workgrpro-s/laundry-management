@@ -4200,447 +4200,670 @@ if (invoice.subscriptionId && invoice.subscriptionDiscount > 0) {
 function showReceipt(invoice) {
 
     lastInvoice = invoice;
+
+    // ==========================================
+    // LANGUAGE
+    // ==========================================
+
+    const currentLang =
+        (document.documentElement.lang || "ar").toLowerCase();
+
+    const isEnglish = currentLang.startsWith("en");
+
+    const lang = isEnglish ? "en" : "ar";
+    const dir = isEnglish ? "ltr" : "rtl";
+
+
+    // ==========================================
+    // TRANSLATIONS
+    // ==========================================
+
+    const t = {
+
+        invoiceNo:
+            isEnglish ? "Invoice No." : "رقم الفاتورة",
+
+        date:
+            isEnglish ? "Date" : "التاريخ",
+
+        customer:
+            isEnglish ? "Customer" : "العميل",
+
+        phone:
+            isEnglish ? "Phone" : "الجوال",
+
+        item:
+            isEnglish ? "Item" : "الصنف",
+
+        total:
+            isEnglish ? "Total" : "المجموع",
+
+        delivery:
+            isEnglish ? "Delivery" : "توصيل",
+
+        pickup:
+            isEnglish ? "Pickup" : "استلام",
+
+        preparation:
+            isEnglish ? "Preparation" : "التجهيز",
+
+        paid:
+            isEnglish ? "Paid" : "تم الدفع",
+
+        subtotal:
+            isEnglish ? "Subtotal" : "الإجمالي الفرعي",
+
+        discount:
+            isEnglish ? "Discount" : "خصم",
+
+        subscriptionDiscount:
+            isEnglish
+                ? "Subscription discount incl. tax"
+                : "خصم الاشتراك مع الضريبة",
+
+        pointsDiscount:
+            isEnglish
+                ? "Points discount"
+                : "خصم النقاط",
+
+        tax:
+            isEnglish ? "Tax" : "ضريبة",
+
+        finalTotal:
+            isEnglish ? "Grand Total" : "الإجمالي النهائي",
+
+        earned:
+            isEnglish ? "You earned" : "حصلت على",
+
+        points:
+            isEnglish ? "points" : "نقطة",
+
+        invoiceCode:
+            isEnglish ? "Invoice QR" : "رمز الفاتورة",
+
+        thanks:
+            isEnglish
+                ? "Thank you for your business 🙏"
+                : "شكراً لتعاملك معنا 🙏"
+    };
+
+
+    // ==========================================
+    // DATE
+    // ==========================================
+
+    const invoiceDate = new Date(invoice.date);
+
+    const formattedDate = invoiceDate.toLocaleString(
+        isEnglish ? "en-US" : "ar-SA"
+    );
+
+
+    // ==========================================
+    // DELIVERY
+    // ==========================================
+
+    const hasDelivery =
+        invoice.items?.some(
+            item => item.deliveryType === "توصيل"
+        );
+
+    const deliveryText =
+        hasDelivery
+            ? t.delivery
+            : t.pickup;
+
+
+    // ==========================================
+    // RECEIPT HTML
+    // ==========================================
+
     const receiptContent = `
+
+<div
+    dir="${dir}"
+    lang="${lang}"
+    style="
+        font-family: Arial, Tahoma, monospace;
+        font-size:12px;
+        line-height:1.6;
+        width:100%;
+        max-width:320px;
+        margin:auto;
+        padding:5px;
+        direction:${dir};
+        text-align:${isEnglish ? "left" : "right"};
+        color:#000;
+    "
+>
+
+
+<!-- ==========================================
+     HEADER
+========================================== -->
+
 <div style="
-    font-family: monospace;
-    font-size:12px;
-    line-height:1.6;
-    width:100%;
-    max-width:320px;
-    margin:auto;
-    padding:5px;
+    text-align:center;
+    margin-bottom:8px;
 ">
 
-
-<!-- HEADER -->
-
-<div style="text-align:center;margin-bottom:8px;">
-
-    <div style="font-size:16px;font-weight:bold;">
-    ${(settings.storeName || sessionStorage.getItem("currentLaundryName") || "").trim()}
+    <div style="
+        font-size:16px;
+        font-weight:bold;
+    ">
+        ${(settings.storeName ||
+            sessionStorage.getItem("currentLaundryName") ||
+            "").trim()}
     </div>
 
     <div style="font-size:11px;">
-        ${settings.storePhone || ''}
+        ${settings.storePhone || ""}
     </div>
 
     <div style="font-size:11px;">
-        ${settings.storeAddress || ''}
+        ${settings.storeAddress || ""}
     </div>
 
-    <div style="font-size:11px;margin-top:3px;">
-        VAT: ${settings.vatNumber || '-'}
+    <div style="
+        font-size:11px;
+        margin-top:3px;
+    ">
+        VAT: ${settings.vatNumber || "-"}
     </div>
 
 </div>
 
 
-<hr style="border:none;border-top:1px dashed #000;margin:6px 0;">
+<hr style="
+    border:none;
+    border-top:1px dashed #000;
+    margin:6px 0;
+">
 
 
-
-<!-- INVOICE INFO -->
+<!-- ==========================================
+     INVOICE INFO
+========================================== -->
 
 <div style="font-size:11px;">
 
-<div>رقم الفاتورة: ${invoice.invoiceNo}</div>
+    <div>
+        ${t.invoiceNo}: ${invoice.invoiceNo}
+    </div>
 
-<div>
-التاريخ:
-${new Date(invoice.date).toLocaleString()}
+    <div>
+        ${t.date}: ${formattedDate}
+    </div>
+
+    <div>
+        ${t.customer}: ${invoice.customerName || "-"}
+    </div>
+
+    <div>
+        ${t.phone}: ${invoice.customerPhone || "-"}
+    </div>
+
 </div>
 
-<div>
-العميل:
-${invoice.customerName}
-</div>
 
-<div>
-الجوال:
-${invoice.customerPhone}
-</div>
-
-</div>
-
-
-
-<hr style="border:none;border-top:1px dashed #000;margin:6px 0;">
-
-
-
-<!-- ITEMS -->
-
-<div style="
-display:flex;
-justify-content:space-between;
-font-weight:bold;
-font-size:11px;
+<hr style="
+    border:none;
+    border-top:1px dashed #000;
+    margin:6px 0;
 ">
 
-<span>الصنف</span>
 
-<span>المجموع</span>
-
-</div>
-
-
-
-${invoice.items.map(item => `
-
-<div style="margin-bottom:6px;font-size:11px;">
+<!-- ==========================================
+     ITEMS HEADER
+========================================== -->
 
 <div style="
-display:flex;
-justify-content:space-between;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+    font-size:11px;
+    gap:10px;
 ">
 
-<span>
-${item.name} × ${item.qty}
-</span>
+    <span>
+        ${t.item}
+    </span>
 
-<span>
-${(item.price * item.qty).toFixed(2)}
-</span>
-
-</div>
-
-
-<div style="font-size:10px;color:#555;">
-
-${item.serviceType || ''}
-
-${item.urgency ? ' - ' + item.urgency : ''}
-
-${item.shemaghStyle ? '<br>التجهيز: ' + item.shemaghStyle : ''}
+    <span>
+        ${t.total}
+    </span>
 
 </div>
 
 
+<!-- ==========================================
+     ITEMS
+========================================== -->
+
+${(invoice.items || []).map(item => `
+
+<div style="
+    margin-bottom:6px;
+    font-size:11px;
+">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-start;
+        gap:8px;
+    ">
+
+        <span style="
+            flex:1;
+            min-width:0;
+            word-break:break-word;
+        ">
+            ${item.name || "-"} × ${item.qty || 0}
+        </span>
+
+        <span style="
+            white-space:nowrap;
+        ">
+            ${(Number(item.price || 0) * Number(item.qty || 0)).toFixed(2)}
+        </span>
+
+    </div>
+
+
+    <div style="
+        font-size:10px;
+        color:#555;
+        margin-top:2px;
+    ">
+
+        ${item.serviceType || ""}
+
+        ${item.urgency
+            ? " - " + item.urgency
+            : ""
+        }
+
+        ${item.shemaghStyle
+            ? `<br>${t.preparation}: ${item.shemaghStyle}`
+            : ""
+        }
+
+    </div>
+
 </div>
 
-
-`).join('')}
-
+`).join("")}
 
 
-<hr style="border:none;border-top:1px dashed #000;margin:6px 0;">
+<hr style="
+    border:none;
+    border-top:1px dashed #000;
+    margin:6px 0;
+">
 
 
-
-<!-- DISCOUNTS -->
+<!-- ==========================================
+     DELIVERY / DISCOUNTS
+========================================== -->
 
 <div style="font-size:11px;">
 
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+    ">
 
-<div style="
-display:flex;
-justify-content:space-between;
+        <span>
+            🚚 ${deliveryText}
+        </span>
+
+        <span style="white-space:nowrap;">
+            ${Number(invoice.deliveryFee || 0).toFixed(2)}
+            ${settings.currency || ""}
+        </span>
+
+    </div>
+
+
+    ${invoice.pointsDiscount > 0 ? `
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        color:#1565c0;
+        gap:10px;
+    ">
+
+        <span>
+            ⭐ ${t.pointsDiscount}
+        </span>
+
+        <span style="white-space:nowrap;">
+            - ${Number(invoice.pointsDiscount).toFixed(2)}
+            ${settings.currency || ""}
+        </span>
+
+    </div>
+
+    ` : ""}
+
+</div>
+
+
+<hr style="
+    border:none;
+    border-top:1px dashed #000;
+    margin:6px 0;
 ">
 
-<span>
-🚚 ${
-    invoice.items?.some(
-        item => item.deliveryType === "توصيل"
-    )
-        ? "توصيل"
-        : "استلام"
-}
-</span>
 
-
-<span>
-${Number(invoice.deliveryFee || 0).toFixed(2)}
-${settings.currency}
-</span>
-
-</div>
-
-
-
-${invoice.subscriptionDiscount > 0 ? `
-
-<div style="
-display:flex;
-justify-content:space-between;
-color:#2e7d32;
-">
-
-
-</div>
-
-` : ''}
-
-
-
-${invoice.pointsDiscount > 0 ? `
-
-<div style="
-display:flex;
-justify-content:space-between;
-color:#1565c0;
-">
-
-<span>
-⭐ خصم النقاط
-</span>
-
-<span>
-- ${Number(invoice.pointsDiscount).toFixed(2)}
-${settings.currency}
-</span>
-
-</div>
-
-` : ''}
-
-
-
-</div>
-
-
-
-<hr style="border:none;border-top:1px dashed #000;margin:6px 0;">
-
-
-
-<!-- TOTALS -->
+<!-- ==========================================
+     TOTALS
+========================================== -->
 
 <div style="font-size:12px;">
 
-${invoice.paymentStatus === 'مدفوعة' ? `
 
-<div style="display:flex; justify-content:space-between;">
+    <!-- PAYMENT STATUS -->
 
-    <span style="color:green; font-weight:bold;">
-        💳 تم الدفع
+    ${invoice.paymentStatus === "مدفوعة" ? `
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:5px;
+        margin-bottom:5px;
+    ">
+
+        <span style="
+            color:green;
+            font-weight:bold;
+        ">
+            💳 ${t.paid}
+        </span>
+
+        <span style="
+            flex:1;
+            text-align:center;
+        ">
+            ${isEnglish ? "→" : "←"}
+        </span>
+
+        <span style="
+            color:green;
+            font-weight:bold;
+        ">
+            ${invoice.paymentMethod || ""}
+        </span>
+
+    </div>
+
+    ` : ""}
+
+
+    <!-- SUBTOTAL -->
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+    ">
+
+        <span>
+            ${t.subtotal}
+        </span>
+
+        <span style="white-space:nowrap;">
+            ${Number(invoice.subtotal || 0).toFixed(2)}
+        </span>
+
+    </div>
+
+
+    <!-- NORMAL DISCOUNT -->
+
+    ${invoice.discount > 0 ? `
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+    ">
+
+        <span>
+            ${t.discount}
+        </span>
+
+        <span style="white-space:nowrap;">
+            -${Number(invoice.discount).toFixed(2)}
+        </span>
+
+    </div>
+
+    ` : ""}
+
+
+    <!-- SUBSCRIPTION DISCOUNT -->
+
+    ${invoice.subscriptionDiscount > 0 ? `
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        color:#2e7d32;
+        gap:10px;
+    ">
+
+        <span>
+            💳 ${t.subscriptionDiscount}
+        </span>
+
+        <span style="white-space:nowrap;">
+            -${Number(invoice.subscriptionDiscount).toFixed(2)}
+        </span>
+
+    </div>
+
+    ` : ""}
+
+
+    <!-- TAX -->
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+    ">
+
+        <span>
+            ${t.tax} (${settings.taxRate}%)
+        </span>
+
+        <span style="white-space:nowrap;">
+            ${Number(invoice.tax || 0).toFixed(2)}
+        </span>
+
+    </div>
+
+</div>
+
+
+<hr style="
+    border:none;
+    border-top:2px solid #000;
+    margin:6px 0;
+">
+
+
+<!-- ==========================================
+     FINAL TOTAL
+========================================== -->
+
+<div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    font-size:14px;
+    font-weight:bold;
+">
+
+    <span>
+        ${t.finalTotal}
     </span>
-   <span style="flex:1;text-align:center;">⬅️</span>
-    <span style="color:green; font-weight:bold;">
-        ${invoice.paymentMethod}
+
+    <span style="
+        white-space:nowrap;
+    ">
+        ${Number(invoice.total || 0).toFixed(2)}
+        ${settings.currency || ""}
     </span>
 
 </div>
 
-` : ''}
 
-
-
-<div style="
-display:flex;
-justify-content:space-between;
-">
-
-<span>
-الإجمالي الفرعي
-</span>
-
-<span>
-${invoice.subtotal.toFixed(2)}
-</span>
-
-</div>
-
-
-
-${invoice.discount > 0 ? `
-
-<div style="
-display:flex;
-justify-content:space-between;
-">
-
-<span>
-خصم
-</span>
-
-<span>
--${invoice.discount.toFixed(2)}
-</span>
-
-</div>
-
-` : ''}
-
-
-
-${invoice.subscriptionDiscount > 0 ? `
-
-<div style="
-display:flex;
-justify-content:space-between;
-color:#2e7d32;
-">
-
-<span>
-💳 خصم الاشتراك مع الضريبة
-</span>
-
-<span>
--${invoice.subscriptionDiscount.toFixed(2)}
-</span>
-
-</div>
-
-` : ''}
-
-
-
-<div style="
-display:flex;
-justify-content:space-between;
-">
-
-<span>
-ضريبة (${settings.taxRate}%)
-</span>
-
-<span>
-${invoice.tax.toFixed(2)}
-</span>
-
-</div>
-
-
-</div>
-
-
-
-<hr style="border:none;border-top:2px solid #000;margin:6px 0;">
-
-
-
-<!-- FINAL TOTAL -->
-
-<div style="
-display:flex;
-justify-content:space-between;
-font-size:14px;
-font-weight:bold;
-">
-
-<span>
-الإجمالي النهائي
-</span>
-
-
-<span>
-${invoice.total.toFixed(2)}
-${settings.currency}
-</span>
-
-
-</div>
-
-
-<!-- POINTS -->
+<!-- ==========================================
+     POINTS
+========================================== -->
 
 ${invoice.pointsEarned > 0 ? `
 
 <div style="
-margin-top:10px;
-padding:8px;
-background:#fff8e1;
-border-radius:8px;
-text-align:center;
-font-size:11px;
+    margin-top:10px;
+    padding:8px;
+    background:#fff8e1;
+    border-radius:8px;
+    text-align:center;
+    font-size:11px;
 ">
 
-⭐ حصلت على 
-<b>${invoice.pointsEarned}</b>
-نقطة
+    ⭐ ${t.earned}
+
+    <b>
+        ${invoice.pointsEarned}
+    </b>
+
+    ${t.points}
 
 </div>
 
-` : ''}
+` : ""}
 
 
-
-<!-- FOOTER -->
+<!-- ==========================================
+     FOOTER
+========================================== -->
 
 <div style="
-text-align:center;
-margin-top:10px;
-font-size:11px;
+    text-align:center;
+    margin-top:10px;
+    font-size:11px;
 ">
 
-شكراً لتعاملك معنا 🙏
+    ${t.thanks}
 
 </div>
 
-<!-- QR -->
+
+<!-- ==========================================
+     QR
+========================================== -->
 
 <div style="
-text-align:center;
-margin-top:10px;
-margin-bottom:0;
+    text-align:center;
+    margin-top:10px;
+    margin-bottom:0;
 ">
 
-<div style="
-font-size:10px;
-margin-bottom:3px;
-">
-رمز الفاتورة
+    <div style="
+        font-size:10px;
+        margin-bottom:3px;
+    ">
+        ${t.invoiceCode}
+    </div>
+
+
+    <div
+        id="invoiceQR"
+        style="
+            display:flex;
+            justify-content:center;
+        "
+    ></div>
+
+
+    <div style="
+        font-size:9px;
+        margin-top:3px;
+        word-break:break-all;
+    ">
+        ${invoice.barcode || ""}
+    </div>
+
 </div>
 
-
-<div id="invoiceQR"
-style="
-display:flex;
-justify-content:center;
-">
-</div>
-
-
-<div style="
-font-size:9px;
-margin-top:3px;
-">
-${invoice.barcode || ''}
-</div>
 
 </div>
 `;
 
 
+    // ==========================================
+    // DISPLAY RECEIPT
+    // ==========================================
 
-document.getElementById('receiptContent').innerHTML =
-receiptContent;
-document.getElementById("invoiceQR").innerHTML = "";
+    document.getElementById("receiptContent").innerHTML =
+        receiptContent;
 
 
-new QRCode(
-    document.getElementById("invoiceQR"),
-    {
-        text: invoice.barcode,
-        width: 90,
-        height:90,
-        colorDark: "#000",
-        colorLight: "#fff"
+    // ==========================================
+    // QR CODE
+    // ==========================================
+
+    document.getElementById("invoiceQR").innerHTML = "";
+
+
+    new QRCode(
+        document.getElementById("invoiceQR"),
+        {
+            text: invoice.barcode || "",
+            width: 90,
+            height: 90,
+            colorDark: "#000",
+            colorLight: "#fff"
+        }
+    );
+
+
+    // ==========================================
+    // WHATSAPP BUTTON
+    // ==========================================
+
+    const whatsappBtn =
+        document.getElementById("whatsappBtn");
+
+
+    if (invoice.customerPhone) {
+
+        whatsappBtn.style.display =
+            "inline-block";
+
+    } else {
+
+        whatsappBtn.style.display =
+            "none";
+
     }
-);
 
 
+    // ==========================================
+    // SHOW MODAL
+    // ==========================================
 
-const whatsappBtn =
-document.getElementById('whatsappBtn');
-
-
-if(invoice.customerPhone){
-
-    whatsappBtn.style.display =
-    'inline-block';
-
-}
-else{
-
-    whatsappBtn.style.display =
-    'none';
-
-}
-
-document.getElementById('receiptModal')
-.classList.add('active');
-
+    document.getElementById("receiptModal")
+        .classList.add("active");
 }
 
 function closeReceiptModal() {
@@ -10145,101 +10368,100 @@ function receivePartialPayment(invoice, remaining) {
     if (!modal) {
         
         modal = document.createElement("div");
-        
         modal.id = "partialPaymentModal";
-        
         modal.innerHTML = `
 
-            <div class="payment-modal-box">
+<div class="payment-modal-box">
 
-                <h2>💳💵 دفع جزئي</h2>
+<h2>💳💵 دفع جزئي</h2>
 
-                <div class="payment-invoice-info">
+<div class="payment-invoice-info">
 
-                    <div>
-                        رقم الفاتورة:
-                        <strong>
-                            ${invoice.invoiceNo}
-                        </strong>
-                    </div>
+<div>
+رقم الفاتورة:
+<strong>
+${invoice.invoiceNo}
 
-                    <div>
-                        المبلغ المتبقي:
-                        <strong>
-                            ${remaining.toFixed(2)}
-                            ${settings.currency}
-                        </strong>
-                    </div>
+</strong>
+</div>
 
-                </div>
+<div>
+المبلغ المتبقي:
+<strong>
+${remaining.toFixed(2)}
+${settings.currency}
+</strong>
+</div>
+
+</div>
 
 
-                <div class="form-group">
+<div class="form-group">
 
-                    <label>
-                        💳 مبلغ الشبكة
-                    </label>
+<label>
+💳 مبلغ الشبكة
+</label>
 
-                    <input
-                        type="number"
-                        id="partialNetworkAmount"
-                        min="0"
-                        step="0.01"
-                        placeholder="مثال: 50"
+<input
+type="number"
+id="partialNetworkAmount"
+min="0"
+step="0.01"
+placeholder="مثال: 50"
                     >
 
-                </div>
+</div>
 
 
-                <div class="form-group">
+<div class="form-group">
 
-                    <label>
-                        💵 مبلغ الكاش
-                    </label>
+<label>
+💵 مبلغ الكاش
+</label>
 
-                    <input
-                        type="number"
-                        id="partialCashAmount"
-                        min="0"
-                        step="0.01"
-                        placeholder="مثال: 50"
+<input
+type="number"
+id="partialCashAmount"
+min="0"
+step="0.01"
+placeholder="مثال: 50"
                     >
 
-                </div>
+</div>
 
 
-                <div
-                    id="partialPaymentTotal"
-                    style="
-                        text-align:center;
-                        margin:15px 0;
-                        font-weight:bold;
-                        color:#0284C7;
-                    ">
+<div
+id="partialPaymentTotal"
+style="
+text-align:center;
+margin:15px 0;
+font-weight:bold;
+color:#0284C7;
+">
 
                     المجموع: 0.00 ${settings.currency}
 
-                </div>
+</div>
 
 
-                <button
-                    class="save-btn"
-                    onclick="completePartialPayment()">
+<button
+class="save-btn"
+onclick="completePartialPayment()">
 
-                    ✅ تأكيد الدفع
+✅ تأكيد الدفع
 
-                </button>
+</button>
 
 
-                <button
-                    class="payment-close"
-                    onclick="closePartialPaymentModal()">
+<button
+class="payment-close"
+onclick="closePartialPaymentModal()">
 
-                    رجوع
+رجوع
 
-                </button>
+</button>
 
-            </div>
+</div>
 
         `;
         
@@ -10774,71 +10996,71 @@ function testInvoiceScan() {
 
 function updateWalletTable() {
 
-    const tbody = document.getElementById("walletTable");
+const tbody = document.getElementById("walletTable");
 
-    if (!tbody) return;
-
-
-    tbody.innerHTML = customers.map(customer => {
+if (!tbody) return;
 
 
-        const balance =
-            Number(customer.walletBalance || 0);
-
-        const transactions =
-            walletTransactions.filter(
-                w => w.customerId === customer.id
-            );
-
-        const last =
-            transactions.length
-            ?
-            transactions[transactions.length - 1]
-            :
-            null;
+tbody.innerHTML = customers.map(customer => {
 
 
-        let balanceColor = "#555";
+const balance =
+Number(customer.walletBalance || 0);
 
-        if (balance > 0) {
-            balanceColor = "#2e7d32"; 
+const transactions =
+walletTransactions.filter(
+w => w.customerId === customer.id
+);
+
+const last =
+transactions.length
+?
+transactions[transactions.length - 1]
+:
+null;
+
+
+let balanceColor = "#555";
+
+if (balance > 0) {
+balanceColor = "#2e7d32"; 
         }
 
-        if (balance < 0) {
-            balanceColor = "#d32f2f"; 
+if (balance < 0) {
+balanceColor = "#d32f2f"; 
         }
 
 
 
-        let lastText = "لا يوجد";
+let lastText = "لا يوجد";
 
 
-        if (last) {
+if (last) {
 
-            if (last.type === "رصيد عميل") {
+if (last.type === "رصيد عميل") {
 
-                lastText =
-                "🟢 " + last.type +
-                " +" +
-                Number(last.amount).toFixed(2);
+lastText =
+"🟢 " + last.type +
+" +" +
+Number(last.amount).toFixed(2);
 
             }
 
-            else if (last.type === "استرجاع نقدي") {
+else if (last.type === "استرجاع نقدي") {
 
-                lastText =
-                "🔵 " + last.type +
-                " " +
-                Number(last.amount).toFixed(2);
+lastText =
+"🔵 " + last.type +
+" " +
+Number(last.amount).toFixed(2);
 
             }
 
-            else if (last.type === "مبلغ مستحق") {
+else if (last.type === "مبلغ مستحق") {
 
-                lastText =
-                "🔴 " + last.type +
+lastText =
+"🔴 " + last.type +
                 " " +
-                Number(last.amount).toFixed(2);
+Number(last.amount).toFixed(2);
 
             }
 
@@ -11150,12 +11372,12 @@ item.date
 
                         `;
 
-                    }).join('')
-                }
+}).join('')
+}
 
-            </tbody>
+</tbody>
 
-        </table>
+</table>
 
     `;
 
@@ -11375,7 +11597,6 @@ min="1"
 </span>
 
 </div>
-
 </div>
 
 
