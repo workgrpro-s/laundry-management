@@ -48,7 +48,7 @@
                 </div>
                 <div class="menu-item" onclick="showSection('sales')">
                     <span>🛒</span>
-                    <span class="menu-text" data-ar=" إنشاء فاتورة جديدة " data-en=" New Ivoices"> فاتورة جديدة </span>
+                    <span class="menu-text" data-ar=" إنشاء فاتورة جديدة " data-en=" New Ivoices"> إنشاء فاتورة جديدة </span>
                 </div>
                 <div class="menu-item" onclick="showSection('invoices')">
                     <span>📋</span>
@@ -484,7 +484,7 @@
                         <div class="search-box">
                         <input
     type="text"
-    id="searchInvoice"
+    id="searchInvqoice"
     placeholder="ابحث عن فاتورة..."
     data-placeholder-ar="ابحث عن فاتورة..."
     data-placeholder-en="Search invoice..."
@@ -668,7 +668,7 @@
 
         radio.addEventListener('click', function () {
 
-            // إذا ضغط على الخيار المحدد مسبقاً، ألغِ الاختيار
+
             if (this.checked && this.dataset.selected === 'true') {
 
                 this.checked = false;
@@ -676,7 +676,6 @@
 
             } else {
 
-                // ألغِ الحالة السابقة داخل نفس المجموعة فقط
                 radios.forEach(function (item) {
                     if (item.name === radio.name) {
                         item.dataset.selected = 'false';
