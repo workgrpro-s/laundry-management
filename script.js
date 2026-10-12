@@ -1038,11 +1038,11 @@ function openInvoiceScanner() {
         return;
     }
     
-    // إظهار النافذة فقط
+
     modal.style.display = "flex";
     
     
-    // تفريغ حقل الإدخال
+
     const input =
         document.getElementById("invoiceNumberInput");
     
@@ -1066,7 +1066,7 @@ function selectInvoiceMethod(method) {
     );
     
     
-    // اختيار الكاميرا
+
     if (method === "camera") {
         
         startInvoiceCamera();
@@ -1075,7 +1075,7 @@ function selectInvoiceMethod(method) {
     }
     
     
-    // اختيار الماسح الخارجي
+
     if (method === "scanner") {
         
         const input =
@@ -1097,7 +1097,6 @@ function selectInvoiceMethod(method) {
     }
     
     
-    // اختيار الإدخال اليدوي
     if (method === "manual") {
         
         const input =
@@ -1134,7 +1133,6 @@ function startInvoiceCamera() {
     }
     
     
-    // إنشاء الماسح
     invoiceScanner =
         new Html5Qrcode("reader");
     
@@ -1890,128 +1888,103 @@ function updateCustomersTable() {
 
 let selectedCustomer = null;
 
+const searchInput = document.getElementById("invoiceCustomerSearch");
+const resultsBox = document.getElementById("invoiceCustomerResults");
 
-const searchInput =
-    document.getElementById("invoiceCustomerSearch")
+if (searchInput && resultsBox) {
     
-const resultsBox =
-    document.getElementById("invoiceCustomerResults")
-
-searchInput.addEventListener("input", function() {
-    
-    
-    const query =
-        this.value.trim().toLowerCase();
-    
-    
-    resultsBox.innerHTML = "";
-    
-
-    if (!query) {
+    searchInput.addEventListener("input", function() {
         
+        const query = this.value.trim().toLowerCase();
         
+        resultsBox.innerHTML = "";
         selectedCustomer = null;
-        const pointsBox =
-            document.getElementById("pointsBox");
         
+        const pointsBox = document.getElementById("pointsBox");
         
         if (pointsBox) {
-            
             pointsBox.style.display = "none";
-            
         }
         
-        return;
+        if (!query) {
+            resultsBox.style.display = "none";
+            return;
+        }
         
-    }
-    
-    
-    const results = customers.filter(c =>
+        const results = customers.filter(c =>
+            String(c.name || "").toLowerCase().includes(query) ||
+            String(c.phone || "").includes(query)
+        );
         
-        c.name.toLowerCase().includes(query) ||
-        c.phone.includes(query)
-        
-    );
-    
-    
-    results.forEach(c => {
-        
-        
-        const item =
-            document.createElement("div");
-        
-        
-        item.className =
-            "result-item";
-        
-        
-        item.textContent =
-            `${c.name} - ${c.phone}`;
-        
-        
-        item.onclick = () => {
-            
-            
-            selectedCustomer = c;
-            searchInput.value =
-                c.name;
-                
+        if (results.length === 0) {
+            resultsBox.style.display = "block";
             resultsBox.innerHTML =
-                "";
-            
-            
-            document.getElementById("customerName").value =
-                c.name;
-            document.getElementById("customerPhone").value =
-                c.phone;
-            
-            
-            updateSubscriptionInfo(c.id);
-            
-            
-            const pointsBox =
-                document.getElementById("pointsBox");
-            const pointsInfo =
-                document.getElementById("pointsInfo");
-            
-            
-            
-            if (pointsBox && pointsInfo) {
-                
-                pointsBox.style.display =
-                    "block";
-                
-                const customerPoints =
-                    Number(c.points || 0);
-                const discount =
-                    Math.floor(customerPoints / 100) * 10;
-                
-                
-                pointsInfo.innerHTML = `
-
-                ⭐ رصيد العميل:
-                <b>${customerPoints}</b> نقطة
-
-                <br>
-
-                💰 الخصم المتاح:
-                <b>${discount.toFixed(2)}</b>
-                ${settings.currency}
-
-                `;
-                
-                
-            }
-            
-        };
+                '<div class="result-item">لا يوجد عميل مطابق</div>';
+            return;
+        }
         
-        resultsBox.appendChild(item);
+        resultsBox.style.display = "block";
         
-        
+        results.forEach(c => {
+            
+            const item = document.createElement("div");
+            
+            item.className = "result-item";
+            item.textContent = `${c.name} - ${c.phone || ""}`;
+            
+            item.addEventListener("click", function() {
+                
+                selectedCustomer = c;
+                
+                searchInput.value = c.name;
+                
+                const nameInput =
+                    document.getElementById("customerName");
+                
+                const phoneInput =
+                    document.getElementById("customerPhone");
+                
+                if (nameInput) {
+                    nameInput.value = c.name || "";
+                }
+                
+                if (phoneInput) {
+                    phoneInput.value = c.phone || "";
+                }
+                
+                resultsBox.innerHTML = "";
+                resultsBox.style.display = "none";
+                
+                updateSubscriptionInfo(c.id);
+                
+                const pointsInfo =
+                    document.getElementById("pointsInfo");
+                
+                if (pointsBox && pointsInfo) {
+                    
+                    pointsBox.style.display = "block";
+                    
+                    const customerPoints = Number(c.points || 0);
+                    
+                    const discount =
+                        Math.floor(customerPoints / 100) * 10;
+                    
+                    pointsInfo.innerHTML = `
+                        ⭐ رصيد العميل:
+                        <b>${customerPoints}</b> نقطة
+                        <br>
+                        💰 الخصم المتاح:
+                        <b>${discount.toFixed(2)}</b>
+                        ${settings.currency}
+                    `;
+                }
+            });
+            
+            resultsBox.appendChild(item);
+        });
     });
-    
-    
-});
+}
+
 
 
 
@@ -2774,7 +2747,6 @@ function decrementQty(index) {
         Number(item.qty) || 0;
 
 
-    // إذا كانت الكمية أكبر من 1، اجعلها 1 مباشرة
     if (currentQty > 1) {
 
         item.qty = 1;
@@ -3060,15 +3032,10 @@ window.currentDiscountData = {
     totalDiscount,
 
     subtotal,
-
     taxableAmount,
-
     taxRate,
-
     tax,
-
     deliveryFee: deliveryTotal,
-
     total
 };
 
@@ -4201,10 +4168,6 @@ function showReceipt(invoice) {
 
     lastInvoice = invoice;
 
-    // ==========================================
-    // LANGUAGE
-    // ==========================================
-
     const currentLang =
         (document.documentElement.lang || "ar").toLowerCase();
 
@@ -4213,10 +4176,6 @@ function showReceipt(invoice) {
     const lang = isEnglish ? "en" : "ar";
     const dir = isEnglish ? "ltr" : "rtl";
 
-
-    // ==========================================
-    // TRANSLATIONS
-    // ==========================================
 
     const t = {
 
@@ -4288,9 +4247,6 @@ function showReceipt(invoice) {
     };
 
 
-    // ==========================================
-    // DATE
-    // ==========================================
 
     const invoiceDate = new Date(invoice.date);
 
@@ -4299,9 +4255,6 @@ function showReceipt(invoice) {
     );
 
 
-    // ==========================================
-    // DELIVERY
-    // ==========================================
 
     const hasDelivery =
         invoice.items?.some(
@@ -4314,9 +4267,6 @@ function showReceipt(invoice) {
             : t.pickup;
 
 
-    // ==========================================
-    // RECEIPT HTML
-    // ==========================================
 
     const receiptContent = `
 
@@ -4810,17 +4760,10 @@ ${invoice.pointsEarned > 0 ? `
 `;
 
 
-    // ==========================================
-    // DISPLAY RECEIPT
-    // ==========================================
+
 
     document.getElementById("receiptContent").innerHTML =
         receiptContent;
-
-
-    // ==========================================
-    // QR CODE
-    // ==========================================
 
     document.getElementById("invoiceQR").innerHTML = "";
 
@@ -4836,10 +4779,6 @@ ${invoice.pointsEarned > 0 ? `
         }
     );
 
-
-    // ==========================================
-    // WHATSAPP BUTTON
-    // ==========================================
 
     const whatsappBtn =
         document.getElementById("whatsappBtn");
@@ -4857,10 +4796,6 @@ ${invoice.pointsEarned > 0 ? `
 
     }
 
-
-    // ==========================================
-    // SHOW MODAL
-    // ==========================================
 
     document.getElementById("receiptModal")
         .classList.add("active");
@@ -6453,7 +6388,7 @@ function restoreBackup() {
                     return;
                 }
                 
-                // استرجاع البيانات
+
                 products = data.products;
                 customers = data.customers;
                 invoices = data.invoices;
@@ -6478,7 +6413,6 @@ function restoreBackup() {
                     "✓ Backup restored successfully"
                 );
                 
-                // إعادة تحميل النظام
                 location.reload();
                 
             } catch (error) {
@@ -6496,7 +6430,7 @@ function restoreBackup() {
         reader.readAsText(file);
     };
     
-    // فتح نافذة اختيار الملف
+
     input.click();
 }
 
@@ -6555,10 +6489,8 @@ function updateClock() {
     }
 }
 
-// تشغيل الساعة مباشرة
-updateClock();
 
-// تحديث كل ثانية
+updateClock();
 setInterval(updateClock, 1000);
 
 
