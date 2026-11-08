@@ -1637,6 +1637,7 @@ function switchLanguage(lang) {
 
 
     updateAllTexts();
+    updateCart();
     updateInvoicesTable();
 
 
@@ -1987,7 +1988,6 @@ if (searchInput && resultsBox) {
 
 
 
-
 function updateCustomerSelect() {
     const select = document.getElementById("customerSelect");
     
@@ -2194,6 +2194,97 @@ if (phone.length !== 9 && phone.length !== 10) {
 }
 
 // ==================== POS - SALES ====================
+
+const productNamesEn = {
+    
+    1: 'Thobe',
+    2: 'Shemagh',
+    3: 'Ghutra',
+    4: 'Pants',
+    5: 'Shirt',
+    6: 'Jacket',
+    7: 'Dress',
+    8: 'Blanket',
+    9: 'Comforter',
+    10: 'Pillow',
+    11: 'Carpet',
+    12: 'Abaya',
+    13: 'Kids Clothes',
+    14: 'Bed Sheets',
+    15: 'Curtain',
+    16: 'Winter Cloak',
+    17: 'Bisht',
+    18: "Men's Suit",
+    19: 'Sportswear',
+    20: 'Underwear',
+    21: 'Socks',
+    22: 'Cap',
+    23: 'Fabric Bag',
+    24: 'Tablecloth',
+    25: 'Towels',
+    26: 'Bathrobe',
+    27: 'Bed Sheet',
+    28: 'Sofa Cover',
+    29: 'Car Cover',
+    30: 'Small Mattress',
+    31: 'Undershirt',
+    32: 'Shorts',
+    33: 'Skirt',
+    34: 'Blouse',
+    35: 'Scarf',
+    36: 'Niqab',
+    37: 'Shawl',
+    38: 'Evening Dress',
+    39: 'Wedding Dress',
+    40: 'Kids Suit',
+    41: 'Pillowcase',
+    42: 'Mattress Cover',
+    43: 'Fur Blanket',
+    
+    47: 'Tie',
+    48: 'Gloves',
+    49: 'Vest',
+    50: 'Sneakers',
+    
+    51: 'Dry Cleaning',
+    52: 'Ironing Only',
+    53: 'Special Stain Cleaning',
+    54: 'Sofa Cleaning',
+    55: 'Mattress Cleaning',
+    56: 'Curtain Cleaning',
+    57: 'Shoe Cleaning',
+    58: 'Bag Cleaning',
+    59: 'Fur Cleaning',
+    60: 'Bisht Cleaning',
+    61: 'Shoe Polishing',
+    62: 'Clothes Perfuming',
+    63: 'Clothes Packaging',
+    64: 'Lint Removal',
+    65: 'Electric Blanket Cleaning',
+    66: 'Leather Jacket',
+    67: 'Winter Coat',
+    68: 'Cap Cleaning',
+    
+    71: 'Formal Uniform',
+    72: 'Military Uniform',
+    73: 'Special Kids Clothes',
+    74: 'Special Sportswear',
+    75: 'Luxury Evening Dress',
+    76: 'Wedding Dress',
+    77: 'Roller Blind',
+    78: 'Luxury Tablecloth',
+    79: 'Fabric Chair',
+    80: 'Corner Sofa',
+    81: 'Small Carpet',
+    82: 'Large Carpet',
+    83: 'Velvet Curtain',
+    84: 'Kids Dolls',
+    85: 'Fabric Toys',
+    86: 'Decorative Pillow',
+    87: 'Sofa Cover',
+    88: 'Car Cover'
+};
+
 function renderProducts(productList = products) {
 
     const grid = document.getElementById('productsGrid');
@@ -2205,95 +2296,7 @@ function renderProducts(productList = products) {
             ? 'en'
             : 'ar';
 
-    const productNamesEn = {
-
-        1: 'Thobe',
-        2: 'Shemagh',
-        3: 'Ghutra',
-        4: 'Pants',
-        5: 'Shirt',
-        6: 'Jacket',
-        7: 'Dress',
-        8: 'Blanket',
-        9: 'Comforter',
-        10: 'Pillow',
-        11: 'Carpet',
-        12: 'Abaya',
-        13: 'Kids Clothes',
-        14: 'Bed Sheets',
-        15: 'Curtain',
-        16: 'Winter Cloak',
-        17: 'Bisht',
-        18: "Men's Suit",
-        19: 'Sportswear',
-        20: 'Underwear',
-        21: 'Socks',
-        22: 'Cap',
-        23: 'Fabric Bag',
-        24: 'Tablecloth',
-        25: 'Towels',
-        26: 'Bathrobe',
-        27: 'Bed Sheet',
-        28: 'Sofa Cover',
-        29: 'Car Cover',
-        30: 'Small Mattress',
-        31: 'Undershirt',
-        32: 'Shorts',
-        33: 'Skirt',
-        34: 'Blouse',
-        35: 'Scarf',
-        36: 'Niqab',
-        37: 'Shawl',
-        38: 'Evening Dress',
-        39: 'Wedding Dress',
-        40: 'Kids Suit',
-        41: 'Pillowcase',
-        42: 'Mattress Cover',
-        43: 'Fur Blanket',
-
-        47: 'Tie',
-        48: 'Gloves',
-        49: 'Vest',
-        50: 'Sneakers',
-
-        51: 'Dry Cleaning',
-        52: 'Ironing Only',
-        53: 'Special Stain Cleaning',
-        54: 'Sofa Cleaning',
-        55: 'Mattress Cleaning',
-        56: 'Curtain Cleaning',
-        57: 'Shoe Cleaning',
-        58: 'Bag Cleaning',
-        59: 'Fur Cleaning',
-        60: 'Bisht Cleaning',
-        61: 'Shoe Polishing',
-        62: 'Clothes Perfuming',
-        63: 'Clothes Packaging',
-        64: 'Lint Removal',
-        65: 'Electric Blanket Cleaning',
-        66: 'Leather Jacket',
-        67: 'Winter Coat',
-        68: 'Cap Cleaning',
-
-        71: 'Formal Uniform',
-        72: 'Military Uniform',
-        73: 'Special Kids Clothes',
-        74: 'Special Sportswear',
-        75: 'Luxury Evening Dress',
-        76: 'Wedding Dress',
-        77: 'Roller Blind',
-        78: 'Luxury Tablecloth',
-        79: 'Fabric Chair',
-        80: 'Corner Sofa',
-        81: 'Small Carpet',
-        82: 'Large Carpet',
-        83: 'Velvet Curtain',
-        84: 'Kids Dolls',
-        85: 'Fabric Toys',
-        86: 'Decorative Pillow',
-        87: 'Sofa Cover',
-        88: 'Car Cover'
-    };
+    
 
 
     productList.forEach(product => {
@@ -2424,6 +2427,44 @@ document.addEventListener('input', function (e) {
 });
 
 
+const CART_TEXT_EN = {
+    'غسيل': 'Wash',
+    'كوي': 'Iron',
+    'غسيل + كوي': 'Wash + Iron',
+    'عادي': 'Normal',
+    'مستعجل': 'Urgent',
+    'نشا خفيف': 'Light starch',
+    'نشا وسط': 'Medium starch',
+    'نشا كثير': 'Heavy starch',
+    'بدون نشا': 'No starch',
+    'مرزام': 'Marzam',
+    'مربع': 'Square',
+    'بدون مرزام': 'No marzam'
+};
+
+function cartText(text) {
+    if (currentLanguage === 'ar') return text || '';
+    
+    const value = String(text || '').trim();
+    
+    if (CART_TEXT_EN[value]) return CART_TEXT_EN[value];
+    
+    return value
+        .split(' + ')
+        .map(part => CART_TEXT_EN[part.trim()] || part)
+        .join(' + ');
+}
+
+function cartItemName(item) {
+    if (currentLanguage === 'ar') return item.name;
+    
+    const product = products.find(p => p.id === item.id);
+    
+    return productNamesEn[item.id] ||
+        (product && product.nameEn) ||
+        item.name;
+}
+
 
 function updateCart() {
     
@@ -2445,15 +2486,18 @@ function updateCart() {
         cartContainer.innerHTML =
             `<p class="empty-cart">${emptyMsg}</p>`;
         
-
         deliveryFee = 0;
         calculateTotal();
         return;
     }
     
     
-        cartContainer.innerHTML =
+    cartContainer.innerHTML =
         cart.map((item, index) => {
+            
+            const isAr =
+                currentLanguage === 'ar';
+            
             
             const isCarpet =
                 item.unit === "متر" ||
@@ -2464,7 +2508,9 @@ function updateCart() {
             
             
             const unit =
-                isCarpet ? "متر" : "قطعة";
+                isCarpet ?
+                (isAr ? "متر" : "m") :
+                (isAr ? "قطعة" : "pc");
             
             
             const qty =
@@ -2501,7 +2547,7 @@ function updateCart() {
                 <div class="cart-item-info">
 
                     <div class="cart-item-name">
-                        ${item.name}
+                        ${cartItemName(item)}
                     </div>
 
                     <div
@@ -2512,32 +2558,33 @@ function updateCart() {
                         "
                     >
 
-                        ${item.serviceType}
+                        ${cartText(item.serviceType)}
                         |
-                        ${item.urgency}
+                        ${cartText(item.urgency)}
 
                         ${
                             item.shemaghStyle
-                                ? '<br>التجهيز: ' +
-                                  item.shemaghStyle
+                                ? '<br>' +
+                                  (isAr ? 'التجهيز: ' : 'Preparation: ') +
+                                  cartText(item.shemaghStyle)
                                 : ''
                         }
 
                         <br>
 
                         <span>
-                            السعر:
+                            ${isAr ? 'السعر:' : 'Price:'}
                             ${formattedPrice}
-                            ريال /
+                            ${isAr ? 'ريال' : 'SAR'} /
                             ${unit}
                         </span>
 
                         <br>
 
                         <strong style="color:#222">
-                            الإجمالي:
+                            ${isAr ? 'الإجمالي:' : 'Total:'}
                             ${formattedTotal}
-                            ريال
+                            ${isAr ? 'ريال' : 'SAR'}
                         </strong>
 
                     </div>
@@ -2603,7 +2650,7 @@ function updateCart() {
                         removeFromCart(${index})
                     "
                 >
-                    حذف
+                    ${isAr ? 'حذف' : 'Remove'}
                 </button>
 
             </div>
@@ -2614,8 +2661,7 @@ function updateCart() {
     
     calculateTotal();
     
-    
-} 
+}
 
 
 function updateCartPrice(index, value) {
@@ -4015,14 +4061,19 @@ function toggleAllInvoices(source) {
 
 
 function searchInvoices() {
-    const query = document.getElementById('searchInvoice').value.toLowerCase();
-    const rows = document.querySelectorAll('#invoicesTable tr');
-
-    rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(query) ? '' : 'none';
+    const searchInput = document.getElementById('searchInvoice');
+    const tbody = document.getElementById('invoicesTable');
+    if (!searchInput || !tbody) return;
+    
+    const query = searchInput.value.trim().toLowerCase();
+    
+    tbody.querySelectorAll('tr').forEach(row => {
+        const match = row.textContent.toLowerCase().includes(query);
+        row.style.setProperty('display', match ? 'table-row' : 'none', 'important');
     });
 }
+
+
 
 
 function deleteSelectedInvoices() {
@@ -9257,158 +9308,156 @@ function importOldData() {
                             sheet,
                             {
                                 defval: ""
-                            }
-                        );
+}
+);
 
 
-                    console.log(
-                        "📄 الورقة:",
-                        sheetName,
-                        "عدد الصفوف:",
-                        rows.length
-                    );
+console.log(
+"📄 الورقة:",
+sheetName,
+"عدد الصفوف:",
+rows.length
+);
 
 
-                    rows.forEach(row => {
+rows.forEach(row => {
 
-                        const keys =
-                            Object.keys(row);
+const keys =
+Object.keys(row);
 
-                        const name =
-                            getExcelValue(
-                                row,
-                                [
-                                    "اسم العميل",
-                                    "العميل",
-                                    "اسم",
-                                    "name",
-                                    "customer",
-                                    "customer name"
-                                ]
-                            );
+const name =
+getExcelValue(
+row,
+[
+"اسم العميل",
+"العميل",
+"اسم",
+"name",
+"customer",
+"customer name"
+]
+);
 
-                        const phone =
-                            getExcelValue(
-                                row,
-                                [
-                                    "رقم الهاتف",
-                                    "رقم الجوال",
-                                    "الهاتف",
-                                    "الجوال",
-                                    "phone",
-                                    "mobile"
-                                ]
-                            );
+const phone =
+getExcelValue(
+row,
+[
+"رقم الهاتف",
+"رقم الجوال",
+"الهاتف",
+"الجوال",
+"phone",
+"mobile"
+]
+);
 
-                        if (
-                            !name &&
-                            !phone
-                        ) {
-                            return;
-                        }
+if (
+!name &&
+!phone
+) {
+return;
+}
 
-                        const normalizedPhone =
-                            String(
-                                phone || ""
-                            ).trim();
-
-
-                        const normalizedName =
-                            normalizeExcelText(
-                                name
-                            );
+const normalizedPhone =
+String(
+phone || ""
+).trim();
 
 
-                        const exists =
-                            customers.some(
-                                customer => {
-
-                                    const oldPhone =
-                                        String(
-                                            customer.phone || ""
-                                        ).trim();
+const normalizedName =
+normalizeExcelText(
+name
+);
 
 
-                                    if (
-                                        normalizedPhone &&
-                                        oldPhone
-                                    ) {
+const exists =
+customers.some(
+customer => {
 
-                                        return (
-                                            normalizedPhone ===
-                                            oldPhone
-                                        );
-
-                                    }
+const oldPhone =
+String(
+customer.phone || ""
+).trim();
 
 
-                                    return (
-                                        normalizeExcelText(
-                                            customer.name
-                                        ) ===
-                                        normalizedName
-                                    );
+if (
+normalizedPhone &&
+oldPhone
+) {
 
-                                }
-                            );
+return (
+normalizedPhone ===
+oldPhone
+);
 
-
-                        if (exists) {
-                            return;
-                        }
+}
 
 
-                        customers.push({
+return (
+normalizeExcelText(
+customer.name ) ===
+normalizedName
+);
 
-                            id:
-                                Date.now() +
-                                Math.floor(
-                                    Math.random() *
-                                    100000
-                                ),
+}
+);
 
-                            name:
-                                name ||
-                                "عميل",
 
-                            phone:
-                                normalizedPhone,
+if (exists) {
+return;
+}
 
-                            email:
-                                getExcelValue(
-                                    row,
-                                    [
-                                        "البريد",
-                                        "البريد الإلكتروني",
-                                        "email"
-                                    ]
-                                ),
 
-                            address:
-                                getExcelValue(
-                                    row,
-                                    [
-                                        "العنوان",
-                                        "address"
-                                    ]
-                                ),
+customers.push({ 
+    id:
+Date.now() +
+Math.floor(
+Math.random() *
+100000
+),
 
-                            points:
-                                Number(
-                                    getExcelValue(
-                                        row,
-                                        [
-                                            "النقاط",
-                                            "points"
-                                        ]
-                                    ) || 0
-                                ),
+name:
+name ||
+"عميل",
 
-                            invoices: 0,
+phone:
+normalizedPhone,
 
-                            createdAt:
-                                new Date()
-                                    .toISOString()
+email:
+getExcelValue(
+row,
+[
+"البريد",
+"البريد الإلكتروني",
+"email"
+]
+),
+
+address:
+getExcelValue(
+row,
+[
+"العنوان",
+"address"
+]
+),
+
+points:
+Number(
+getExcelValue(
+row,
+[
+"النقاط",
+"points"
+]
+) || 0
+),
+
+invoices: 0,
+
+createdAt:
+new Date()
+.toISOString()
 
                         });
 
@@ -10102,76 +10151,76 @@ function receiveFullPayment(invoice, remaining) {
         
         modal.innerHTML = `
 
-            <div class="payment-modal-box">
+<div class="payment-modal-box">
 
-                <h2>💰 دفع كامل</h2>
+<h2>💰 دفع كامل</h2>
 
-                <div class="payment-invoice-info">
+<div class="payment-invoice-info">
 
-                    <div>
-                        رقم الفاتورة:
-                        <strong>
-                            ${invoice.invoiceNo}
-                        </strong>
-                    </div>
+<div>
+رقم الفاتورة:
+<strong>
+${invoice.invoiceNo}
+</strong>
+</div>
 
-                    <div>
-                        المبلغ:
-                        <strong>
-                            ${remaining.toFixed(2)}
-                            ${settings.currency}
-                        </strong>
-                    </div>
+<div>
+المبلغ:
+<strong>
+${remaining.toFixed(2)}
+${settings.currency}
+</strong>
+</div>
 
-                </div>
-
-
-                <div class="payment-methods">
-
-                    <button
-                        class="payment-method full"
-                        onclick="completeFullPayment('شبكة')">
-
-                        <span>💳</span>
-
-                        <strong>
-                            شبكة
-                        </strong>
-
-                        <small>
-                            دفع كامل عن طريق الشبكة
-                        </small>
-
-                    </button>
+</div>
 
 
-                    <button
-                        class="payment-method subscription"
-                        style="border-color:#16a34a;"
-                        onclick="completeFullPayment('كاش')">
+<div class="payment-methods">
 
-                        <span>💵</span>
+<button
+class="payment-method full"
+onclick="completeFullPayment('شبكة')">
 
-                        <strong>
-                            كاش
-                        </strong>
+<span>💳</span>
 
-                        <small>
-                            دفع كامل نقداً
-                        </small>
+<strong>
+شبكة
+</strong>
 
-                    </button>
+<small>
+دفع كامل عن طريق الشبكة
+</small>
 
-                </div>
+</button>
 
 
-                <button
-                    class="payment-close"
-                    onclick="closeFullPaymentModal()">
+<button
+class="payment-method subscription"
+style="border-color:#16a34a;"
+onclick="completeFullPayment('كاش')">
 
-                    رجوع
+<span>💵</span>
 
-                </button>
+<strong>
+كاش
+</strong>
+
+<small>
+دفع كامل نقداً
+</small>
+
+</button>
+
+</div>
+
+
+<button
+class="payment-close"
+onclick="closeFullPaymentModal()">
+
+رجوع
+
+</button>
 
             </div>
 
@@ -10548,8 +10597,6 @@ function completePartialPayment() {
 
 
     invoice.remaining = 0;
-
-
     invoice.paymentStatus =
         "مدفوعة";
 
@@ -11898,7 +11945,7 @@ function renewSubscription(index) {
             </div>
 
 
-            <div class="renew-subscription-body">
+<div class="renew-subscription-body">
 
                 <div class="renew-customer-info">
 
@@ -11923,59 +11970,61 @@ function renewSubscription(index) {
                             data-plan-index="${planIndex}"
                         >
 
-                            <div class="renew-plan-icon">
-                                💳
-                            </div>
+<div class="renew-plan-icon">
+     💳
+</div>
 
-                            <div class="renew-plan-name">
-                                ${plan.name || "باقة اشتراك"}
-                            </div>
+<div class="renew-plan-name">
+${plan.name || "باقة اشتراك"}
+</div>
 
-                            <div class="renew-plan-price">
-                                ${Number(plan.price || 0).toFixed(2)}
-                                ${settings.currency || "ر.س"}
-                            </div>
 
-                            <div class="renew-plan-details">
 
-                                <span>
-                                    💰 رصيد:
-                                    <b>${Number(plan.balance || 0)}</b>
-                                </span>
+<div class="renew-plan-price">
+${Number(plan.price || 0).toFixed(2)}
+${settings.currency || "ر.س"}
+</div>
 
-                                <span>
-                                    📅 مدة:
-                                    <b>${Number(plan.days || 0)} يوم</b>
-                                </span>
+<div class="renew-plan-details">
 
-                            </div>
+<span>
+💰 رصيد:
+<b>${Number(plan.balance || 0)}</b>
+</span>
 
-                        </div>
+<span>
+📅 مدة:
+<b>${Number(plan.days || 0)} يوم</b>
+</span>
 
-                    `).join("")}
+</div>
+
+</div>
+
+`).join("")}
 
                 </div>
 
             </div>
 
 
-            <div class="renew-subscription-footer">
+<div class="renew-subscription-footer">
 
-                <button
-                    type="button"
-                    class="renew-cancel-btn"
-                    onclick="closeRenewSubscription()">
+<button
+type="button"
+class="renew-cancel-btn"
+onclick="closeRenewSubscription()">
                     إلغاء
-                </button>
+</button>
 
-                <button
-                    type="button"
-                    id="confirmRenewBtn"
-                    class="renew-confirm-btn"
-                    disabled
-                    onclick="confirmRenewSubscription()">
+<button
+type="button"
+id="confirmRenewBtn"
+class="renew-confirm-btn"
+disabled
+onclick="confirmRenewSubscription()">
                     ✓ تأكيد التجديد
-                </button>
+</button>
 
             </div>
 
