@@ -52,7 +52,7 @@
                 </div>
                 <div class="menu-item" onclick="showSection('invoices')">
                     <span>📋</span>
-                    <span class="menu-text" data-ar="الفواتير" data-en="Invoices">الفواتير</span>
+                    <span class="menu-text" data-ar="تسليم الفواتير " data-en="Invoices">تسليم الفواتير</span>
                 </div>
                 
                 <div class="menu-item" onclick="showSection('inventory')">
@@ -1220,167 +1220,230 @@ checked>
 
     <span class="close" onclick="closeModal()">&times;</span>
 
-    <h2 class="product-modal-title">
-        📦 إضافة / تعديل المنتج
-    </h2>
 
-    <form id="productForm" onsubmit="addProduct(event)">
+<h2 class="product-modal-title"
+    data-ar="📦 إضافة / تعديل المنتج"
+    data-en="📦 Add / Edit Product">
+    📦 إضافة / تعديل المنتج
+</h2>
 
-        <div class="product-form-section">
+<form id="productForm" onsubmit="addProduct(event)">
 
-            <label class="product-form-label">
-                🏷️ اسم المنتج
-            </label>
+    <div class="product-form-section">
 
-            <input
-                type="text"
-                id="productName"
-                required
-                placeholder="مثال: ثوب"
-                class="product-form-input"
-            >
+        <label class="product-form-label"
+               data-ar="🏷️ اسم المنتج"
+               data-en="🏷️ Product Name">
+            🏷️ اسم المنتج
+        </label>
 
-        </div>
+        <input
+            type="text"
+            id="productName"
+            required
+            placeholder="مثال: ثوب"
+            data-placeholder-ar="مثال: ثوب"
+            data-placeholder-en="Example: Thobe"
+            class="product-form-input"
+        >
 
-        <div class="product-form-section">
+    </div>
 
-            <label class="product-form-label">
-                🗂️ التصنيف
-            </label>
+    <div class="product-form-section">
 
-            <select
-                id="productCategory"
-                required
-                class="product-form-input"
-            >
-                <option value="">اختر التصنيف</option>
-                <option value="غسيل">🧺 غسيل</option>
-                <option value="كي">👔 كي</option>
-                <option value="تنظيف">🧼 تنظيف</option>
-                <option value="خدمات">✨ خدمات</option>
-                <option value="مفروشات">🛋️ مفروشات</option>
-            </select>
+        <label class="product-form-label"
+               data-ar="🗂️ التصنيف"
+               data-en="🗂️ Category">
+            🗂️ التصنيف
+        </label>
 
-        </div>
+        <select
+            id="productCategory"
+            required
+            class="product-form-input"
+        >
+            <option value=""
+                    data-ar="اختر التصنيف"
+                    data-en="Select Category">
+                اختر التصنيف
+            </option>
 
-        <div class="product-form-section">
+            <option value="غسيل"
+                    data-ar="🧺 غسيل"
+                    data-en="🧺 Laundry">
+                🧺 غسيل
+            </option>
 
-            <label class="product-form-label">
-                💰 أسعار الخدمات
-            </label>
+            <option value="كي"
+                    data-ar="👔 كي"
+                    data-en="👔 Ironing">
+                👔 كي
+            </option>
 
-            <div class="service-prices-box">
+            <option value="تنظيف"
+                    data-ar="🧼 تنظيف"
+                    data-en="🧼 Cleaning">
+                🧼 تنظيف
+            </option>
 
-                <div class="service-price-card">
+            <option value="خدمات"
+                    data-ar="✨ خدمات"
+                    data-en="✨ Services">
+                ✨ خدمات
+            </option>
 
-                    <div class="service-price-title">
-                        🧺 غسيل
+            <option value="مفروشات"
+                    data-ar="🛋️ مفروشات"
+                    data-en="🛋️ Furnishings">
+                🛋️ مفروشات
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="product-form-section">
+
+        <label class="product-form-label"
+               data-ar="💰 أسعار الخدمات"
+               data-en="💰 Service Prices">
+            💰 أسعار الخدمات
+        </label>
+
+        <div class="service-prices-box">
+
+            <div class="service-price-card">
+
+                <div class="service-price-title"
+                     data-ar="🧺 غسيل"
+                     data-en="🧺 Laundry">
+                    🧺 غسيل
+                </div>
+
+                <div class="service-price-row">
+
+                    <div>
+                        <label data-ar="🟢 عادي"
+                               data-en="🟢 Normal">
+                            🟢 عادي
+                        </label>
+
+                        <input
+                            type="number"
+                            id="priceNormalWash"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            class="product-form-input"
+                        >
                     </div>
 
-                    <div class="service-price-row">
+                    <div>
+                        <label data-ar="🔴 مستعجل"
+                               data-en="🔴 Urgent">
+                            🔴 مستعجل
+                        </label>
 
-                        <div>
-                            <label>🟢 عادي</label>
-
-                            <input
-                                type="number"
-                                id="priceNormalWash"
-                                min="0"
-                                step="0.01"
-                                placeholder="0.00"
-                                class="product-form-input"
-                            >
-                        </div>
-
-                        <div>
-                            <label>🔴 مستعجل</label>
-
-                            <input
-                                type="number"
-                                id="priceUrgentWash"
-                                min="0"
-                                step="0.01"
-                                placeholder="0.00"
-                                class="product-form-input"
-                            >
-                        </div>
-
+                        <input
+                            type="number"
+                            id="priceUrgentWash"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            class="product-form-input"
+                        >
                     </div>
 
                 </div>
 
-                <div class="service-price-card">
+            </div>
 
-                    <div class="service-price-title">
-                        👔 كوي
+            <div class="service-price-card">
+
+                <div class="service-price-title"
+                     data-ar="👔 كوي"
+                     data-en="👔 Ironing">
+                    👔 كوي
+                </div>
+
+                <div class="service-price-row">
+
+                    <div>
+                        <label data-ar="🟢 عادي"
+                               data-en="🟢 Normal">
+                            🟢 عادي
+                        </label>
+
+                        <input
+                            type="number"
+                            id="priceNormalIron"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            class="product-form-input"
+                        >
                     </div>
 
-                    <div class="service-price-row">
+                    <div>
+                        <label data-ar="🔴 مستعجل"
+                               data-en="🔴 Urgent">
+                            🔴 مستعجل
+                        </label>
 
-                        <div>
-                            <label>🟢 عادي</label>
-
-                            <input
-                                type="number"
-                                id="priceNormalIron"
-                                min="0"
-                                step="0.01"
-                                placeholder="0.00"
-                                class="product-form-input"
-                            >
-                        </div>
-
-                        <div>
-                            <label>🔴 مستعجل</label>
-
-                            <input
-                                type="number"
-                                id="priceUrgentIron"
-                                min="0"
-                                step="0.01"
-                                placeholder="0.00"
-                                class="product-form-input"
-                            >
-                        </div>
-
+                        <input
+                            type="number"
+                            id="priceUrgentIron"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            class="product-form-input"
+                        >
                     </div>
 
                 </div>
 
-                <div class="service-price-card">
+            </div>
 
-                    <div class="service-price-title">
-                        🧺👔 غسيل وكوي
+            <div class="service-price-card">
+
+                <div class="service-price-title"
+                     data-ar="🧺👔 غسيل وكوي"
+                     data-en="🧺👔 Wash & Iron">
+                    🧺👔 غسيل وكوي
+                </div>
+
+                <div class="service-price-row">
+
+                    <div>
+                        <label data-ar="🟢 عادي"
+                               data-en="🟢 Normal">
+                            🟢 عادي
+                        </label>
+
+                        <input
+                            type="number"
+                            id="priceWashIron"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            class="product-form-input"
+                        >
                     </div>
 
-                    <div class="service-price-row">
+                    <div>
+                        <label data-ar="🔴 مستعجل"
+                               data-en="🔴 Urgent">
+                            🔴 مستعجل
+                        </label>
 
-                        <div>
-                            <label>🟢 عادي</label>
-
-                            <input
-                                type="number"
-                                id="priceWashIron"
-                                min="0"
-                                step="0.01"
-                                placeholder="0.00"
-                                class="product-form-input"
-                            >
-                        </div>
-
-                        <div>
-                            <label>🔴 مستعجل</label>
-
-                            <input
-                                type="number"
-                                id="priceUrgentWashIron"
-                                min="0"
-                                step="0.01"
-                                placeholder="0.00"
-                                class="product-form-input"
-                            >
-                        </div>
-
+                        <input
+                            type="number"
+                            id="priceUrgentWashIron"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            class="product-form-input"
+                        >
                     </div>
 
                 </div>
@@ -1389,92 +1452,105 @@ checked>
 
         </div>
 
-        <div class="product-form-section">
+    </div>
 
-            <label class="product-form-label">
-                🔢 الكمية
-            </label>
+    <div class="product-form-section">
 
-            <input
-                type="number"
-                id="productQuantity"
-                required
-                min="0"
-                placeholder="0"
-                class="product-form-input"
-            >
+        <label class="product-form-label"
+               data-ar="🔢 الكمية"
+               data-en="🔢 Quantity">
+            🔢 الكمية
+        </label>
 
+        <input
+            type="number"
+            id="productQuantity"
+            required
+            min="0"
+            placeholder="0"
+            class="product-form-input"
+        >
+
+    </div>
+
+    <div class="product-image-field">
+
+        <label class="product-image-label"
+               data-ar="📷 صورة المنتج"
+               data-en="📷 Product Image">
+            📷 صورة المنتج
+        </label>
+
+        <div
+            id="productImagePreview"
+            class="product-image-preview"
+        >
+            <div class="image-placeholder">
+                📷
+                <span
+                    data-ar="اختر صورة للمنتج"
+                    data-en="Choose a product image">
+                    اختر صورة للمنتج
+                </span>
+            </div>
         </div>
 
-        <div class="product-image-field">
+        <div class="product-image-actions">
 
-            <label class="product-image-label">
-                📷 صورة المنتج
+            <label
+                for="productImage"
+                class="choose-product-image"
+                data-ar="📷 اختيار صورة"
+                data-en="📷 Choose Image">
+                📷 اختيار صورة
             </label>
-
-            <div
-                id="productImagePreview"
-                class="product-image-preview"
-            >
-                <div class="image-placeholder">
-                    📷
-                    <span>اختر صورة للمنتج</span>
-                </div>
-            </div>
-
-            <div class="product-image-actions">
-
-                <label
-                    for="productImage"
-                    class="choose-product-image"
-                >
-                    📷 اختيار صورة
-                </label>
-
-                <button
-                    type="button"
-                    id="removeProductImageBtn"
-                    class="remove-product-image"
-                    onclick="removeProductImage()"
-                >
-                    🗑️ حذف الصورة
-                </button>
-
-            </div>
-
-            <input
-                type="file"
-                id="productImage"
-                accept="image/*"
-                hidden
-            >
-
-        </div>
-
-        <div class="product-form-actions">
-
-            <button
-                type="submit"
-                class="product-save-btn"
-            >
-                ✓ حفظ المنتج
-            </button>
 
             <button
                 type="button"
-                class="product-cancel-btn"
-                onclick="closeModal()"
-            >
-                إلغاء
+                id="removeProductImageBtn"
+                class="remove-product-image"
+                onclick="removeProductImage()"
+                data-ar="🗑️ حذف الصورة"
+                data-en="🗑️ Remove Image">
+                🗑️ حذف الصورة
             </button>
 
         </div>
 
-    </form>
+        <input
+            type="file"
+            id="productImage"
+            accept="image/*"
+            hidden
+        >
 
+    </div>
+
+    <div class="product-form-actions">
+
+        <button
+            type="submit"
+            class="product-save-btn"
+            data-ar="✓ حفظ المنتج"
+            data-en="✓ Save Product">
+            ✓ حفظ المنتج
+        </button>
+
+        <button
+            type="button"
+            class="product-cancel-btn"
+            onclick="closeModal()"
+            data-ar="إلغاء"
+            data-en="Cancel">
+            إلغاء
+        </button>
+
+    </div>
+
+</form>
+</div>
 </div>
 
-</div>
 
     <div id="receiptModal" class="modal">
         <div class="modal-content receipt">
@@ -1496,17 +1572,17 @@ checked>
 
 <div class="service-panel">
 
-    <h3 class="service-title">
-        ✨ اختيار الخدمة
-    </h3>
+ <h3 class="service-title" data-ar="✨ اختيار الخدمة" data-en="✨ Select Service">
+    ✨ اختيار الخدمة
+</h3>
 
 
 
     <div class="service-section">
 
-        <label class="service-label">
-            🧺 نوع الخدمة
-        </label>
+<label class="service-label" data-ar="🧺 نوع الخدمة" data-en="🧺 Service Type">
+    🧺 نوع الخدمة
+</label>
 
         <div class="service-options">
 
@@ -1518,7 +1594,7 @@ checked>
                     checked
                 >
                 <span class="service-icon">🧺</span>
-                <span class="service-name">غسيل</span>
+<span class="service-name" data-ar="غسيل" data-en="Wash">غسيل</span>
             </label>
 
 
@@ -1529,7 +1605,7 @@ checked>
                     value="كوي"
                 >
                 <span class="service-icon"></span>
-                <span class="service-name">كوي</span>
+<span class="service-name" data-ar="كوي" data-en="Iron">كوي</span>
             </label>
 
 
@@ -1541,7 +1617,7 @@ checked>
                 >
                 <span class="service-icon"></span>
                 <span class="service-icon second"></span>
-                <span class="service-name">غسيل + كوي</span>
+             <span class="service-name" data-ar="غسيل + كوي" data-en="Wash + Iron">غسيل + كوي</span>
             </label>
 
         </div>
@@ -1552,9 +1628,9 @@ checked>
 
     <div class="service-section quantity-section">
 
-        <label class="service-label">
-            🔢 الكمية
-        </label>
+<label class="service-label" data-ar="🔢 الكمية" data-en="🔢 Quantity">
+    🔢 الكمية
+</label>
 
         <input
             type="number"
@@ -1562,6 +1638,8 @@ checked>
             min="1"
             value="1"
             placeholder="أدخل الكمية"
+            data-placeholder-ar="أدخل الكمية"
+           data-placeholder-en="Enter quantity"
             class="service-input"
         >
 
@@ -1574,14 +1652,14 @@ checked>
     style="display:none;"
 >
 
-    <label class="service-label">
-        📏 أبعاد السجاد
-    </label>
+<label class="service-label" data-ar="📏 أبعاد السجاد" data-en="📏 Carpet Dimensions">
+    📏 أبعاد السجاد
+</label>
 
     <div style="display:flex; gap:10px;">
 
         <div style="flex:1;">
-            <label>الطول بالمتر</label>
+<label data-ar="الطول بالمتر" data-en="Length (m)">الطول بالمتر</label>
 
             <input
                 type="number"
@@ -1589,12 +1667,14 @@ checked>
                 min="0.1"
                 step="0.01"
                 placeholder="الطول"
+                data-placeholder-ar="الطول"
+                data-placeholder-en="Length"
                 class="service-input"
             >
         </div>
 
         <div style="flex:1;">
-            <label>العرض بالمتر</label>
+<label data-ar="العرض بالمتر" data-en="Width (m)">العرض بالمتر</label>
 
             <input
                 type="number"
@@ -1602,18 +1682,21 @@ checked>
                 min="0.1"
                 step="0.01"
                 placeholder="العرض"
+                data-placeholder-ar="العرض"
+                data-placeholder-en="Width"
                 class="service-input"
             >
         </div>
 
     </div>
 
-    <div style="margin-top:12px;">
-        📐 المساحة:
-        <strong>
-            <span id="carpetArea">0</span> م²
-        </strong>
-    </div>
+<div style="margin-top:12px;">
+    <span data-ar="📐 المساحة:" data-en="📐 Area:">📐 المساحة:</span>
+    <strong>
+        <span id="carpetArea">0</span>
+        <span data-ar="م²" data-en="m²">م²</span>
+    </strong>
+</div>
 
 </div>
 
@@ -1624,9 +1707,9 @@ checked>
         style="display:none;"
     >
 
-        <label class="service-label">
-            مستوى النشا
-        </label>
+    <label class="service-label" data-ar="مستوى النشا" data-en="Starch Level">
+    مستوى النشا
+</label>
 
         <div class="service-options">
 
@@ -1638,7 +1721,7 @@ checked>
                     checked
                 >
                 <span class="service-icon"></span>
-                <span class="service-name">نشا خفيف</span>
+<span class="service-name" data-ar="نشا خفيف" data-en="Light starch">نشا خفيف</span>
             </label>
 
 
@@ -1649,7 +1732,7 @@ checked>
                     value="نشا وسط"
                 >
                 <span class="service-icon"></span>
-                <span class="service-name">نشا وسط</span>
+<span class="service-name" data-ar="نشا وسط" data-en="Medium starch">نشا وسط</span>
             </label>
 
 
@@ -1660,7 +1743,7 @@ checked>
                     value="نشا كثير"
                 >
                 <span class="service-icon"></span>
-                <span class="service-name">نشا كثير</span>
+<span class="service-name" data-ar="نشا كثير" data-en="Heavy starch">نشا كثير</span>
             </label>
 
 
@@ -1671,18 +1754,20 @@ checked>
                     value="بدون نشا"
                 >
                 <span class="service-icon">⭕</span>
-                <span class="service-name">بدون نشا</span>
+            <span class="service-name" data-ar="بدون نشا" data-en="No starch">بدون نشا</span>
             </label>
 
         </div>
 
 
-        <label
-            class="service-label"
-            style="margin-top:16px;"
-        >
-            ✨ طريقة الشكل
-        </label>
+<label
+    class="service-label"
+    style="margin-top:16px;"
+    data-ar="✨ طريقة الشكل"
+    data-en="✨ Shape Style"
+>
+    ✨ طريقة الشكل
+</label>
 
         <div class="service-options">
 
@@ -1694,7 +1779,7 @@ checked>
                     checked
                 >
                 <span class="service-icon">〰️</span>
-                <span class="service-name">مرزام</span>
+             <span class="service-name" data-ar="مرزام" data-en="Marzam">مرزام</span>
             </label>
 
 
@@ -1705,7 +1790,7 @@ checked>
                     value="مربع"
                 >
                 <span class="service-icon">▣</span>
-                <span class="service-name">مربع</span>
+<span class="service-name" data-ar="مربع" data-en="Square">مربع</span>
             </label>
 
 
@@ -1716,7 +1801,7 @@ checked>
                     value="بدون مرزام"
                 >
                 <span class="service-icon">⭕</span>
-                <span class="service-name">بدون مرزام</span>
+<span class="service-name" data-ar="بدون مرزام" data-en="No marzam">بدون مرزام</span>
             </label>
 
         </div>
@@ -1726,9 +1811,9 @@ checked>
 
     <div class="service-section">
 
-        <label class="service-label">
-            ⚡ سرعة الخدمة
-        </label>
+    <label class="service-label" data-ar="⚡ سرعة الخدمة" data-en="⚡ Service Speed">
+    ⚡ سرعة الخدمة
+</label>
 
         <div class="service-options">
 
@@ -1740,7 +1825,7 @@ checked>
                     checked
                 >
                 <span class="service-icon">🕐</span>
-                <span class="service-name">عادي</span>
+<span class="service-name" data-ar="عادي" data-en="Normal">عادي</span>
             </label>
 
 
@@ -1751,10 +1836,10 @@ checked>
                     value="مستعجل"
                 >
                 <span class="service-icon">⚡</span>
-                <span class="service-name">
-                    مستعجل
-                    <small>+30%</small>
-                </span>
+<span class="service-name">
+    <span data-ar="مستعجل" data-en="Urgent">مستعجل</span>
+    <small>+30%</small>
+</span>
             </label>
 
         </div>
@@ -1765,9 +1850,9 @@ checked>
 
     <div class="service-section">
 
-        <label class="service-label">
-            🚚 طريقة الاستلام
-        </label>
+<label class="service-label" data-ar="🚚 طريقة الاستلام" data-en="🚚 Pickup Method">
+    🚚 طريقة الاستلام
+</label>
 
         <div class="service-options">
 
@@ -1782,9 +1867,9 @@ checked>
 
     <span class="service-icon">🏪</span>
 
-    <span class="service-name">
-        استلام
-    </span>
+<span class="service-name" data-ar="استلام" data-en="Pickup">
+    استلام
+</span>
 
 </label>
 
@@ -1801,9 +1886,9 @@ checked>
 
     <span class="service-icon">🚚</span>
 
-    <span class="service-name">
-        توصيل
-    </span>
+<span class="service-name" data-ar="توصيل" data-en="Delivery">
+    توصيل
+</span>
 
 </label>
 
@@ -1842,9 +1927,9 @@ checked>
 </style>
         
         <div style="margin-top:30px; display:flex; gap:25px;">
-            <button onclick="confirmAddToCart()" class="btn btn-primary">إضافة</button>
-            <button onclick="closeServiceModal()" class="btn">إلغاء</button>
-        </div>
+<button onclick="confirmAddToCart()" class="btn btn-primary" data-ar="إضافة" data-en="Add">إضافة</button>
+<button onclick="closeServiceModal()" class="btn" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+</div>
         
     </div>
 </div>
