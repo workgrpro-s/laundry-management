@@ -1638,6 +1638,7 @@ function switchLanguage(lang) {
 
     updateAllTexts();
     updateCart();
+    updateInventoryTable();
     updateInvoicesTable();
 
 
@@ -2312,10 +2313,9 @@ function renderProducts(productList = products) {
 
 
         const productName =
-            lang === 'en'
-                ? (productNamesEn[product.id] || product.name)
-                : product.name;
-
+    lang === 'en' ?
+    (productNamesEn[product.id] || product.nameEn || product.name) :
+    product.name;
 
         btn.innerHTML = `
 
@@ -2345,8 +2345,7 @@ function renderProducts(productList = products) {
             <div
                 class="name"
                 data-ar="${product.name}"
-                data-en="${productNamesEn[product.id] || product.name}">
-                ${productName}
+                data-en="${productNamesEn[product.id] || product.nameEn || product.name}">
             </div>
 
 
@@ -5235,148 +5234,126 @@ async function sendWhatsApp() {
     );
 }
 
+const CATEGORY_EN = {
+    'غسيل': 'Laundry',
+    'كي': 'Ironing',
+    'كوي': 'Ironing',
+    'تنظيف': 'Cleaning',
+    'خدمات': 'Services',
+    'مفروشات': 'Furnishings'
+};
 
+function productDisplayName(product) {
+    if (currentLanguage === 'ar') return product.name;
+    
+    return product.nameEn ||
+        productNamesEn[product.id] ||
+        product.name;
+}
+
+function productCategoryText(product) {
+    if (currentLanguage === 'ar') return product.category;
+    
+    return product.categoryEn ||
+        CATEGORY_EN[product.category] ||
+        product.category;
+}
 
 function updateInventoryTable() {
-const tbody = document.getElementById('inventoryTable');
-
-
-tbody.innerHTML = products.map((product, index) => `
-    <tr style="border-bottom:3px solid #E2E8F0;">
-
-        <td style="font-weight:700;font-size:16px;color:var(--dark);vertical-align:top;padding:18px 12px;">
-            <div style="background:#F8FAFC;border-radius:10px;padding:10px 12px;border:1px solid #E2E8F0;">
-                ${product.name}
-            </div>
-        </td>
-
-        <td style="vertical-align:top;padding:18px 12px;">
-            <span style="display:inline-block;background:#F1F5F9;padding:7px 12px;border-radius:8px;font-weight:600;">
-                ${product.category}
-            </span>
-        </td>
-
-        <td style="vertical-align:top;padding:18px 12px;">
-
-            <div style="display:grid;gap:10px;min-width:280px;">
-
-                <div style="background:#F0FDFA;border:1px solid #99F6E4;border-radius:10px;padding:7px 7px;">
-                    <div style="font-weight:500;color:#0F766E;margin-bottom:7px;">
-                        🧺 غسيل
-                    </div>
-
-                    <div style="display:flex;justify-content:space-between;gap:8px;">
-                        <span style="color:#15803D;font-weight:500;">
-                            عادي
-                        </span>
-
-                        <strong>
-                            ${product.priceNormalWash || 0} ${settings.currency}
-                        </strong>
-                    </div>
-
-                    <div style="display:flex;justify-content:space-between;gap:8px;margin-top:5px;">
-                        <span style="color:#DC2626;font-weight:500;">
-                            مستعجل
-                        </span>
-
-                        <strong>
-                            ${product.priceUrgentWash || 0} ${settings.currency}
-                        </strong>
-                    </div>
-                </div>
-
-                <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:7px 7px;">
-                    <div style="font-weight:500;color:#7C3AED;margin-bottom:7px;">
-                        👔 كوي
-                    </div>
-
-                    <div style="display:flex;justify-content:space-between;gap:8px;">
-                        <span style="color:#15803D;font-weight:500;">
-                            عادي
-                        </span>
-
-                        <strong>
-                            ${product.priceNormalIron || 0} ${settings.currency}
-                        </strong>
-                    </div>
-
-                    <div style="display:flex;justify-content:space-between;gap:8px;margin-top:5px;">
-                        <span style="color:#DC2626;font-weight:500;">
-                            مستعجل
-                        </span>
-
-                        <strong>
-                            ${product.priceUrgentIron || 0} ${settings.currency}
-                        </strong>
-                    </div>
-                </div>
-
-                <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:7px 7px;">
-                    <div style="font-weight:500;color:#0284C7;margin-bottom:7px;">
-                        🧺👔 غسيل + كوي
-                    </div>
-
-                    <div style="display:flex;justify-content:space-between;gap:8px;">
-                        <span style="color:#15803D;font-weight:500;">
-                            عادي
-                        </span>
-
-                        <strong>
-                            ${product.priceWashIron || 0} ${settings.currency}
-                        </strong>
-                    </div>
-
-                    <div style="display:flex;justify-content:space-between;gap:8px;margin-top:5px;">
-                        <span style="color:#DC2626;font-weight:500;">
-                            مستعجل
-                        </span>
-
-                        <strong>
-                            ${product.priceUrgentWashIron || 0} ${settings.currency}
-                        </strong>
-                    </div>
-                </div>
-
+    
+    const tbody =
+        document.getElementById('inventoryTable');
+    
+    const isAr =
+        currentLanguage === 'ar';
+    
+    const t = {
+        wash: isAr ? '🧺 غسيل' : '🧺 Wash',
+        iron: isAr ? '👔 كوي' : '👔 Iron',
+        washIron: isAr ? '🧺👔 غسيل + كوي' : '🧺👔 Wash + Iron',
+        normal: isAr ? 'عادي' : 'Normal',
+        urgent: isAr ? 'مستعجل' : 'Urgent',
+        currency: settings.currency,
+        edit: isAr ? 'تعديل' : 'Edit',
+        del: isAr ? 'حذف' : 'Delete'
+    };
+    
+    const priceBox = (bg, border, titleColor, title, normal, urgent) => `
+        <div style="background:${bg};border:1px solid ${border};border-radius:10px;padding:7px 7px;">
+            <div style="font-weight:500;color:${titleColor};margin-bottom:7px;">
+                ${title}
             </div>
 
-        </td>
-
-        <td style="vertical-align:top;padding:18px 12px;text-align:center;">
-            <span style="display:inline-block;background:#F1F5F9;border-radius:10px;padding:7px 7px;font-weight:700;">
-                ${product.qty}
-            </span>
-        </td>
-
-        <td style="vertical-align:top;padding:18px 12px;">
-
-            <div style="display:flex;flex-direction:column;gap:8px;">
-
-                <button
-                    class="btn btn-small"
-                    onclick="openEditProductModalById(${product.id})"
-                >
-                    ✏️
-                    ${currentLanguage === 'ar' ? 'تعديل' : 'Edit'}
-                </button>
-
-                <button
-                    class="btn btn-small"
-                    style="background:var(--danger);color:white;"
-                    onclick="deleteProduct(${product.id})"
-                >
-                    🗑️
-                    ${currentLanguage === 'ar' ? 'حذف' : 'Delete'}
-                </button>
-
+            <div style="display:flex;justify-content:space-between;gap:8px;">
+                <span style="color:#15803D;font-weight:500;">${t.normal}</span>
+                <strong>${normal || 0} ${t.currency}</strong>
             </div>
 
-        </td>
+            <div style="display:flex;justify-content:space-between;gap:8px;margin-top:5px;">
+                <span style="color:#DC2626;font-weight:500;">${t.urgent}</span>
+                <strong>${urgent || 0} ${t.currency}</strong>
+            </div>
+        </div>
+    `;
+    
+    tbody.innerHTML = products.map(product => `
+        <tr style="border-bottom:3px solid #E2E8F0;">
 
-    </tr>
-`).join('');
+            <td style="font-weight:700;font-size:16px;color:var(--dark);vertical-align:top;padding:18px 12px;">
+                <div style="background:#F8FAFC;border-radius:10px;padding:10px 12px;border:1px solid #E2E8F0;">
+                    ${productDisplayName(product)}
+                </div>
+            </td>
 
+            <td style="vertical-align:top;padding:18px 12px;">
+                <span style="display:inline-block;background:#F1F5F9;padding:7px 12px;border-radius:8px;font-weight:600;">
+                    ${productCategoryText(product)}
+                </span>
+            </td>
 
+            <td style="vertical-align:top;padding:18px 12px;">
+                <div style="display:grid;gap:10px;min-width:280px;">
+
+                    ${priceBox('#F0FDFA', '#99F6E4', '#0F766E', t.wash,
+                        product.priceNormalWash, product.priceUrgentWash)}
+
+                    ${priceBox('#F5F3FF', '#DDD6FE', '#7C3AED', t.iron,
+                        product.priceNormalIron, product.priceUrgentIron)}
+
+                    ${priceBox('#EFF6FF', '#BFDBFE', '#0284C7', t.washIron,
+                        product.priceWashIron, product.priceUrgentWashIron)}
+
+                </div>
+            </td>
+
+            <td style="vertical-align:top;padding:18px 12px;text-align:center;">
+                <span style="display:inline-block;background:#F1F5F9;border-radius:10px;padding:7px 7px;font-weight:700;">
+                    ${product.qty}
+                </span>
+            </td>
+
+            <td style="vertical-align:top;padding:18px 12px;">
+                <div style="display:flex;flex-direction:column;gap:8px;">
+
+                    <button
+                        class="btn btn-small"
+                        onclick="openEditProductModalById(${product.id})">
+                        ✏️ ${t.edit}
+                    </button>
+
+                    <button
+                        class="btn btn-small"
+                        style="background:var(--danger);color:white;"
+                        onclick="deleteProduct(${product.id})">
+                        🗑️ ${t.del}
+                    </button>
+
+                </div>
+            </td>
+
+        </tr>
+    `).join('');
+    
 }
 
 
@@ -5449,6 +5426,9 @@ function openEditProductModal(index) {
     
     document.getElementById('productName').value =
         product.name || '';
+    
+    document.getElementById('productNameEn').value =
+    product.nameEn || '';
     
     document.getElementById('productCategory').value =
         product.category || '';
@@ -5545,6 +5525,8 @@ function addProduct(event) {
 
     const name =
         document.getElementById('productName').value.trim();
+    const nameEn =
+    document.getElementById('productNameEn').value.trim();
 
     const category =
         document.getElementById('productCategory').value;
@@ -5577,10 +5559,11 @@ function addProduct(event) {
         document.getElementById('productImage');
 
     if (
-        !name ||
-        !category ||
-        isNaN(qty)
-    ) {
+    !name ||
+    !nameEn ||
+    !category ||
+    isNaN(qty)
+) {
         alert(
             currentLanguage === 'ar'
                 ? 'يرجى ملء جميع الحقول'
@@ -5600,7 +5583,9 @@ function addProduct(event) {
 
                 ...oldProduct,
 
+                
                 name: name,
+                nameEn: nameEn,
                 category: category,
                 priceNormalWash: priceNormalWash,
                 priceUrgentWash: priceUrgentWash,
@@ -5635,6 +5620,7 @@ function addProduct(event) {
                 id: Date.now(),
 
                 name: name,
+                nameEn: nameEn,
 
                 category: category,
                 priceNormalWash: priceNormalWash,
@@ -11287,12 +11273,12 @@ function viewWalletHistory(customerId) {
 
             <thead>
                 <tr>
-                    <th>الحركة</th>
-                    <th>الفاتورة</th>
-                    <th>المبلغ</th>
-                    <th>طريقة الدفع</th>
-                    <th>ملاحظة</th>
-                    <th>التاريخ</th>
+<th>الحركة</th>
+<th>الفاتورة</th>
+<th>المبلغ</th>
+<th>طريقة الدفع</th>
+<th>ملاحظة</th>
+<th>التاريخ</th>
                 </tr>
             </thead>
 
@@ -11630,62 +11616,62 @@ async function saveSubscriptionPlans() {
         settings.subscriptionPlans.forEach(
             (plan, index) => {
 
-                const nameInput =
-                    document.getElementById(
-                        `subPlanName${index}`
+const nameInput =
+document.getElementById(
+`subPlanName${index}`
                     );
 
-                const priceInput =
-                    document.getElementById(
-                        `subPlanPrice${index}`
+const priceInput =
+document.getElementById(
+`subPlanPrice${index}`
                     );
 
-                const balanceInput =
-                    document.getElementById(
-                        `subPlanBalance${index}`
+const balanceInput =
+document.getElementById(
+`subPlanBalance${index}`
                     );
 
-                const daysInput =
-                    document.getElementById(
-                        `subPlanDays${index}`
-                    );
+const daysInput =
+document.getElementById(
+`subPlanDays${index}`
+);
 
 
-                if (nameInput) {
-                    plan.name =
-                        nameInput.value.trim();
+if (nameInput) {
+plan.name =
+nameInput.value.trim();
                 }
 
-                if (priceInput) {
-                    plan.price =
-                        Number(
-                            priceInput.value || 0
-                        );
+if (priceInput) {
+plan.price =
+Number(
+priceInput.value || 0
+);
                 }
 
-                if (balanceInput) {
-                    plan.balance =
-                        Number(
-                            balanceInput.value || 0
-                        );
+if (balanceInput) {
+plan.balance =
+Number(
+balanceInput.value || 0
+);
                 }
 
-                if (daysInput) {
-                    plan.days =
-                        Number(
-                            daysInput.value || 0
-                        );
+if (daysInput) {
+plan.days =
+Number(
+daysInput.value || 0
+);
                 }
 
             }
         );
 
 
-        await saveData();
+await saveData();
 
 
-        alert(
-            "✅ تم حفظ باقات الاشتراك بنجاح"
+alert(
+"✅ تم حفظ باقات الاشتراك بنجاح"
         );
 
 
