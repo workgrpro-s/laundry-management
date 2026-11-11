@@ -159,9 +159,9 @@
         سياسة الخصوصية
     </h1>
 
-    <div class="updated">
-        آخر تحديث: 2026
-    </div>
+   <div class="updated">
+    آخر تحديث: <span id="policyDate">2026</span>
+</div>
 
 </div>
 
@@ -370,10 +370,17 @@
         backLink.textContent =
             "← العودة";
     }
+    
+    
 </script>
 
 </div>
-
+<script type="module">
+    import { POLICY_VERSION } from "./policy-version.js";
+    
+    document.getElementById("policyDate").textContent =
+        POLICY_VERSION;
+</script>
 </body>
 
 </html>
