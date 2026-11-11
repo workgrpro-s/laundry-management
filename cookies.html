@@ -84,6 +84,12 @@
 
 <h1>سياسة ملفات الارتباط</h1>
 
+
+<div style="color:#64748B; font-size:13px; margin:6px 0 18px;">
+    آخر تحديث: <span id="policyDate">2026</span>
+</div>
+
+
 <p>
     نستخدم ملفات الارتباط (Cookies) والتقنيات المشابهة
     للمساعدة في تشغيل نظام إدارة المغاسل وتحسين تجربة المستخدم
@@ -140,6 +146,15 @@
 
 
 </div>
+
+
+<script type="module">
+    import { POLICY_VERSION } from "./policy-version.js";
+    
+    document.getElementById("policyDate").textContent =
+        POLICY_VERSION;
+</script>
+
 
 </body>
 </html>
