@@ -29,14 +29,12 @@
             --danger: #B91C1C;
 
         }
-
-
+        
         * {
 
             box-sizing: border-box;
 
         }
-
 
         body {
 
@@ -233,16 +231,12 @@
                 rgba(15, 118, 110, .20);
 
         }
-
-
         .accept-btn:hover {
 
             transform:
                 translateY(-2px);
 
         }
-
-
         .reject-btn {
 
             background: #FEF2F2;
@@ -250,15 +244,11 @@
             border: 1px solid #FECACA;
 
         }
-
-
         .reject-btn:hover {
 
             background: #FEE2E2;
 
         }
-
-
         #message {
 
             margin-top: 15px;
@@ -267,7 +257,17 @@
             min-height: 20px;
 
         }
-
+        
+        .update-notice {
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    color: #92400E;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.8;
+}
 
         @media (max-width: 600px) {
 
@@ -284,8 +284,6 @@
                 font-size: 23px;
 
             }
-
-
             .buttons {
 
                 grid-template-columns: 1fr;
@@ -317,6 +315,10 @@
 
         </h1>
 
+<div id="updateNotice" class="update-notice" style="display:none;">
+    🔔 تم تحديث الشروط والأحكام وسياسة الخصوصية.
+    يرجى مراجعتها والموافقة عليها للمتابعة.
+</div>
 
         <div class="description">
 
@@ -386,7 +388,6 @@
                     ←
 
                 </span>
-
             </a>
 
 
@@ -463,7 +464,7 @@
         } from
             "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
-
+        import { POLICY_VERSION } from "./policy-version.js";
 
 const firebaseConfig = {
 
@@ -536,20 +537,24 @@ const firebaseConfig = {
                     const snapshot =
                         await get(consentRef);
 
-                    if (
-                        snapshot.exists() &&
-                        snapshot.val().accepted === true
-                    ) {
+const consent =
+    snapshot.exists() ?
+    snapshot.val() :
+    null;
 
+if (
+    consent &&
+    consent.accepted === true &&
+    consent.version === POLICY_VERSION
+) {
+    window.location.replace("laundry.html");
+    return;
+}
 
-                        window.location.replace(
-                            "laundry.html"
-                        );
-
-
-                        return;
-
-                    }
+if (consent && consent.accepted === true) {
+    document.getElementById("updateNotice")
+        .style.display = "block";
+}
 
 
                 }
@@ -603,7 +608,7 @@ db,
                         {
 
 accepted: true,
-
+version: POLICY_VERSION,
 acceptedAt:
 new Date().toISOString()
 
