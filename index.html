@@ -9,7 +9,7 @@
 </head>
 <body>
     
-    <div class="container-main">
+    <div class="container-main sidebar-collapsed">
 
   <div class="sidebar">
 <div class="logo">
@@ -300,6 +300,31 @@
             <!-- TOP HEADER -->
             <div class="top-header">
                 <div class="header-left">
+                    <div class="header-left">
+
+ <button
+    id="sidebarToggle"
+    class="sidebar-toggle"
+    type="button"
+    onclick="toggleSidebar()"
+    aria-label="القائمة"
+    title="القائمة"
+    data-title-ar="القائمة"
+    data-title-en="Menu">
+
+    <span class="toggle-icon">☰</span>
+
+    <span
+        class="toggle-text"
+        data-ar="القائمة"
+        data-en="Menu">
+        القائمة
+    </span>
+
+</button>
+
+    <h1 id="page-title">الرئيسية</h1>
+</div>
                     <h1 id="page-title">الرئيسية</h1>
                 </div>
                 <div class="header-right">
@@ -482,13 +507,13 @@
                     <div class="products-section">
                         <h3 data-ar="الخدمات المتاحة" data-en="Available Services">الخدمات المتاحة</h3>
                         <div class="search-box">
-                        <input
+                    <input
     type="text"
-    id="searchInvqoice"
-    placeholder="ابحث عن فاتورة..."
-    data-placeholder-ar="ابحث عن فاتورة..."
-    data-placeholder-en="Search invoice..."
-    onkeyup="searchInvoices()">
+    id="searchProduct"
+    placeholder="ابحث عن خدمة..."
+    data-placeholder-ar="ابحث عن خدمة..."
+    data-placeholder-en="Search service..."
+    onkeyup="searchProducts()">
 
                         </div>
                         <div class="products-grid" id="productsGrid"></div>
@@ -873,15 +898,14 @@
     </div>
 
     <div class="search-box" style="margin-bottom:20px;">
-    <input
+<input
     type="text"
-    id="searchCustomer"
+    id="walletSearch"
     placeholder="ابحث عن عميل..."
     data-placeholder-ar="ابحث عن عميل..."
     data-placeholder-en="Search for customer..."
-    onkeyup="searchCustomers()"
-
-            style="width:100%;padding:10px;border:2px solid #0F766E;">
+    onkeyup="searchWallet()"
+    style="width:100%;padding:10px;border:2px solid #0F766E;">
     </div>
 
     <table class="inventory-table">
@@ -2416,7 +2440,35 @@ data-en="Close">
 })();
 
 </script>
+<script>
+    (function() {
+        
+        const container =
+            document.querySelector('.container-main');
+        
+        if (!container) return;
+        
 
+        window.toggleSidebar = function() {
+            container.classList.toggle('sidebar-collapsed');
+        };
+        
+
+        container.classList.add('sidebar-collapsed');
+        
+
+        document
+            .querySelectorAll('.sidebar .menu-item')
+            .forEach(function(item) {
+                
+                item.addEventListener('click', function() {
+                    container.classList.add('sidebar-collapsed');
+                });
+                
+            });
+        
+    })();
+</script>
 
 </body>
 </html>
