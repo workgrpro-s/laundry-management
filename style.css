@@ -6144,23 +6144,29 @@ body::after {
 
 
 
+/* =====================================================
+   القائمة الجانبية: تظهر فوق الصفحة عند الطلب
+   ===================================================== */
+
 .sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 280px;
+    max-width: 85vw;
+    z-index: 900;
+    box-shadow: -8px 0 30px rgba(15, 23, 42, .25);
     transition:
-        width .3s ease,
-        padding .3s ease,
+        transform .3s ease,
         opacity .25s ease;
-    flex-shrink: 0;
 }
 
 .container-main.sidebar-collapsed .sidebar {
-    width: 0;
-    padding-left: 0;
-    padding-right: 0;
+    transform: translateX(105%);
     opacity: 0;
-    overflow: hidden;
-    border: 0;
-    box-shadow: none;
     pointer-events: none;
+    box-shadow: none;
 }
 
 .header-left {
@@ -6186,12 +6192,6 @@ body::after {
 .sidebar-toggle:hover {
     transform: scale(1.06);
     box-shadow: 0 6px 16px rgba(15, 118, 110, .35);
-}
-
-@media (max-width: 768px) {
-    .container-main.sidebar-collapsed .sidebar {
-        display: none;
-    }
 }
 
 
@@ -6229,4 +6229,24 @@ html[lang="en"] .header-left h1 {
 .sidebar-toggle .toggle-icon {
     font-size: 22px;
     line-height: 1;
+}
+
+/* =========================
+   شريط حافة الشاشة 
+============================ */
+
+.sidebar-hotzone {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 100vh;
+    z-index: 899;
+}
+
+
+@media (hover: none), (pointer: coarse) {
+    .sidebar-hotzone {
+        display: none;
+    }
 }
