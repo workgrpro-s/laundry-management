@@ -1235,11 +1235,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     input.addEventListener("keydown", function(event) {
         
-        // إذا ضغط الماسح Enter
+
         if (event.key === "Enter") {
             
             event.preventDefault();
-            
             submitInvoiceNumber();
         }
         
@@ -1994,7 +1993,7 @@ function updateCustomerSelect() {
     
     if (!select) return;
     
-    select.innerHTML = `<option value="">-- سابقا مسجل --</option>`;
+    select.innerHTML = `<option value="">-- مسجل سابقاً  --</option>`;
     
     
     customers.forEach((customer, index) => {
@@ -9020,9 +9019,10 @@ function searchProducts() {
         .trim()
         .toLowerCase();
     
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(keyword)
-    );
+   const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(keyword) ||
+    String(product.nameEn || '').toLowerCase().includes(keyword)
+);
     
     renderProducts(filteredProducts);
 }
@@ -9678,7 +9678,6 @@ function addWalletTransaction(customerId, amount, type, note, invoiceNo = null) 
 
 
     if (customer.walletBalance < 0) {
-
         customer.walletBalance = 0;
 
     }
@@ -9734,7 +9733,6 @@ function receivePayment(invoiceNo) {
     
     
     window.currentPaymentInvoice = invoice;
-    
     window.currentPaymentRemaining = remaining;
     
     openPaymentMethodModal();
