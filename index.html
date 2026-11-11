@@ -10,6 +10,7 @@
 <body>
     
     <div class="container-main sidebar-collapsed">
+    <div id="sidebarHotzone" class="sidebar-hotzone"></div>
 
   <div class="sidebar">
 <div class="logo">
@@ -2446,26 +2447,98 @@ data-en="Close">
         const container =
             document.querySelector('.container-main');
         
-        if (!container) return;
+        const sidebar =
+            document.querySelector('.sidebar');
+        
+        const hotzone =
+            document.getElementById('sidebarHotzone');
+        
+        if (!container || !sidebar) return;
+        
+        let pinned = false; 
+        let closeTimer = null;
+        
+        function openSidebar() {
+            clearTimeout(closeTimer);
+            container.classList.remove('sidebar-collapsed');
+        }
+        
+        function closeSidebar() {
+            container.classList.add('sidebar-collapsed');
+        }
         
 
         window.toggleSidebar = function() {
-            container.classList.toggle('sidebar-collapsed');
+            
+            if (container.classList.contains('sidebar-collapsed')) {
+                pinned = true;
+                openSidebar();
+            } else {
+                pinned = false;
+                closeSidebar();
+            }
+            
         };
         
+        
+        if (hotzone) {
+            
+            hotzone.addEventListener('mouseenter', function() {
+                
+                pinned = false;
+                openSidebar();
+                
 
-        container.classList.add('sidebar-collapsed');
+                closeTimer = setTimeout(function() {
+                    
+                    if (!sidebar.matches(':hover')) {
+                        closeSidebar();
+                    }
+                    
+                }, 1200);
+                
+            });
+            
+        }
         
 
-        document
-            .querySelectorAll('.sidebar .menu-item')
+        sidebar.addEventListener('mouseenter', function() {
+            clearTimeout(closeTimer);
+        });
+        
+
+        sidebar.addEventListener('mouseleave', function() {
+            
+            if (pinned) return;
+            
+            closeTimer = setTimeout(closeSidebar, 250);
+            
+        });
+        
+
+        sidebar
+            .querySelectorAll('.menu-item')
             .forEach(function(item) {
                 
                 item.addEventListener('click', function() {
-                    container.classList.add('sidebar-collapsed');
+                    pinned = false;
+                    closeSidebar();
                 });
                 
             });
+        
+
+        document.addEventListener('keydown', function(e) {
+            
+            if (e.key === 'Escape') {
+                pinned = false;
+                closeSidebar();
+            }
+            
+        });
+        
+
+        closeSidebar();
         
     })();
 </script>
