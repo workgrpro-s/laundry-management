@@ -197,6 +197,10 @@
     <p>
         الشروط المنظمة لاستخدام منصة إدارة المغاسل
     </p>
+    
+<div style="font-size:13px; opacity:.85; margin-top:6px;">
+    آخر تحديث: <span id="policyDate">2026</span>
+</div>
 
 </header>
 
@@ -531,10 +535,11 @@
             18. التواصل
         </h2>
 
-   <p>
+        <p>
             التواصل عبر البريد الألكتروني
 (lanundrymanagement@gmail.com)
         </p>
+
 
         <div class="warning">
 
@@ -627,6 +632,12 @@
 
 </footer>
 
+<script type="module">
+    import { POLICY_VERSION } from "./policy-version.js";
+    
+    document.getElementById("policyDate").textContent =
+        POLICY_VERSION;
+</script>
 
 </body>
 
