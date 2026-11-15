@@ -157,7 +157,7 @@ border-right: 3px solid #ffffff;
     font-size: 18px;
 }
 
-/* Main Content */
+
 .main-content {
     flex: 1;
     display: flex;
@@ -541,7 +541,7 @@ border-right: 3px solid #ffffff;
     font-weight: bold;
 }
 
-/* Buttons */
+
 .btn {
     padding: 10px 20px;
     border: none;
@@ -1390,14 +1390,13 @@ body::after {
 }
 
 
-.stat-card:nth-child(1) h3 { color: #16a34a; } /* مبيعات */
-.stat-card:nth-child(2) h3 { color: #2563eb; } /* فواتير */
-.stat-card:nth-child(3) h3 { color: #f59e0b; } /* جاهز */
-.stat-card:nth-child(4) h3 { color: #B91C1C; } /* قيد التنفيذ */
-.stat-card:nth-child(5) h3 { color: #8b5cf6; } /* اشتراكات */
+.stat-card:nth-child(1) h3 { color: #16a34a; } 
+.stat-card:nth-child(2) h3 { color: #2563eb; } 
+.stat-card:nth-child(3) h3 { color: #f59e0b; } 
+.stat-card:nth-child(4) h3 { color: #B91C1C; } 
+.stat-card:nth-child(5) h3 { color: #8b5cf6; } 
 
 
-/* حجم نافذة فواتير العميل */
 #customerInvoicesModal .modal-content {
     width: 700px;
     max-width: 90%;
@@ -3626,7 +3625,7 @@ body::after {
 
 
 
-/* ازرار إضافة اشتراك */
+
 
 .add-subscription-btn {
 
@@ -5541,9 +5540,7 @@ body::after {
 }
 
 
-/* =========================================
-   نافذة إضافة الاشتراك
-========================================= */
+
 
 .subscription-add-modal {
 
@@ -5657,7 +5654,7 @@ body::after {
 }
 
 
-/* زر الإغلاق */
+
 
 .subscription-close {
 
@@ -5744,9 +5741,7 @@ body::after {
 }
 
 
-/* =========================================
-   البحث عن العميل
-========================================= */
+
 
 .subscription-search-box {
 
@@ -5852,9 +5847,6 @@ body::after {
 }
 
 
-/* =========================================
-   خطة الاشتراك
-========================================= */
 
 .subscription-plan-box {
 
@@ -5982,7 +5974,7 @@ body::after {
 }
 
 
-/* حفظ */
+
 
 .subscription-save-button {
 
@@ -6142,12 +6134,6 @@ body::after {
 }
 
 
-
-
-/* =====================================================
-   القائمة الجانبية: تظهر فوق الصفحة عند الطلب
-   ===================================================== */
-
 .sidebar {
     position: fixed;
     top: 0;
@@ -6214,7 +6200,7 @@ html[lang="en"] .header-left h1 {
     direction: ltr;
 }
 
-/* زر القائمة:  */
+
 .sidebar-toggle {
     width: auto;
     height: 46px;
@@ -6231,9 +6217,6 @@ html[lang="en"] .header-left h1 {
     line-height: 1;
 }
 
-/* =========================
-   شريط حافة الشاشة 
-============================ */
 
 .sidebar-hotzone {
     position: fixed;
@@ -6285,9 +6268,7 @@ html[lang="en"] .header-left h1 {
     }
 }
 
-/* =====================================================
-   تصغير القائمة الجانبية لتظهر كل الأقسام
-   ===================================================== */
+
 
 .sidebar {
     padding: 14px;
@@ -6317,7 +6298,7 @@ html[lang="en"] .header-left h1 {
     font-size: 16px;
 }
 
-/* الشاشات القصيرة */
+
 @media (max-height: 700px) {
     
     .logo {
