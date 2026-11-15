@@ -1637,6 +1637,7 @@ function switchLanguage(lang) {
 
     updateAllTexts();
     updateCart();
+    renderSubscriptions();
     updateInventoryTable();
     updateInvoicesTable();
 
@@ -1965,10 +1966,20 @@ if (searchInput && resultsBox) {
                     
                     pointsBox.style.display = "block";
                     
-                    const customerPoints = Number(c.points || 0);
                     
-                    const discount =
-                        Math.floor(customerPoints / 100) * 10;
+                    
+                    const customerPoints = Number(c.points || 0);
+
+const redeemRate =
+    Number(settings.pointsRedeemRate) || 10;
+
+const discountValue =
+    Number(settings.pointsDiscountValue) || 10;
+
+const discount =
+    settings.pointsEnabled === false ?
+    0 :
+    Math.floor(customerPoints / redeemRate) * discountValue;
                     
                     pointsInfo.innerHTML = `
                         ⭐ رصيد العميل:
@@ -3218,7 +3229,7 @@ function getSelectedCustomer() {
                 Number(customer.points || 0);
     
             const redeemRate =
-                Number(settings.pointsRedeemRate) || 20;
+                Number(settings.pointsRedeemRate) || 10;
     
             const discountValue =
                 Number(settings.pointsDiscountValue) || 10;
@@ -3359,7 +3370,11 @@ if (currentWallet > 0) {
         'input[name="payment"]:checked'
     )?.value || "نقدي";
 
-
+const selectedPayment =
+    document.querySelector(
+        'input[name="payment"]:checked'
+    )?.value || "";
+    
 let earnedPoints = 0;
 
   if(settings.pointsEnabled){
@@ -3480,16 +3495,22 @@ const invoice = {
     total,
     pointsEarned:
     earnedPoints,
-    paymentMethod:
-    activeSub &&
-    useSub &&
-    useSub.checked ?
-    "اشتراك" :
-    (
-        paymentStatus === "paid" ?
-        paymentMethod :
-        ""
-    ),
+    selectedPayment: selectedPayment,
+    
+        paymentMethod:
+        activeSub &&
+        useSub &&
+        useSub.checked ?
+        "اشتراك" :
+        (
+            pointsUsed > 0 ?
+            "نقاط" :
+            (
+                paymentStatus === "paid" ?
+                paymentMethod :
+                ""
+            )
+        ),
 
 
     status:"غير مستلم"
@@ -3700,7 +3721,7 @@ function getInvoiceCustomer() {
 }
 
 
-// ============ INVOICES  تحديث الفاتورة  =============
+// ============   تحديث الفاتورة  =============
 function updateInvoicesTable() {
 
     const tbody = document.getElementById('invoicesTable');
@@ -3746,31 +3767,52 @@ function updateInvoicesTable() {
 
 
 
-        let paymentMethodText = '-';
+        const pm = invoice.paymentMethod || '';
 
-        if (invoice.paymentMethod) {
+let paymentMethodText = '-';
 
-            if (invoice.paymentMethod === 'شبكة') {
+if (pm) {
+    
+    if (pm === 'شبكة' || pm === 'بطاقة') {
+        
+        paymentMethodText =
+            isArabic ? '💳 ' + pm : '💳 Card';
+        
+    } else if (pm === 'كاش' || pm === 'نقداً' || pm === 'نقدي') {
+        
+        paymentMethodText =
+            isArabic ? '💵 ' + pm : '💵 Cash';
+        
+    } else if (pm === 'اشتراك') {
+        
+        paymentMethodText =
+            isArabic ? '🎫 اشتراك' : '🎫 Subscription';
+        
+    } else if (pm === 'نقاط') {
+        
+        paymentMethodText =
+            isArabic ? '⭐ نقاط' : '⭐ Points';
+        
+    } else {
+        
+        paymentMethodText = pm;
+        
+    }
+}
 
-                paymentMethodText =
-                    isArabic ? '💳 شبكة' : '💳 Card';
+const pmBg =
+    (pm === 'شبكة' || pm === 'بطاقة') ? '#e3f2fd' :
+    (pm === 'كاش' || pm === 'نقداً' || pm === 'نقدي') ? '#e8f5e9' :
+    pm === 'اشتراك' ? '#fff3e0' :
+    pm === 'نقاط' ? '#fef9c3' :
+    '#f3f4f6';
 
-            } else if (invoice.paymentMethod === 'كاش') {
-
-                paymentMethodText =
-                    isArabic ? '💵 كاش' : '💵 Cash';
-
-            } else if (invoice.paymentMethod === 'اشتراك') {
-
-                paymentMethodText =
-                    isArabic ? '🎫 اشتراك' : '🎫 Subscription';
-
-            } else {
-
-                paymentMethodText = invoice.paymentMethod;
-
-            }
-        }
+const pmColor =
+    (pm === 'شبكة' || pm === 'بطاقة') ? '#1565c0' :
+    (pm === 'كاش' || pm === 'نقداً' || pm === 'نقدي') ? '#2e7d32' :
+    pm === 'اشتراك' ? '#e65100' :
+    pm === 'نقاط' ? '#a16207' :
+    '#374151';
 
 
         const statusReceived =
@@ -3851,32 +3893,16 @@ function updateInvoicesTable() {
 
                     ?
 
-                    `<span style="
-                        display:inline-block;
-                        padding:5px 10px;
-                        border-radius:8px;
-                        font-weight:bold;
-                        background:${
-                            invoice.paymentMethod === 'شبكة'
-                            ? '#e3f2fd'
-                            : invoice.paymentMethod === 'كاش'
-                            ? '#e8f5e9'
-                            : invoice.paymentMethod === 'اشتراك'
-                            ? '#fff3e0'
-                            : '#f3f4f6'
-                        };
-                        color:${
-                            invoice.paymentMethod === 'شبكة'
-                            ? '#1565c0'
-                            : invoice.paymentMethod === 'كاش'
-                            ? '#2e7d32'
-                            : invoice.paymentMethod === 'اشتراك'
-                            ? '#e65100'
-                            : '#374151'
-                        };
-                    ">
-                        ${paymentMethodText}
-                    </span>`
+`<span style="
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:8px;
+    font-weight:bold;
+    background:${pmBg};
+    color:${pmColor};
+">
+    ${paymentMethodText}
+</span>`
 
                     :
 
@@ -4289,14 +4315,27 @@ function showReceipt(invoice) {
         invoiceCode:
             isEnglish ? "Invoice QR" : "رمز الفاتورة",
 
-        thanks:
-            isEnglish
-                ? "Thank you for your business 🙏"
-                : "شكراً لتعاملك معنا 🙏"
-    };
+                thanks:
+            isEnglish ?
+            "Thank you for your business 🙏" :
+            "شكراً لتعاملك معنا 🙏",
+            
+            paymentMethod:
+            isEnglish ? "Payment method" : "طريقة الدفع"
+        };
 
 
-
+    const methodLabel = (method) =>
+        isEnglish ?
+        ({
+            "نقداً": "Cash",
+            "نقدي": "Cash",
+            "كاش": "Cash",
+            "بطاقة": "Card",
+            "شبكة": "Card"
+        } [method] || method) :
+        method;
+        
     const invoiceDate = new Date(invoice.date);
 
     const formattedDate = invoiceDate.toLocaleString(
@@ -4603,6 +4642,30 @@ ${(invoice.items || []).map(item => `
     ` : ""}
 
 
+
+    ${invoice.selectedPayment &&
+      (!invoice.paymentMethod || invoice.paymentMethod === "اشتراك") ? `
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom:5px;
+        font-weight:bold;
+    ">
+
+        <span>
+            💳 ${t.paymentMethod}
+        </span>
+
+        <span>
+            ${methodLabel(invoice.selectedPayment)}
+        </span>
+
+    </div>
+
+    ` : ""}
+    
     <!-- SUBTOTAL -->
 
     <div style="
@@ -6397,7 +6460,7 @@ function restoreBackup() {
                 
                 const data = JSON.parse(event.target.result);
                 
-                // التحقق من أن الملف نسخة احتياطية صحيحة
+
                 if (
                     !data ||
                     !Array.isArray(data.products) ||
@@ -6471,7 +6534,7 @@ function restoreBackup() {
 }
 
 
-// ===============================
+
 // مسح جميع البيانات
 // ===============================
 function resetData() {
@@ -7103,45 +7166,129 @@ function addSubscription(e) {
 
 
 function renderSubscriptions(list = subscriptions) {
-    
-    let table = document.getElementById("subscriptionsTable");
-    table.innerHTML = "";
-    
+
+    const table = document.getElementById("subscriptionsTable");
+
+    const isAr = currentLanguage === "ar";
+    const locale = isAr ? "ar-SA" : "en-US";
+    const DAY = 24 * 60 * 60 * 1000;
+
+    const fmt = (value) => {
+
+        if (!value) return "-";
+
+        const d = new Date(value);
+
+        return isNaN(d.getTime())
+            ? "-"
+            : d.toLocaleDateString(locale);
+    };
+
+    let html = "";
+
     list.forEach((sub) => {
-        
+
         const index = subscriptions.indexOf(sub);
-        
-        table.innerHTML += `
+
+        const startValue = sub.start || sub.startDate;
+        const endValue = sub.end || sub.endDate;
+
+        const endTime =
+            endValue ? new Date(endValue).getTime() : NaN;
+
+        const expiredByDate =
+            !isNaN(endTime) && endTime <= Date.now();
+
+        const remaining = Number(sub.remaining || 0);
+        const planBalance = Number(sub.planBalance || 0);
+        const used = Math.max(0, planBalance - remaining);
+
+        const isExpired =
+            expiredByDate ||
+            remaining <= 0 ||
+            sub.status === "منتهي";
+
+        // الأيام المتبقية
+        let daysText = "-";
+        let daysColor = "#16a34a";
+
+        if (!isNaN(endTime)) {
+
+            if (expiredByDate) {
+
+                daysText = isAr ? "منتهي" : "Expired";
+                daysColor = "#dc2626";
+
+            } else {
+
+                const daysLeft =
+                    Math.ceil((endTime - Date.now()) / DAY);
+
+                daysText = isAr
+                    ? `باقي ${daysLeft} يوم`
+                    : `${daysLeft} days left`;
+
+                if (daysLeft <= 7) daysColor = "#dc2626";
+            }
+        }
+
+        const statusText = isExpired
+            ? (isAr ? "منتهي" : "Expired")
+            : (isAr ? "نشط" : "Active");
+
+        const statusColor =
+            isExpired ? "#dc2626" : "#16a34a";
+
+        html += `
             <tr>
                 <td>${sub.customerName}</td>
                 <td>${sub.type}</td>
-                <td>${sub.price.toFixed(2)} ${settings.currency}</td>
-                <td>${sub.remaining.toFixed(2)} ${settings.currency}</td>
-                <td>${sub.status}</td>
+                <td>${Number(sub.price || 0).toFixed(2)} ${settings.currency}</td>
+                <td>${remaining.toFixed(2)} ${settings.currency}</td>
+
+                <td>
+                    <strong style="color:${statusColor}">
+                        ${statusText}
+                    </strong>
+                </td>
+
+                <td style="font-size:12px;line-height:1.7;white-space:nowrap;">
+                    📅 ${isAr ? "من" : "From"}: ${fmt(startValue)}<br>
+                    📅 ${isAr ? "إلى" : "To"}: ${fmt(endValue)}<br>
+                    <strong style="color:${daysColor}">⏳ ${daysText}</strong>
+                    ${
+                        planBalance > 0
+                            ? `<br>💳 ${isAr ? "المستخدم" : "Used"}:
+                               ${used.toFixed(2)} / ${planBalance.toFixed(2)}
+                               ${settings.currency}`
+                            : ""
+                    }
+                </td>
 
                 <td>
 
                     <button class="delete-btn" onclick="deleteSubscription(${index})">
-                        حذف
+                        ${isAr ? "حذف" : "Delete"}
                     </button>
 
                     ${
-                        (sub.remaining <= 0 || sub.status === "منتهي")
-                        ?
-                        `<button 
-                            class="btn btn-primary"
-                            onclick="renewSubscription(${index})">
-                            🔄 تجديد
-                        </button>`
-                        :
-                        ''
+                        isExpired
+                            ? `<button
+                                class="btn btn-primary"
+                                onclick="renewSubscription(${index})">
+                                🔄 ${isAr ? "تجديد" : "Renew"}
+                            </button>`
+                            : ""
                     }
 
                 </td>
             </tr>
         `;
     });
-} 
+
+    table.innerHTML = html;
+}
+
 
 
 function deleteSubscription(index) {
@@ -11619,35 +11766,35 @@ document.getElementById(
 `subPlanName${index}`
                     );
 
-const priceInput =
+  const priceInput =
 document.getElementById(
 `subPlanPrice${index}`
                     );
 
-const balanceInput =
+      const balanceInput =
 document.getElementById(
 `subPlanBalance${index}`
                     );
 
-const daysInput =
+   const daysInput =
 document.getElementById(
 `subPlanDays${index}`
 );
 
 
-if (nameInput) {
+     if (nameInput) {
 plan.name =
 nameInput.value.trim();
                 }
 
-if (priceInput) {
+  if (priceInput) {
 plan.price =
 Number(
 priceInput.value || 0
 );
                 }
 
-if (balanceInput) {
+    if (balanceInput) {
 plan.balance =
 Number(
 balanceInput.value || 0
@@ -12101,6 +12248,26 @@ function confirmRenewSubscription() {
     
     sub.endDate =
         endDate.toISOString();
+
+    sub.start = sub.startDate;
+    sub.end = sub.endDate;
+    sub.type = plan.name;
+    sub.planBalance = Number(plan.balance || 0);
+    
+
+    if (!Array.isArray(revenues)) {
+        revenues = [];
+    }
+    
+    revenues.push({
+        type: "اشتراك",
+        amount: Number(plan.price || 0),
+        subscriptionId: sub.id,
+        customerName: sub.customerName,
+        date: new Date().toISOString()
+    });
+    
+    saveData();
     
     
     localStorage.setItem(
