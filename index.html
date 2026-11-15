@@ -2541,7 +2541,17 @@ data-en="Close">
                 });
                 
             });
-        
+
+    sidebar
+        .querySelectorAll('.lang-btn')
+        .forEach(function(btn) {
+            
+            btn.addEventListener('click', function() {
+                pinned = false;
+                closeSidebar();
+            });
+            
+        });
 
         document.addEventListener('keydown', function(e) {
             
@@ -2557,6 +2567,77 @@ data-en="Close">
         
     })();
 </script>
+
+<script>
+    (function() {
+        
+
+        function clearPaymentRadios() {
+            
+            document
+                .querySelectorAll('input[name="payment"]')
+                .forEach(function(radio) {
+                    
+                    radio.checked = false;
+                    radio.dataset.selected = 'false';
+                    
+                });
+            
+        }
+        
+        document.addEventListener('change', function(event) {
+            
+            const target = event.target;
+            
+            if (!target || !target.matches) return;
+            
+            const sub =
+                document.getElementById('useSubscription');
+            
+            const pts =
+                document.getElementById('usePoints');
+            
+
+            if (target.id === 'useSubscription' && target.checked) {
+                
+                if (pts) pts.checked = false;
+                
+                clearPaymentRadios();
+            }
+            
+
+            if (target.id === 'usePoints' && target.checked) {
+                
+                if (sub) sub.checked = false;
+                
+                clearPaymentRadios();
+            }
+            
+
+            if (
+                target.matches('input[name="payment"]') &&
+                target.checked
+            ) {
+                
+                if (sub) sub.checked = false;
+                if (pts) pts.checked = false;
+            }
+            
+
+            if (
+                target.matches(
+                    '#useSubscription, #usePoints, input[name="payment"]'
+                ) &&
+                typeof calculateTotal === 'function'
+            ) {
+                calculateTotal();
+            }
+            
+        });
+        
+    })();
+</script>
+
 
 </body>
 </html>
